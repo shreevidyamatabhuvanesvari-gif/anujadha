@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fffaf3">
+  <title>सुविचार TTS — 9:16 मल्टी-कलर डिस्प्ले</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <main id="app" class="page-shell">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Lalita-Sahasranama-Ratnavali • TTS Studio</p>
+        <h1>सुविचार — 9:16 वाचन डिस्प्ले</h1>
+        <p class="subtitle">एक समय में एक ही सुविचार प्रदर्शित होगा और उसके पूर्ण वाचन के बाद ही अगला सुविचार आएगा।</p>
+      </div>
+      <div id="systemStatus" class="system-status" role="status" aria-live="polite">App तैयार हो रहा है…</div>
+    </header>
+
+    <section class="workspace" aria-label="एक-पेज सुविचार पैनल">
+      <aside class="control-panel" aria-label="सुविचार और मीडिया नियंत्रण">
+        <section class="panel-card">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">01</p>
+              <h2>सुविचार लिखें</h2>
+            </div>
+            <span class="status-dot" aria-hidden="true"></span>
+          </div>
+
+          <label class="field-label" for="quoteInput">सुविचार</label>
+          <textarea id="quoteInput" class="quote-input" rows="7" placeholder="यहाँ अपना मौलिक सुविचार लिखें…"></textarea>
+          <div class="field-hint">एक सुविचार लिखकर “कतार में जोड़ें” दबाएँ।</div>
+
+          <div class="button-row">
+            <button id="addQuoteButton" class="btn btn-primary" type="button">कतार में जोड़ें</button>
+            <button id="clearQuotesButton" class="btn btn-secondary" type="button">सभी साफ़ करें</button>
+          </div>
+
+          <div class="queue-box">
+            <div class="queue-header">
+              <span>सुविचार कतार</span>
+              <strong id="queueCount">0</strong>
+            </div>
+            <ol id="quoteQueue" class="quote-queue" aria-live="polite"></ol>
+          </div>
+        </section>
+
+        <section class="panel-card">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">02</p>
+              <h2>फोटो</h2>
+            </div>
+          </div>
+
+          <label class="upload-box" for="photoUpload">
+            <span class="upload-title">फोटो अपलोड करें</span>
+            <span class="upload-subtitle">JPG, PNG, WEBP</span>
+            <input id="photoUpload" type="file" accept="image/*">
+          </label>
+
+          <div id="photoStatus" class="media-status">कोई फोटो चयनित नहीं है।</div>
+          <button id="removePhotoButton" class="btn btn-secondary btn-full" type="button" disabled>फोटो हटाएँ</button>
+        </section>
+
+        <section class="panel-card">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">03</p>
+              <h2>वीडियो क्लिप</h2>
+            </div>
+          </div>
+
+          <label class="upload-box" for="videoUpload">
+            <span class="upload-title">वीडियो क्लिप अपलोड करें</span>
+            <span class="upload-subtitle">वीडियो 9:16 stage में प्रदर्शित होगा</span>
+            <input id="videoUpload" type="file" accept="video/*">
+          </label>
+
+          <div id="videoUploadStatus" class="media-status">कोई वीडियो चयनित नहीं है।</div>
+          <button id="removeVideoButton" class="btn btn-secondary btn-full" type="button" disabled>वीडियो हटाएँ</button>
+        </section>
+
+        <section class="panel-card">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">04</p>
+              <h2>TTS</h2>
+            </div>
+          </div>
+
+          <label class="field-label" for="voiceSelect">Voice</label>
+          <select id="voiceSelect" class="select-input"></select>
+          <div id="ttsVoiceStatus" class="media-status">Voice खोजी जा रही है…</div>
+
+          <div class="range-row">
+            <label class="field-label" for="ttsRate">वाचन गति</label>
+            <output id="ttsRateValue" class="range-value">0.90</output>
+          </div>
+          <input id="ttsRate" class="range-input" type="range" min="0.60" max="1.20" step="0.01" value="0.90">
+
+          <div class="profile-note">
+            <strong>Locked TTS profile</strong>
+            <span>Timbre 9.5 • Pitch 8.5 • Prosody 9.5 • Articulation 9.0 • Tempo 8.5 • Resonance 9.5</span>
+          </div>
+        </section>
+
+        <section class="panel-card controls-card">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">05</p>
+              <h2>वाचन नियंत्रण</h2>
+            </div>
+          </div>
+
+          <div class="button-row control-buttons">
+            <button id="playButton" class="btn btn-primary" type="button">▶ प्रारंभ</button>
+            <button id="pauseButton" class="btn btn-secondary" type="button" disabled>Ⅱ Pause</button>
+            <button id="stopButton" class="btn btn-secondary" type="button" disabled>■ Stop</button>
+          </div>
+
+          <div id="ttsStatus" class="tts-status" role="status" aria-live="polite">पहले सुविचार जोड़ें।</div>
+          <div class="progress-wrap">
+            <div class="progress-meta"><span>वाचन प्रगति</span><output id="ttsProgressValue">0%</output></div>
+            <progress id="ttsProgress" max="100" value="0">0%</progress>
+          </div>
+        </section>
+      </aside>
+
+      <section class="stage-panel" aria-label="9:16 डिस्प्ले">
+        <div class="stage-frame">
+          <video id="videoPlayer" class="stage-video" playsinline preload="metadata" muted></video>
+          <div id="videoPlaceholder" class="stage-placeholder">
+            <div class="placeholder-icon">▶</div>
+            <span>वीडियो क्लिप अपलोड करें</span>
+            <small>9:16 display stage</small>
+          </div>
+
+          <div class="stage-shade" aria-hidden="true"></div>
+          <div class="stage-border" aria-hidden="true"></div>
+
+          <div id="photoFrame" class="photo-frame" hidden>
+            <img id="stagePhoto" alt="अपलोड की गई फोटो">
+          </div>
+
+          <div id="quoteStage" class="quote-stage" aria-live="polite" aria-atomic="true">
+            <div class="quote-stage-placeholder">वाचन शुरू होने पर सुविचार यहाँ प्रदर्शित होगा।</div>
+          </div>
+
+          <div class="stage-badge">9 : 16</div>
+        </div>
+
+        <div class="stage-info">
+          <div>
+            <strong id="stageNow">कोई सुविचार प्रदर्शित नहीं हो रहा है।</strong>
+            <span id="stageIndex">0 / 0</span>
+          </div>
+          <div id="videoStatus" class="video-status">वीडियो तैयार नहीं है।</div>
+        </div>
+
+        <div class="completion-strip">
+          <span id="quoteCompletion">कतार: 0 / 0</span>
+          <span id="completionGate">वाचन के लिए तैयार</span>
+        </div>
+      </section>
+    </section>
+  </main>
+</body>
+</html>
