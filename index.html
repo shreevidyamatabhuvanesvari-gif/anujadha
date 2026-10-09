@@ -4,261 +4,187 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#111827">
-  <title>सुविचार 9:16 — TTS Display Panel</title>
+  <meta name="description" content="सुविचारों को 9:16 दृश्य पर फोटो, वीडियो और क्रमिक TTS वाचन के साथ प्रस्तुत करने का एकल-पृष्ठ पैनल।">
+  <title>सुविचार 9:16 — वाचन एवं डिस्प्ले पैनल</title>
   <link rel="stylesheet" href="./style.css">
+  <script src="./app.js" defer></script>
 </head>
 <body>
   <main class="app-shell">
     <header class="site-header">
       <div class="header-copy">
         <p class="eyebrow">SUVICHAR • TTS • 9:16 DISPLAY</p>
-        <h1>सुविचार वाचन एवं 9:16 डिस्प्ले पैनल</h1>
-        <p class="subtitle">सुविचार जोड़ें, फोटो और वीडियो लगाएँ तथा क्रमशः TTS के साथ प्रदर्शित करें। वर्तमान सुविचार का पूरा वाचन समाप्त होने के बाद ही अगला सुविचार प्रदर्शित होगा।</p>
+        <h1>सुविचार वाचन एवं दृश्य पैनल</h1>
+        <p class="subtitle">सुविचार जोड़ें, फोटो और वीडियो चुनें, फिर क्रमशः वाचन करें। अगले सुविचार का प्रदर्शन पिछले सुविचार के वास्तविक TTS completion event के बाद ही होगा।</p>
       </div>
-      <div class="ratio-badge" aria-label="मुख्य डिस्प्ले अनुपात">9:16</div>
+      <div class="header-side">
+        <span class="ratio-badge" aria-label="मुख्य डिस्प्ले अनुपात 9:16">9:16</span>
+        <span class="single-page-badge">एकल पृष्ठ</span>
+      </div>
     </header>
 
-    <section class="workspace" aria-label="सुविचार नियंत्रण और पूर्वावलोकन">
-      <section class="control-panel" aria-label="नियंत्रण पैनल">
-        <section class="panel-section">
+    <section class="workspace" aria-label="मुख्य कार्यक्षेत्र">
+      <aside class="control-panel" aria-label="एडमिन कंट्रोल पैनल">
+        <div class="admin-panel-head">
+          <div>
+            <span class="section-kicker">ADMIN CONTROL PANEL</span>
+            <h2>कंटेंट एवं प्लेबैक</h2>
+            <p>इनपुट, मीडिया, आवाज़ और कतार के सभी नियंत्रण एक ही पैनल में।</p>
+          </div>
+          <span class="admin-badge">CONTROL</span>
+        </div>
+
+        <section class="panel-section content-section" aria-labelledby="contentHeading">
           <div class="section-heading">
-            <div><span class="section-kicker">01</span><h2>सुविचार लिखें</h2></div>
-            <span class="queue-pill">कतार: <strong id="queueCount">0</strong></span>
+            <div class="heading-title">
+              <span class="step-number">01</span>
+              <h3 id="contentHeading">सुविचार जोड़ें</h3>
+            </div>
+            <span class="queue-pill">कुल <strong id="queueCount">0</strong></span>
           </div>
 
-          <label class="field-label" for="quoteInput">सुविचार</label>
-          <textarea
-            id="quoteInput"
-            rows="5"
-            maxlength="800"
-            placeholder="यहाँ अपना सुविचार लिखें…"
-          ></textarea>
-
-          <div class="field-help">Ctrl + Enter या Command + Enter से भी सुविचार जोड़ा जा सकता है।</div>
+          <label class="field-label" for="quoteInput">सुविचार का पूरा पाठ</label>
+          <textarea id="quoteInput" rows="5" maxlength="800" placeholder="यहाँ एक सुविचार लिखें…" autocomplete="off" spellcheck="false"></textarea>
+          <div class="field-help">खाली पाठ नहीं जोड़ा जाएगा। Ctrl + Enter या Command + Enter से भी जोड़ सकते हैं।</div>
 
           <div class="button-row">
-            <button id="addQuoteButton" class="button primary" type="button">सुविचार जोड़ें</button>
-            <button id="clearQuotesButton" class="button secondary" type="button">सभी साफ़ करें</button>
+            <button id="addQuoteButton" class="button primary" type="button">+ सुविचार जोड़ें</button>
+            <button id="clearQuotesButton" class="button danger-outline" type="button" disabled>सभी साफ़ करें</button>
           </div>
         </section>
 
-        <section class="panel-section">
-          <div class="section-heading compact">
-            <div>
-              <span class="section-kicker">02</span>
-              <h2>फोटो</h2>
+        <div class="media-grid" aria-label="मीडिया नियंत्रण">
+          <section class="panel-section media-card" aria-labelledby="photoHeading">
+            <div class="section-heading compact">
+              <div class="heading-title">
+                <span class="step-number">02</span>
+                <h3 id="photoHeading">फोटो</h3>
+              </div>
             </div>
-          </div>
 
-          <label class="upload-box" for="photoUpload">
-            <span class="upload-title">फोटो चुनें</span>
-            <span class="upload-help">JPG, PNG, WEBP आदि image files</span>
-          </label>
+            <label class="upload-box" for="photoUpload">
+              <span class="upload-icon" aria-hidden="true">▧</span>
+              <span class="upload-title">फोटो चुनें</span>
+              <span class="upload-help">JPG, PNG, WEBP</span>
+            </label>
 
-          <input
-            id="photoUpload"
-            class="visually-hidden"
-            type="file"
-            accept="image/*"
-          >
+            <input id="photoUpload" class="visually-hidden" type="file" accept="image/*">
+            <p id="photoStatus" class="inline-status" role="status" aria-live="polite">कोई फोटो चयनित नहीं है।</p>
+            <button id="removePhotoButton" class="button small secondary" type="button" disabled>फोटो हटाएँ</button>
+          </section>
 
-          <div id="photoStatus" class="inline-status" aria-live="polite">
-            कोई फोटो चयनित नहीं है।
-          </div>
-
-          <button
-            id="removePhotoButton"
-            class="button danger-outline"
-            type="button"
-            disabled
-          >
-            फोटो हटाएँ
-          </button>
-        </section>
-
-        <section class="panel-section">
-          <div class="section-heading compact">
-            <div>
-              <span class="section-kicker">03</span>
-              <h2>वीडियो क्लिप</h2>
+          <section class="panel-section media-card" aria-labelledby="videoHeading">
+            <div class="section-heading compact">
+              <div class="heading-title">
+                <span class="step-number">03</span>
+                <h3 id="videoHeading">वीडियो</h3>
+              </div>
             </div>
-          </div>
 
-          <label class="upload-box" for="videoUpload">
-            <span class="upload-title">वीडियो चुनें</span>
-            <span class="upload-help">MP4, WEBM आदि — display में 9:16 frame में fit होगा</span>
-          </label>
+            <label class="upload-box" for="videoUpload">
+              <span class="upload-icon" aria-hidden="true">▶</span>
+              <span class="upload-title">वीडियो चुनें</span>
+              <span class="upload-help">MP4, WEBM आदि</span>
+            </label>
 
-          <input
-            id="videoUpload"
-            class="visually-hidden"
-            type="file"
-            accept="video/*"
-          >
+            <input id="videoUpload" class="visually-hidden" type="file" accept="video/*">
+            <p id="videoUploadStatus" class="inline-status" role="status" aria-live="polite">कोई वीडियो चयनित नहीं है।</p>
+            <button id="removeVideoButton" class="button small secondary" type="button" disabled>वीडियो हटाएँ</button>
+          </section>
+        </div>
 
-          <div id="videoUploadStatus" class="inline-status" aria-live="polite">
-            कोई वीडियो चयनित नहीं है।
-          </div>
-
-          <button
-            id="removeVideoButton"
-            class="button danger-outline"
-            type="button"
-            disabled
-          >
-            वीडियो हटाएँ
-          </button>
-        </section>
-
-        <section class="panel-section">
-          <div class="section-heading compact">
-            <div>
-              <span class="section-kicker">04</span>
-              <h2>TTS वाचन</h2>
+        <section class="panel-section tts-section" aria-labelledby="ttsHeading">
+          <div class="section-heading">
+            <div class="heading-title">
+              <span class="step-number">04</span>
+              <h3 id="ttsHeading">TTS वाचन</h3>
             </div>
+            <span id="ttsAvailabilityBadge" class="state-badge neutral">जाँच जारी</span>
           </div>
 
-          <label class="field-label" for="voiceSelect">Voice चयन</label>
+          <label class="field-label" for="voiceSearchInput">Voice सूची में खोजें</label>
+          <input id="voiceSearchInput" class="control-input voice-search" type="search" placeholder="जैसे: संस्कृत, sa-IN, हिन्दी…" autocomplete="off" aria-controls="voiceSelect">
+          <div class="field-help">सूची scroll करें या voice name / भाषा खोजें। चयनित voice अगली utterance पर लागू होगी।</div>
 
-          <select
-            id="voiceSelect"
-            class="control-input"
-            aria-describedby="ttsVoiceStatus"
-          >
-            <option value="">Voice खोजी जा रही है…</option>
+          <label class="field-label voice-label" for="voiceSelect">उपलब्ध browser voices</label>
+          <select id="voiceSelect" class="voice-select" size="5" aria-describedby="ttsVoiceStatus" disabled>
+            <option value="">Browser voices लोड हो रही हैं…</option>
           </select>
 
-          <div id="ttsVoiceStatus" class="inline-status" aria-live="polite">
-            Speech Synthesis जाँची जा रही है…
+          <div class="voice-actions">
+            <button id="refreshVoicesButton" class="button small secondary" type="button">↻ Voice सूची रीफ़्रेश करें</button>
+            <button id="voiceTestButton" class="button small voice-test" type="button" disabled>🔊 चयनित Voice जाँचें</button>
           </div>
+
+          <p id="ttsVoiceStatus" class="inline-status voice-status" role="status" aria-live="polite">Speech Synthesis और उपलब्ध voices जाँची जा रही हैं…</p>
 
           <div class="range-row">
             <label class="field-label" for="ttsRate">वाचन गति</label>
             <output id="ttsRateValue" class="rate-value" for="ttsRate">0.90</output>
           </div>
+          <input id="ttsRate" class="range" type="range" min="0.60" max="1.20" step="0.01" value="0.90" aria-label="TTS वाचन गति">
 
-          <input
-            id="ttsRate"
-            class="range"
-            type="range"
-            min="0.60"
-            max="1.20"
-            step="0.01"
-            value="0.90"
-            aria-label="TTS वाचन गति"
-          >
-
-          <div class="button-row playback-row">
-            <button
-              id="playButton"
-              class="button primary"
-              type="button"
-              disabled
-            >
-              ▶ प्रारंभ
-            </button>
-
-            <button
-              id="pauseButton"
-              class="button secondary"
-              type="button"
-              disabled
-            >
-              Ⅱ विराम
-            </button>
-
-            <button
-              id="resumeButton"
-              class="button secondary"
-              type="button"
-              disabled
-            >
-              ▶ Resume
-            </button>
-
-            <button
-              id="stopButton"
-              class="button secondary"
-              type="button"
-              disabled
-            >
-              ■ रोकें
-            </button>
+          <div class="playback-controls" aria-label="वाचन नियंत्रण">
+            <button id="playButton" class="button primary" type="button" disabled>▶ प्रारंभ</button>
+            <button id="pauseButton" class="button secondary" type="button" disabled>Ⅱ विराम</button>
+            <button id="resumeButton" class="button secondary" type="button" disabled>▶ Resume</button>
+            <button id="stopButton" class="button danger-outline" type="button" disabled>■ रोकें</button>
           </div>
 
-          <p class="tts-note">
-            Web Speech API browser के उपलब्ध voice engine पर निर्भर है।
-            timbre और prosody के लिए browser में कोई स्वतंत्र numeric API control नहीं है;
-            code केवल उपलब्ध voice, rate और pitch properties को नियंत्रित करता है।
-          </p>
+          <details class="profile-details">
+            <summary>Voice profile एवं API सीमाएँ</summary>
+            <p>ये preference scores हैं, browser के सीधे numeric controls नहीं। Web Speech API में timbre, prosody, articulation और resonance के लिए स्वतंत्र numeric properties उपलब्ध नहीं हैं।</p>
+            <dl class="profile-grid">
+              <div><dt>timbre</dt><dd>9.5</dd></div>
+              <div><dt>pitch</dt><dd>8.5</dd></div>
+              <div><dt>prosody</dt><dd>9.5</dd></div>
+              <div><dt>articulation</dt><dd>9.0</dd></div>
+              <div><dt>speaking rate</dt><dd>8.5</dd></div>
+              <div><dt>pitch variation</dt><dd>9.5</dd></div>
+            </dl>
+            <p>कोड केवल supported <code>rate</code> और <code>pitch</code> पर bounded mapping लागू करता है। Voice metadata से gender सिद्ध न होने पर gender का अनुमान नहीं लगाया जाता।</p>
+          </details>
         </section>
 
-        <section class="panel-section queue-section">
-          <div class="section-heading compact">
-            <div>
-              <span class="section-kicker">05</span>
-              <h2>सुविचार कतार</h2>
+        <section class="panel-section queue-section" aria-labelledby="queueHeading">
+          <div class="section-heading">
+            <div class="heading-title">
+              <span class="step-number">05</span>
+              <h3 id="queueHeading">सुविचार कतार</h3>
             </div>
+            <span id="queueModeBadge" class="state-badge neutral">तैयार</span>
           </div>
-
-          <ol
-            id="quoteQueue"
-            class="quote-queue"
-            aria-live="polite"
-          ></ol>
+          <ol id="quoteQueue" class="quote-queue" aria-label="क्रमबद्ध सुविचार"></ol>
         </section>
-      </section>
+      </aside>
 
-      <section class="preview-panel" aria-label="9:16 live display">
+      <section class="preview-panel" aria-label="9:16 लाइव डिस्प्ले">
         <div class="preview-header">
           <div>
             <span class="section-kicker">LIVE DISPLAY</span>
-            <h2>9:16 दृश्य</h2>
+            <h2>9:16 पूर्वावलोकन</h2>
+            <p>यहीं केवल वर्तमान वाचन वाला सुविचार दिखेगा।</p>
           </div>
-
-          <span id="completionGate" class="live-state">
-            वाचन के लिए तैयार
-          </span>
+          <span id="completionGate" class="live-state">वाचन के लिए तैयार</span>
         </div>
 
         <div class="display-wrap">
           <div id="displayStage" class="display-stage">
-            <video
-              id="videoPlayer"
-              class="stage-video"
-              playsinline
-              muted
-              preload="metadata"
-              aria-label="पृष्ठभूमि वीडियो"
-            ></video>
-
+            <video id="videoPlayer" class="stage-video" playsinline muted preload="metadata" aria-label="म्यूट पृष्ठभूमि वीडियो"></video>
             <div id="videoPlaceholder" class="video-placeholder">
-              <span class="placeholder-icon">▶</span>
-              <span>
-                वीडियो जोड़ने पर यह क्लिप TTS के दौरान लगातार repeat होगी।
-              </span>
+              <span class="placeholder-icon" aria-hidden="true">▶</span>
+              <strong>आपका 9:16 दृश्य</strong>
+              <span>वीडियो अपलोड करने पर यह पृष्ठभूमि TTS वाचन के दौरान repeat होगी।</span>
             </div>
-
             <div class="display-scrim" aria-hidden="true"></div>
-
             <div id="photoFrame" class="photo-frame" hidden>
-              <img
-                id="stagePhoto"
-                class="stage-photo"
-                src=""
-                alt="अपलोड की गई फोटो"
-              >
+              <img id="stagePhoto" class="stage-photo" src="" alt="अपलोड की गई फोटो">
             </div>
-
             <div class="display-content">
               <div class="display-label">सुविचार</div>
-
               <div id="quoteStage" class="quote-stage">
-                <div class="quote-stage-placeholder">
-                  वाचन शुरू होने पर सुविचार यहाँ प्रदर्शित होगा।
-                </div>
+                <div class="quote-stage-placeholder">वाचन शुरू होने पर सुविचार यहाँ प्रदर्शित होगा।</div>
               </div>
-
               <div class="display-footer">
                 <span id="stageIndex">0 / 0</span>
                 <span>9:16</span>
@@ -269,56 +195,43 @@
 
         <div class="current-readout" aria-live="polite">
           <div class="readout-title">वर्तमान सुविचार</div>
-          <div id="stageNow" class="readout-text">
-            कोई सुविचार प्रदर्शित नहीं हो रहा है।
-          </div>
+          <div id="stageNow" class="readout-text">कोई सुविचार प्रदर्शित नहीं हो रहा है।</div>
         </div>
 
         <div class="status-grid">
           <div class="status-card">
             <div class="status-label">TTS स्थिति</div>
-            <div id="ttsStatus" class="status-value">
-              वाचन प्रारंभ नहीं हुआ है।
-            </div>
+            <div id="ttsStatus" class="status-value" role="status" aria-live="polite">वाचन प्रारंभ नहीं हुआ है।</div>
           </div>
-
           <div class="status-card">
             <div class="status-label">वीडियो स्थिति</div>
-            <div id="videoStatus" class="status-value">
-              वीडियो तैयार नहीं है।
-            </div>
+            <div id="videoStatus" class="status-value" role="status" aria-live="polite">वीडियो तैयार नहीं है।</div>
           </div>
         </div>
 
         <div class="progress-card">
           <div class="progress-head">
-            <span>वाचन प्रगति</span>
+            <span>वास्तविक वाचन प्रगति</span>
             <output id="ttsProgressValue">0%</output>
           </div>
-
           <progress id="ttsProgress" value="0" max="100">0%</progress>
-
-          <div id="quoteCompletion" class="progress-caption">
-            कतार: 0 / 0
-          </div>
+          <div id="quoteCompletion" class="progress-caption">पूर्ण: 0 / 0 सुविचार</div>
         </div>
       </section>
     </section>
 
     <footer class="system-footer">
-      <div id="systemStatus" class="system-status" aria-live="polite">
-        App तैयार है। सुविचार जोड़ें।
+      <div class="footer-status-head">
+        <span class="section-kicker">SYSTEM STATUS</span>
+        <span id="systemStatus" class="system-status" role="status" aria-live="polite">App तैयार है। सुविचार जोड़ें और browser voice जाँचें।</span>
       </div>
-
       <div class="system-rules">
         <span>एक समय में एक सुविचार</span>
-        <span>पूरा TTS होने पर ही अगला</span>
-        <span>वीडियो repeat</span>
-        <span>फोटो overlay</span>
+        <span>अगला केवल वास्तविक onend पर</span>
+        <span>वीडियो loop</span>
+        <span>सुरक्षित text rendering</span>
       </div>
     </footer>
   </main>
-
-  <script src="./app.js" defer></script>
 </body>
 </html>
