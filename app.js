@@ -819,3 +819,4 @@ window.addEventListener('beforeunload', () => {
 });
 
 document.addEventListener('DOMContentLoaded', init, { once: true });
+
