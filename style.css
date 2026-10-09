@@ -149,7 +149,7 @@ select:disabled {
 
 .workspace {
   display: grid;
-  grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+  grid-template-columns: minmax(330px, 0.88fr) minmax(0, 1.12fr);
   gap: 16px;
   align-items: start;
   min-width: 0;
@@ -170,7 +170,7 @@ select:disabled {
 }
 
 .admin-panel-head h2 {
-  margin: 4px 0;
+  margin: 4px 0 4px;
   font-size: 19px;
   line-height: 1.3;
 }
@@ -1010,7 +1010,9 @@ textarea:focus,
 }
 
 @media (max-width: 1020px) {
-  body { padding: 12px; }
+  body {
+    padding: 12px;
+  }
 
   .workspace {
     grid-template-columns: minmax(0, 1fr);
@@ -1035,15 +1037,22 @@ textarea:focus,
 }
 
 @media (max-width: 620px) {
-  body { padding: 8px; }
+  body {
+    padding: 8px;
+  }
 
   .site-header {
     gap: 10px;
     padding: 15px;
   }
 
-  .site-header h1 { font-size: 21px; }
-  .subtitle { font-size: 11px; }
+  .site-header h1 {
+    font-size: 21px;
+  }
+
+  .subtitle {
+    font-size: 11px;
+  }
 
   .ratio-badge {
     width: 50px;
@@ -1053,56 +1062,133 @@ textarea:focus,
   }
 
   .control-panel,
-  .preview-panel { padding: 10px; }
+  .preview-panel {
+    padding: 10px;
+  }
 
-  .panel-section { padding: 12px; }
-  .media-grid { gap: 8px; }
-  .media-card { padding: 10px; }
+  .panel-section {
+    padding: 12px;
+  }
+
+  .media-grid {
+    gap: 8px;
+  }
+
+  .media-card {
+    padding: 10px;
+  }
 
   .media-card .heading-title {
     align-items: flex-start;
     gap: 6px;
   }
 
-  .heading-title h3 { font-size: 13px; }
-  .upload-box { padding: 9px; }
-  .preview-header { align-items: flex-start; }
+  .heading-title h3 {
+    font-size: 13px;
+  }
+
+  .upload-box {
+    padding: 9px;
+  }
+
+  .preview-header {
+    align-items: flex-start;
+  }
 
   .live-state {
     max-width: 48%;
     font-size: 9px;
   }
 
-  .status-grid { grid-template-columns: minmax(0, 1fr); }
-  .display-stage { border-radius: 17px; }
-  .quote-text { font-size: clamp(17px, 5.4vw, 27px); }
-  .button { min-height: 44px; }
-  .system-footer { margin-top: 10px; }
+  .status-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .display-stage {
+    border-radius: 17px;
+  }
+
+  .quote-text {
+    font-size: clamp(17px, 5.4vw, 27px);
+  }
+
+  .button {
+    min-height: 44px;
+  }
+
+  .system-footer {
+    margin-top: 10px;
+  }
 }
 
 @media (max-width: 380px) {
-  body { padding: 5px; }
+  body {
+    padding: 5px;
+  }
 
-  .site-header { padding: 12px; }
-  .site-header h1 { font-size: 18px; }
+  .site-header {
+    padding: 12px;
+  }
+
+  .site-header h1 {
+    font-size: 18px;
+  }
+
   .eyebrow,
-  .section-kicker { font-size: 9px; }
-  .subtitle { font-size: 10px; }
+  .section-kicker {
+    font-size: 9px;
+  }
+
+  .subtitle {
+    font-size: 10px;
+  }
 
   .ratio-badge,
-  .single-page-badge { display: none; }
+  .single-page-badge {
+    display: none;
+  }
 
-  .media-grid { grid-template-columns: minmax(0, 1fr); }
-  .media-card { padding: 12px; }
-  .upload-box { min-height: 80px; }
+  .media-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 
-  .voice-actions { flex-direction: column; }
-  .voice-actions .button { width: 100%; }
-  .playback-controls { grid-template-columns: minmax(0, 1fr); }
-  .profile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .display-content { padding: 7% 6% 5%; }
-  .quote-text { font-size: 16px; line-height: 1.48; }
-  .photo-frame { inset: auto 7% 11%; height: 23%; }
+  .media-card {
+    padding: 12px;
+  }
+
+  .upload-box {
+    min-height: 80px;
+  }
+
+  .voice-actions {
+    flex-direction: column;
+  }
+
+  .voice-actions .button {
+    width: 100%;
+  }
+
+  .playback-controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .profile-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .display-content {
+    padding: 7% 6% 5%;
+  }
+
+  .quote-text {
+    font-size: 16px;
+    line-height: 1.48;
+  }
+
+  .photo-frame {
+    inset: auto 7% 11%;
+    height: 23%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1114,4 +1200,64 @@ textarea:focus,
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
+}
+
+
+/* Sanskrit/Vedic read-only knowledge panel. Deliberately separate from TTS controls. */
+.sanskrit-master-panel {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface-soft);
+}
+
+.sanskrit-master-panel > summary {
+  color: var(--ink);
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.sanskrit-master-status {
+  margin: 0;
+  padding: 9px 10px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  overflow-wrap: anywhere;
+}
+
+.sanskrit-master-status[data-status="ready"] {
+  color: #065f46;
+  background: #ecfdf5;
+}
+
+.sanskrit-master-status[data-status="error"] {
+  color: #92400e;
+  background: #fffbeb;
+}
+
+.sanskrit-master-panel textarea {
+  width: 100%;
+  min-height: 92px;
+  resize: vertical;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink);
+}
+
+.sanskrit-analysis-output {
+  max-height: 420px;
+  overflow: auto;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink);
+  font: 0.88rem/1.65 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
