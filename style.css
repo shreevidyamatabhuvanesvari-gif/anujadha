@@ -34,3 +34,7 @@ button:disabled{cursor:not-allowed;opacity:.48}
 .sanskrit-panel [data-status="ready"] { color: #166534; }
 .sanskrit-panel [data-status="error"] { color: #b42318; }
 .sanskrit-analysis-output { max-height: 360px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; padding: 11px; margin: 10px 0 0; border: 1px solid var(--line); border-radius: 11px; background: #f8fafc; color: #334155; font: 11px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+/* Dedicated status for the optional Sanskrit–Vedic knowledge layer. */
+.sanskrit-vedic-status{margin:9px 0 0;color:var(--muted);font-size:11px;line-height:1.55;overflow-wrap:anywhere}
+.sanskrit-vedic-status[data-state="loaded"]{color:#067647}
+.sanskrit-vedic-status[data-state="error"]{color:#b42318}
