@@ -13,37 +13,20 @@
       <div class="header-copy">
         <p class="eyebrow">SUVICHAR • TTS • 9:16 DISPLAY</p>
         <h1>सुविचार वाचन एवं 9:16 डिस्प्ले पैनल</h1>
-        <p class="subtitle">
-          सुविचार जोड़ें, फोटो और वीडियो लगाएँ तथा क्रमशः TTS के साथ प्रदर्शित करें।
-          वर्तमान सुविचार का पूरा वाचन समाप्त होने के बाद ही अगला सुविचार प्रदर्शित होगा।
-        </p>
+        <p class="subtitle">सुविचार जोड़ें, फोटो और वीडियो लगाएँ तथा क्रमशः TTS के साथ प्रदर्शित करें। वर्तमान सुविचार का पूरा वाचन समाप्त होने के बाद ही अगला सुविचार प्रदर्शित होगा।</p>
       </div>
-
-      <div class="ratio-badge" aria-label="मुख्य डिस्प्ले अनुपात">
-        9:16
-      </div>
+      <div class="ratio-badge" aria-label="मुख्य डिस्प्ले अनुपात">9:16</div>
     </header>
 
     <section class="workspace" aria-label="सुविचार नियंत्रण और पूर्वावलोकन">
-
       <section class="control-panel" aria-label="नियंत्रण पैनल">
-
         <section class="panel-section">
           <div class="section-heading">
-            <div>
-              <span class="section-kicker">01</span>
-              <h2>सुविचार लिखें</h2>
-            </div>
-
-            <span class="queue-pill">
-              कतार: <strong id="queueCount">0</strong>
-            </span>
+            <div><span class="section-kicker">01</span><h2>सुविचार लिखें</h2></div>
+            <span class="queue-pill">कतार: <strong id="queueCount">0</strong></span>
           </div>
 
-          <label class="field-label" for="quoteInput">
-            सुविचार
-          </label>
-
+          <label class="field-label" for="quoteInput">सुविचार</label>
           <textarea
             id="quoteInput"
             rows="5"
@@ -51,26 +34,11 @@
             placeholder="यहाँ अपना सुविचार लिखें…"
           ></textarea>
 
-          <div class="field-help">
-            Ctrl + Enter या Command + Enter से भी सुविचार जोड़ा जा सकता है।
-          </div>
+          <div class="field-help">Ctrl + Enter या Command + Enter से भी सुविचार जोड़ा जा सकता है।</div>
 
           <div class="button-row">
-            <button
-              id="addQuoteButton"
-              class="button primary"
-              type="button"
-            >
-              सुविचार जोड़ें
-            </button>
-
-            <button
-              id="clearQuotesButton"
-              class="button secondary"
-              type="button"
-            >
-              सभी साफ़ करें
-            </button>
+            <button id="addQuoteButton" class="button primary" type="button">सुविचार जोड़ें</button>
+            <button id="clearQuotesButton" class="button secondary" type="button">सभी साफ़ करें</button>
           </div>
         </section>
 
@@ -84,9 +52,7 @@
 
           <label class="upload-box" for="photoUpload">
             <span class="upload-title">फोटो चुनें</span>
-            <span class="upload-help">
-              JPG, PNG, WEBP आदि image files
-            </span>
+            <span class="upload-help">JPG, PNG, WEBP आदि image files</span>
           </label>
 
           <input
@@ -96,11 +62,7 @@
             accept="image/*"
           >
 
-          <div
-            id="photoStatus"
-            class="inline-status"
-            aria-live="polite"
-          >
+          <div id="photoStatus" class="inline-status" aria-live="polite">
             कोई फोटो चयनित नहीं है।
           </div>
 
@@ -124,9 +86,7 @@
 
           <label class="upload-box" for="videoUpload">
             <span class="upload-title">वीडियो चुनें</span>
-            <span class="upload-help">
-              MP4, WEBM आदि — display में 9:16 frame में fit होगा
-            </span>
+            <span class="upload-help">MP4, WEBM आदि — display में 9:16 frame में fit होगा</span>
           </label>
 
           <input
@@ -136,11 +96,7 @@
             accept="video/*"
           >
 
-          <div
-            id="videoUploadStatus"
-            class="inline-status"
-            aria-live="polite"
-          >
+          <div id="videoUploadStatus" class="inline-status" aria-live="polite">
             कोई वीडियो चयनित नहीं है।
           </div>
 
@@ -162,40 +118,23 @@
             </div>
           </div>
 
-          <label class="field-label" for="voiceSelect">
-            Voice चयन
-          </label>
+          <label class="field-label" for="voiceSelect">Voice चयन</label>
 
           <select
             id="voiceSelect"
             class="control-input"
             aria-describedby="ttsVoiceStatus"
           >
-            <option value="">
-              Voice खोजी जा रही है…
-            </option>
+            <option value="">Voice खोजी जा रही है…</option>
           </select>
 
-          <div
-            id="ttsVoiceStatus"
-            class="inline-status"
-            aria-live="polite"
-          >
+          <div id="ttsVoiceStatus" class="inline-status" aria-live="polite">
             Speech Synthesis जाँची जा रही है…
           </div>
 
           <div class="range-row">
-            <label class="field-label" for="ttsRate">
-              वाचन गति
-            </label>
-
-            <output
-              id="ttsRateValue"
-              class="rate-value"
-              for="ttsRate"
-            >
-              0.90
-            </output>
+            <label class="field-label" for="ttsRate">वाचन गति</label>
+            <output id="ttsRateValue" class="rate-value" for="ttsRate">0.90</output>
           </div>
 
           <input
@@ -210,7 +149,6 @@
           >
 
           <div class="button-row playback-row">
-
             <button
               id="playButton"
               class="button primary"
@@ -246,7 +184,6 @@
             >
               ■ रोकें
             </button>
-
           </div>
 
           <p class="tts-note">
@@ -270,35 +207,22 @@
             aria-live="polite"
           ></ol>
         </section>
-
       </section>
 
-      <section
-        class="preview-panel"
-        aria-label="9:16 live display"
-      >
-
+      <section class="preview-panel" aria-label="9:16 live display">
         <div class="preview-header">
           <div>
             <span class="section-kicker">LIVE DISPLAY</span>
             <h2>9:16 दृश्य</h2>
           </div>
 
-          <span
-            id="completionGate"
-            class="live-state"
-          >
+          <span id="completionGate" class="live-state">
             वाचन के लिए तैयार
           </span>
         </div>
 
         <div class="display-wrap">
-
-          <div
-            id="displayStage"
-            class="display-stage"
-          >
-
+          <div id="displayStage" class="display-stage">
             <video
               id="videoPlayer"
               class="stage-video"
@@ -308,27 +232,16 @@
               aria-label="पृष्ठभूमि वीडियो"
             ></video>
 
-            <div
-              id="videoPlaceholder"
-              class="video-placeholder"
-            >
+            <div id="videoPlaceholder" class="video-placeholder">
               <span class="placeholder-icon">▶</span>
-
               <span>
                 वीडियो जोड़ने पर यह क्लिप TTS के दौरान लगातार repeat होगी।
               </span>
             </div>
 
-            <div
-              class="display-scrim"
-              aria-hidden="true"
-            ></div>
+            <div class="display-scrim" aria-hidden="true"></div>
 
-            <div
-              id="photoFrame"
-              class="photo-frame"
-              hidden
-            >
+            <div id="photoFrame" class="photo-frame" hidden>
               <img
                 id="stagePhoto"
                 class="stage-photo"
@@ -338,15 +251,9 @@
             </div>
 
             <div class="display-content">
+              <div class="display-label">सुविचार</div>
 
-              <div class="display-label">
-                सुविचार
-              </div>
-
-              <div
-                id="quoteStage"
-                class="quote-stage"
-              >
+              <div id="quoteStage" class="quote-stage">
                 <div class="quote-stage-placeholder">
                   वाचन शुरू होने पर सुविचार यहाँ प्रदर्शित होगा।
                 </div>
@@ -356,94 +263,50 @@
                 <span id="stageIndex">0 / 0</span>
                 <span>9:16</span>
               </div>
-
             </div>
-
           </div>
-
         </div>
 
-        <div
-          class="current-readout"
-          aria-live="polite"
-        >
-          <div class="readout-title">
-            वर्तमान सुविचार
-          </div>
-
-          <div
-            id="stageNow"
-            class="readout-text"
-          >
+        <div class="current-readout" aria-live="polite">
+          <div class="readout-title">वर्तमान सुविचार</div>
+          <div id="stageNow" class="readout-text">
             कोई सुविचार प्रदर्शित नहीं हो रहा है।
           </div>
         </div>
 
         <div class="status-grid">
-
           <div class="status-card">
-            <div class="status-label">
-              TTS स्थिति
-            </div>
-
-            <div
-              id="ttsStatus"
-              class="status-value"
-            >
+            <div class="status-label">TTS स्थिति</div>
+            <div id="ttsStatus" class="status-value">
               वाचन प्रारंभ नहीं हुआ है।
             </div>
           </div>
 
           <div class="status-card">
-            <div class="status-label">
-              वीडियो स्थिति
-            </div>
-
-            <div
-              id="videoStatus"
-              class="status-value"
-            >
+            <div class="status-label">वीडियो स्थिति</div>
+            <div id="videoStatus" class="status-value">
               वीडियो तैयार नहीं है।
             </div>
           </div>
-
         </div>
 
         <div class="progress-card">
-
           <div class="progress-head">
             <span>वाचन प्रगति</span>
             <output id="ttsProgressValue">0%</output>
           </div>
 
-          <progress
-            id="ttsProgress"
-            value="0"
-            max="100"
-          >
-            0%
-          </progress>
+          <progress id="ttsProgress" value="0" max="100">0%</progress>
 
-          <div
-            id="quoteCompletion"
-            class="progress-caption"
-          >
+          <div id="quoteCompletion" class="progress-caption">
             कतार: 0 / 0
           </div>
-
         </div>
-
       </section>
-
     </section>
 
     <footer class="system-footer">
-
-      <div
-        id="systemStatus"
-        class="system-status"
-        aria-live="polite"
-      >
+      <div id="systemStatus" class="system-status" aria-live="polite">
         App तैयार है। सुविचार जोड़ें।
       </div>
 
@@ -453,9 +316,7 @@
         <span>वीडियो repeat</span>
         <span>फोटो overlay</span>
       </div>
-
     </footer>
-
   </main>
 
   <script src="./app.js" defer></script>
