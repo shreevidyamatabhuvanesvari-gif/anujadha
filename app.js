@@ -1,18 +1,5 @@
 'use strict';
 
-/*
- * Locked target profile.
- *
- * Web Speech API does NOT expose independent numeric controls for:
- * - timbre
- * - prosody
- * - pronunciation articulation
- * - resonance
- *
- * Therefore those values are preserved as the locked target profile,
- * while only supported browser properties such as voice, lang, rate,
- * pitch and volume are actually applied.
- */
 const targetVoiceProfile = Object.freeze({
   timbre: 9.5,
   pitch: 8.5,
@@ -24,26 +11,20 @@ const targetVoiceProfile = Object.freeze({
 
 const state = {
   initialized: false,
-
   quotes: [],
   index: 0,
-
   playback: 'idle',
-
   voice: null,
   voices: [],
-
   speechToken: 0,
-
   videoObjectUrl: '',
   photoObjectUrl: '',
-
   videoReady: false,
   photoReady: false,
-
   ttsSupported: false,
-
-  voiceLoadTimer: null
+  voiceLoadTimer: null,
+  photoToken: 0,
+  videoToken: 0
 };
 
 const PLAYBACK = Object.freeze({
@@ -53,257 +34,133 @@ const PLAYBACK = Object.freeze({
   COMPLETED: 'completed'
 });
 
-const $ = id =>
-  document.getElementById(id);
+const $ = id => document.getElementById(id);
 
-const quoteInput =
-  $('quoteInput');
+const quoteInput = $('quoteInput');
+const addQuoteButton = $('addQuoteButton');
+const clearQuotesButton = $('clearQuotesButton');
+const quoteQueue = $('quoteQueue');
+const queueCount = $('queueCount');
 
-const addQuoteButton =
-  $('addQuoteButton');
+const photoUpload = $('photoUpload');
+const photoStatus = $('photoStatus');
+const photoFrame = $('photoFrame');
+const stagePhoto = $('stagePhoto');
+const removePhotoButton = $('removePhotoButton');
 
-const clearQuotesButton =
-  $('clearQuotesButton');
+const videoUpload = $('videoUpload');
+const videoUploadStatus = $('videoUploadStatus');
+const removeVideoButton = $('removeVideoButton');
+const videoPlayer = $('videoPlayer');
+const videoPlaceholder = $('videoPlaceholder');
 
-const quoteQueue =
-  $('quoteQueue');
+const voiceSelect = $('voiceSelect');
+const ttsVoiceStatus = $('ttsVoiceStatus');
+const ttsRate = $('ttsRate');
+const ttsRateValue = $('ttsRateValue');
 
-const queueCount =
-  $('queueCount');
+const playButton = $('playButton');
+const pauseButton = $('pauseButton');
+const resumeButton = $('resumeButton');
+const stopButton = $('stopButton');
 
-const photoUpload =
-  $('photoUpload');
+const ttsStatus = $('ttsStatus');
+const ttsProgress = $('ttsProgress');
+const ttsProgressValue = $('ttsProgressValue');
+const quoteCompletion = $('quoteCompletion');
 
-const photoStatus =
-  $('photoStatus');
+const quoteStage = $('quoteStage');
+const stageNow = $('stageNow');
+const stageIndex = $('stageIndex');
+const completionGate = $('completionGate');
+const systemStatus = $('systemStatus');
 
-const photoFrame =
-  $('photoFrame');
-
-const stagePhoto =
-  $('stagePhoto');
-
-const removePhotoButton =
-  $('removePhotoButton');
-
-const videoUpload =
-  $('videoUpload');
-
-const videoUploadStatus =
-  $('videoUploadStatus');
-
-const removeVideoButton =
-  $('removeVideoButton');
-
-const videoPlayer =
-  $('videoPlayer');
-
-const videoPlaceholder =
-  $('videoPlaceholder');
-
-const voiceSelect =
-  $('voiceSelect');
-
-const ttsVoiceStatus =
-  $('ttsVoiceStatus');
-
-const ttsRate =
-  $('ttsRate');
-
-const ttsRateValue =
-  $('ttsRateValue');
-
-const playButton =
-  $('playButton');
-
-const pauseButton =
-  $('pauseButton');
-
-const resumeButton =
-  $('resumeButton');
-
-const stopButton =
-  $('stopButton');
-
-const ttsStatus =
-  $('ttsStatus');
-
-const ttsProgress =
-  $('ttsProgress');
-
-const ttsProgressValue =
-  $('ttsProgressValue');
-
-const quoteCompletion =
-  $('quoteCompletion');
-
-const quoteStage =
-  $('quoteStage');
-
-const stageNow =
-  $('stageNow');
-
-const stageIndex =
-  $('stageIndex');
-
-const completionGate =
-  $('completionGate');
-
-const systemStatus =
-  $('systemStatus');
-
-function synth(){
-  return 'speechSynthesis' in window
-    ? window.speechSynthesis
-    : null;
+function synth() {
+  return 'speechSynthesis' in window ? window.speechSynthesis : null;
 }
 
-function clampRate(value){
-  const number =
-    Number(value);
+function clampRate(value) {
+  const number = Number(value);
 
-  if (!Number.isFinite(number)){
+  if (!Number.isFinite(number)) {
     return 0.9;
   }
 
-  return Math.min(
-    1.2,
-    Math.max(
-      0.6,
-      number
-    )
-  );
+  return Math.min(1.2, Math.max(0.6, number));
 }
 
-function profileRate(){
+function profileRate() {
   return clampRate(
     0.90 +
-    (
-      (
-        targetVoiceProfile.speakingRateTempo -
-        5
-      ) / 5
-    ) * 0.03
+    ((targetVoiceProfile.speakingRateTempo - 5) / 5) * 0.03
   );
 }
 
-function profilePitch(index){
+function profilePitch(index) {
   let pitch =
     1 +
-    (
-      (
-        targetVoiceProfile.pitch -
-        5
-      ) / 5
-    ) * 0.06;
+    ((targetVoiceProfile.pitch - 5) / 5) * 0.06;
 
   const prosody =
     0.006 +
-    (
-      targetVoiceProfile.prosody /
-      10
-    ) * 0.010;
+    (targetVoiceProfile.prosody / 10) * 0.010;
 
   const resonance =
     0.006 +
-    (
-      targetVoiceProfile.pitchVariationResonance /
-      10
-    ) * 0.012;
+    (targetVoiceProfile.pitchVariationResonance / 10) * 0.012;
 
-  const cycle = [
-    0,
-    1,
-    -0.55,
-    0.65,
-    -0.30
-  ];
+  const cycle = [0, 1, -0.55, 0.65, -0.30];
 
   pitch +=
     cycle[index % cycle.length] *
-    (
-      prosody +
-      resonance
-    );
+    (prosody + resonance);
 
-  return Math.min(
-    2,
-    Math.max(
-      0.5,
-      pitch
-    )
-  );
+  return Math.min(2, Math.max(0.5, pitch));
 }
 
-function selectedRate(){
-  const control =
-    clampRate(
-      ttsRate?.value ||
-      0.9
-    );
+function selectedRate() {
+  const control = clampRate(ttsRate?.value || 0.9);
 
   return clampRate(
     profileRate() +
-    (
-      control -
-      0.9
-    )
+    (control - 0.9)
   );
 }
 
-function normalizeQuote(value){
-  return String(
-    value ?? ''
-  )
-    .replace(
-      /\r\n?/g,
-      '\n'
-    )
+function normalizeQuote(value) {
+  return String(value ?? '')
+    .replace(/\r\n?/g, '\n')
     .split('\n')
-    .map(
-      line =>
-        line
-          .trim()
-          .replace(
-            /[ \t]+/g,
-            ' '
-          )
+    .map(line =>
+      line
+        .trim()
+        .replace(/[ \t]+/g, ' ')
     )
     .join('\n')
     .trim();
 }
 
-function speechText(text){
+function speechText(text) {
   return normalizeQuote(text)
-    .replace(
-      /\n+/g,
-      '। '
-    );
+    .replace(/\n+/g, '। ');
 }
 
-function msg(text){
-  if (systemStatus){
-    systemStatus.textContent =
-      text;
+function msg(text) {
+  if (systemStatus) {
+    systemStatus.textContent = text;
   }
 }
 
-function updateRateLabel(){
-  if (ttsRateValue){
+function updateRateLabel() {
+  if (ttsRateValue) {
     ttsRateValue.textContent =
-      Number(
-        ttsRate?.value ||
-        0.9
-      ).toFixed(2);
+      Number(ttsRate?.value || 0.9).toFixed(2);
   }
 }
 
-function isSanskritVoice(voice){
+function isSanskritVoice(voice) {
   const lang =
-    String(
-      voice?.lang ||
-      ''
-    ).toLowerCase();
+    String(voice?.lang || '').toLowerCase();
 
   const descriptor =
     `${voice?.name || ''} ${voice?.voiceURI || ''}`;
@@ -311,33 +168,25 @@ function isSanskritVoice(voice){
   return (
     lang === 'sa' ||
     lang.startsWith('sa-') ||
-    /sanskrit|संस्कृत|vedic|वेद/i.test(
-      descriptor
-    )
+    /sanskrit|संस्कृत|vedic|वेद/i.test(descriptor)
   );
 }
 
-function isIndianVoice(voice){
+function isIndianVoice(voice) {
   const lang =
-    String(
-      voice?.lang ||
-      ''
-    ).toLowerCase();
+    String(voice?.lang || '').toLowerCase();
 
-  return /^(hi|mr|bn|gu|pa|ta|te|kn|ml|or|ne)(-|$)/i.test(
-    lang
-  );
+  return /^(hi|mr|bn|gu|pa|ta|te|kn|ml|or|ne)(-|$)/i.test(lang);
 }
 
-function refreshVoices(){
-  const api =
-    synth();
+function refreshVoices() {
+  const api = synth();
 
-  if (!api){
+  if (!api) {
     state.voices = [];
     state.voice = null;
 
-    if (voiceSelect){
+    if (voiceSelect) {
       voiceSelect.replaceChildren();
 
       voiceSelect.append(
@@ -347,45 +196,31 @@ function refreshVoices(){
         )
       );
 
-      voiceSelect.disabled =
-        true;
+      voiceSelect.disabled = true;
     }
 
-    if (ttsVoiceStatus){
+    if (ttsVoiceStatus) {
       ttsVoiceStatus.textContent =
         'इस browser में Speech Synthesis उपलब्ध नहीं है।';
     }
 
-    state.ttsSupported =
-      false;
-
     updateControls();
-
     return;
   }
-
-  state.ttsSupported =
-    typeof window.SpeechSynthesisUtterance ===
-    'function';
 
   state.voices =
     api.getVoices().slice();
 
   const previousUri =
-    state.voice?.voiceURI ||
-    '';
+    state.voice?.voiceURI || '';
 
   const ordered = [
-    ...state.voices.filter(
-      isSanskritVoice
-    ),
-
+    ...state.voices.filter(isSanskritVoice),
     ...state.voices.filter(
       voice =>
         !isSanskritVoice(voice) &&
         isIndianVoice(voice)
     ),
-
     ...state.voices.filter(
       voice =>
         !isSanskritVoice(voice) &&
@@ -393,26 +228,23 @@ function refreshVoices(){
     )
   ];
 
-  state.voices =
-    ordered;
+  state.voices = ordered;
 
-  if (!state.voices.length){
-    state.voice =
-      null;
-  }else{
+  if (!state.voices.length) {
+    state.voice = null;
+  } else {
     state.voice =
       state.voices.find(
         voice =>
-          voice.voiceURI ===
-          previousUri
+          voice.voiceURI === previousUri
       ) ||
       state.voices[0];
   }
 
-  if (voiceSelect){
+  if (voiceSelect) {
     voiceSelect.replaceChildren();
 
-    if (!state.voices.length){
+    if (!state.voices.length) {
       voiceSelect.append(
         new Option(
           'कोई voice उपलब्ध नहीं है',
@@ -420,19 +252,13 @@ function refreshVoices(){
         )
       );
 
-      voiceSelect.disabled =
-        true;
-    }else{
+      voiceSelect.disabled = true;
+    } else {
       state.voices.forEach(
-        (voice,index) => {
-
+        (voice, index) => {
           const label =
             `${voice.name} — ${voice.lang}` +
-            (
-              voice.default
-                ? ' — default'
-                : ''
-            );
+            `${voice.default ? ' — default' : ''}`;
 
           const option =
             new Option(
@@ -440,40 +266,29 @@ function refreshVoices(){
               String(index)
             );
 
-          voiceSelect.append(
-            option
-          );
+          voiceSelect.append(option);
         }
       );
 
       const selectedIndex =
-        state.voices.indexOf(
-          state.voice
-        );
+        state.voices.indexOf(state.voice);
 
       voiceSelect.value =
         selectedIndex >= 0
           ? String(selectedIndex)
           : '';
 
-      voiceSelect.disabled =
-        false;
+      voiceSelect.disabled = false;
     }
   }
 
-  if (ttsVoiceStatus){
-
-    if (!state.voices.length){
-
+  if (ttsVoiceStatus) {
+    if (!state.voices.length) {
       ttsVoiceStatus.textContent =
         'कोई browser voice उपलब्ध नहीं है।';
-
-    }else if (state.voice){
-
+    } else if (state.voice) {
       const kind =
-        isSanskritVoice(
-          state.voice
-        )
+        isSanskritVoice(state.voice)
           ? 'संस्कृत metadata match'
           : 'Browser/Indian voice';
 
@@ -482,23 +297,24 @@ function refreshVoices(){
     }
   }
 
+  state.ttsSupported =
+    typeof window.SpeechSynthesisUtterance ===
+    'function';
+
   updateControls();
 }
 
-function selectVoice(){
+function selectVoice() {
   const index =
-    Number(
-      voiceSelect?.value
-    );
+    Number(voiceSelect?.value);
 
   state.voice =
     Number.isInteger(index) &&
     index >= 0
-      ? state.voices[index] ||
-        null
+      ? state.voices[index] || null
       : null;
 
-  if (ttsVoiceStatus){
+  if (ttsVoiceStatus) {
     ttsVoiceStatus.textContent =
       state.voice
         ? `${state.voice.name} (${state.voice.lang}) चयनित है।`
@@ -508,19 +324,16 @@ function selectVoice(){
   updateControls();
 }
 
-function renderQueue(){
-  if (!quoteQueue){
+function renderQueue() {
+  if (!quoteQueue) {
     return;
   }
 
   quoteQueue.replaceChildren();
 
-  if (!state.quotes.length){
-
+  if (!state.quotes.length) {
     const empty =
-      document.createElement(
-        'li'
-      );
+      document.createElement('li');
 
     empty.className =
       'queue-empty';
@@ -528,28 +341,19 @@ function renderQueue(){
     empty.textContent =
       'अभी कोई सुविचार कतार में नहीं है।';
 
-    quoteQueue.append(
-      empty
-    );
-
-  }else{
-
+    quoteQueue.append(empty);
+  } else {
     state.quotes.forEach(
-      (quote,index) => {
-
+      (quote, index) => {
         const item =
-          document.createElement(
-            'li'
-          );
+          document.createElement('li');
 
         item.className =
           `queue-item${
             index === state.index &&
             (
-              state.playback ===
-                PLAYBACK.PLAYING ||
-              state.playback ===
-                PLAYBACK.PAUSED
+              state.playback === PLAYBACK.PLAYING ||
+              state.playback === PLAYBACK.PAUSED
             )
               ? ' active'
               : ''
@@ -559,22 +363,16 @@ function renderQueue(){
           String(index);
 
         const number =
-          document.createElement(
-            'span'
-          );
+          document.createElement('span');
 
         number.className =
           'queue-number';
 
         number.textContent =
-          String(
-            index + 1
-          );
+          String(index + 1);
 
         const text =
-          document.createElement(
-            'div'
-          );
+          document.createElement('div');
 
         text.className =
           'queue-text';
@@ -587,72 +385,47 @@ function renderQueue(){
           text
         );
 
-        quoteQueue.append(
-          item
-        );
+        quoteQueue.append(item);
       }
     );
   }
 
-  if (queueCount){
+  if (queueCount) {
     queueCount.textContent =
-      String(
-        state.quotes.length
-      );
+      String(state.quotes.length);
   }
 }
 
-function addQuote(){
-
+function addQuote() {
   const quote =
     normalizeQuote(
       quoteInput?.value
     );
 
-  if (!quote){
-
+  if (!quote) {
     msg(
       'खाली सुविचार queue में नहीं जोड़ा गया।'
     );
 
     quoteInput?.focus();
-
     return;
   }
 
-  state.quotes.push(
-    quote
-  );
+  state.quotes.push(quote);
 
-  if (quoteInput){
-    quoteInput.value =
-      '';
+  if (quoteInput) {
+    quoteInput.value = '';
   }
 
-  /*
-   * New quotes may be appended while playback
-   * is active. The current utterance is never
-   * interrupted; the new item simply becomes
-   * part of the existing queue.
-   */
-  if (
-    state.playback ===
-    PLAYBACK.COMPLETED
-  ){
-
-    state.playback =
-      PLAYBACK.IDLE;
-
-    state.index =
-      0;
+  if (state.playback === PLAYBACK.COMPLETED) {
+    state.playback = PLAYBACK.IDLE;
+    state.index = 0;
 
     updateProgress();
     clearDisplay();
   }
 
   renderQueue();
-  updateProgress();
-  updateQueueHighlight();
   updateControls();
 
   msg(
@@ -660,24 +433,12 @@ function addQuote(){
   );
 }
 
-function clearQuotes(){
-
-  /*
-   * Clear All is intentionally allowed during
-   * playback. stopPlayback() invalidates the
-   * current speech session before the queue
-   * itself is destroyed.
-   */
+function clearQuotes() {
   stopPlayback(true);
 
-  state.quotes =
-    [];
-
-  state.index =
-    0;
-
-  state.playback =
-    PLAYBACK.IDLE;
+  state.quotes = [];
+  state.index = 0;
+  state.playback = PLAYBACK.IDLE;
 
   renderQueue();
   updateProgress();
@@ -689,71 +450,49 @@ function clearQuotes(){
   );
 }
 
-function createMulticolorQuote(text){
-
+function createMulticolorQuote(text) {
   const wrapper =
-    document.createElement(
-      'div'
-    );
+    document.createElement('div');
 
   wrapper.className =
     'quote-text';
 
   const parts =
     normalizeQuote(text)
-      .split(
-        /(\s+)/
-      );
+      .split(/(\s+)/);
 
-  let colorIndex =
-    0;
+  let colorIndex = 0;
 
-  parts.forEach(
-    part => {
-
-      if (
-        /^\s+$/.test(part)
-      ){
-
-        wrapper.append(
-          document.createTextNode(
-            part
-          )
-        );
-
-        return;
-      }
-
-      const span =
-        document.createElement(
-          'span'
-        );
-
-      span.className =
-        `quote-word c${(
-          colorIndex % 6
-        ) + 1}`;
-
-      span.textContent =
-        part;
-
+  parts.forEach(part => {
+    if (/^\s+$/.test(part)) {
       wrapper.append(
-        span
+        document.createTextNode(part)
       );
-
-      colorIndex += 1;
+      return;
     }
-  );
+
+    const span =
+      document.createElement('span');
+
+    span.className =
+      `quote-word c${(colorIndex % 6) + 1}`;
+
+    span.textContent =
+      part;
+
+    wrapper.append(span);
+
+    colorIndex += 1;
+  });
 
   return wrapper;
 }
 
-function showQuote(index){
-
+function showQuote(index) {
   if (
     !quoteStage ||
     !state.quotes[index]
-  ){
+  ) {
     return;
   }
 
@@ -763,12 +502,12 @@ function showQuote(index){
     )
   );
 
-  if (stageNow){
+  if (stageNow) {
     stageNow.textContent =
       state.quotes[index];
   }
 
-  if (stageIndex){
+  if (stageIndex) {
     stageIndex.textContent =
       `${index + 1} / ${state.quotes.length}`;
   }
@@ -776,16 +515,12 @@ function showQuote(index){
   updateQueueHighlight();
 }
 
-function clearDisplay(){
-
-  if (quoteStage){
-
+function clearDisplay() {
+  if (quoteStage) {
     quoteStage.replaceChildren();
 
     const placeholder =
-      document.createElement(
-        'div'
-      );
+      document.createElement('div');
 
     placeholder.className =
       'quote-stage-placeholder';
@@ -793,210 +528,169 @@ function clearDisplay(){
     placeholder.textContent =
       'वाचन शुरू होने पर सुविचार यहाँ प्रदर्शित होगा।';
 
-    quoteStage.append(
-      placeholder
-    );
+    quoteStage.append(placeholder);
   }
 
-  if (stageNow){
+  if (stageNow) {
     stageNow.textContent =
       'कोई सुविचार प्रदर्शित नहीं हो रहा है।';
   }
 
-  if (stageIndex){
+  if (stageIndex) {
     stageIndex.textContent =
       `0 / ${state.quotes.length}`;
   }
 
-  if (completionGate){
+  if (completionGate) {
     completionGate.textContent =
       'वाचन के लिए तैयार';
   }
 }
 
-function updateQueueHighlight(){
-
-  if (!quoteQueue){
+function updateQueueHighlight() {
+  if (!quoteQueue) {
     return;
   }
 
   quoteQueue
-    .querySelectorAll(
-      '.queue-item'
-    )
-    .forEach(
-      item => {
-
-        const active =
-          Number(
-            item.dataset.index
-          ) ===
+    .querySelectorAll('.queue-item')
+    .forEach(item => {
+      const active =
+        Number(item.dataset.index) ===
           state.index &&
-          (
-            state.playback ===
-              PLAYBACK.PLAYING ||
-            state.playback ===
-              PLAYBACK.PAUSED
-          );
-
-        item.classList.toggle(
-          'active',
-          active
+        (
+          state.playback === PLAYBACK.PLAYING ||
+          state.playback === PLAYBACK.PAUSED
         );
-      }
-    );
+
+      item.classList.toggle(
+        'active',
+        active
+      );
+    });
 }
 
-function updateProgress(){
-
+function updateProgress() {
   const total =
     state.quotes.length;
 
   const completed =
     Math.min(
-      Math.max(
-        state.index,
-        0
-      ),
+      Math.max(state.index, 0),
       total
     );
 
   const value =
     total
       ? Math.round(
-          (
-            completed *
-            100
-          ) /
-          total
+          (completed * 100) / total
         )
       : 0;
 
-  if (ttsProgress){
+  if (ttsProgress) {
     ttsProgress.value =
       value;
   }
 
-  if (ttsProgressValue){
+  if (ttsProgressValue) {
     ttsProgressValue.textContent =
       `${value}%`;
   }
 
-  if (quoteCompletion){
+  if (quoteCompletion) {
     quoteCompletion.textContent =
       `कतार: ${completed} / ${total}`;
   }
 }
 
-function updateControls(){
-
+function updateControls() {
   const active =
-    state.playback ===
-    PLAYBACK.PLAYING;
+    state.playback === PLAYBACK.PLAYING;
 
   const paused =
-    state.playback ===
-    PLAYBACK.PAUSED;
+    state.playback === PLAYBACK.PAUSED;
 
   const hasVoice =
-    Boolean(
-      state.voice
-    );
+    Boolean(state.voice);
 
   const canPlay =
-    state.quotes.length >
-      0 &&
+    state.quotes.length > 0 &&
     state.ttsSupported &&
     hasVoice &&
     !active &&
     !paused;
 
-  if (playButton){
+  if (playButton) {
     playButton.disabled =
       !canPlay;
   }
 
-  if (pauseButton){
+  if (pauseButton) {
     pauseButton.disabled =
       !active;
   }
 
-  if (resumeButton){
+  if (resumeButton) {
     resumeButton.disabled =
       !paused;
   }
 
-  if (stopButton){
+  if (stopButton) {
     stopButton.disabled =
-      !(
-        active ||
-        paused
-      );
+      !(active || paused);
   }
 
-  /*
-   * Add and Clear remain available while
-   * playback is active. Add appends to the
-   * queue; Clear safely invalidates playback.
-   */
-  if (clearQuotesButton){
+  if (clearQuotesButton) {
     clearQuotesButton.disabled =
-      false;
+      state.quotes.length === 0;
   }
 
-  if (addQuoteButton){
+  if (addQuoteButton) {
     addQuoteButton.disabled =
       false;
   }
 
-  if (removePhotoButton){
+  if (removePhotoButton) {
     removePhotoButton.disabled =
       !state.photoReady;
   }
 
-  if (removeVideoButton){
+  if (removeVideoButton) {
     removeVideoButton.disabled =
       !state.videoReady;
   }
 }
 
-function clearPhotoObjectUrl(){
-
-  if (state.photoObjectUrl){
-
+function clearPhotoObjectUrl() {
+  if (state.photoObjectUrl) {
     URL.revokeObjectURL(
       state.photoObjectUrl
     );
 
-    state.photoObjectUrl =
-      '';
+    state.photoObjectUrl = '';
   }
 }
 
-function removePhoto(){
+function removePhoto() {
+  state.photoToken += 1;
 
   clearPhotoObjectUrl();
 
-  state.photoReady =
-    false;
+  state.photoReady = false;
 
-  if (stagePhoto){
-    stagePhoto.removeAttribute(
-      'src'
-    );
+  if (stagePhoto) {
+    stagePhoto.removeAttribute('src');
   }
 
-  if (photoFrame){
-    photoFrame.hidden =
-      true;
+  if (photoFrame) {
+    photoFrame.hidden = true;
   }
 
-  if (photoUpload){
-    photoUpload.value =
-      '';
+  if (photoUpload) {
+    photoUpload.value = '';
   }
 
-  if (photoStatus){
+  if (photoStatus) {
     photoStatus.textContent =
       'कोई फोटो चयनित नहीं है।';
   }
@@ -1008,28 +702,21 @@ function removePhoto(){
   );
 }
 
-function photoSelected(event){
-
+function photoSelected(event) {
   const file =
     event.target.files?.[0];
 
-  if (!file){
+  if (!file) {
     return;
   }
 
-  if (
-    !file.type.startsWith(
-      'image/'
-    )
-  ){
-
-    if (photoStatus){
+  if (!file.type.startsWith('image/')) {
+    if (photoStatus) {
       photoStatus.textContent =
         'मान्य image file चुनें।';
     }
 
-    event.target.value =
-      '';
+    event.target.value = '';
 
     msg(
       'अमान्य photo file अस्वीकार कर दी गई।'
@@ -1038,69 +725,74 @@ function photoSelected(event){
     return;
   }
 
+  const token =
+    ++state.photoToken;
+
   clearPhotoObjectUrl();
 
-  state.photoReady =
-    false;
+  state.photoReady = false;
 
   const url =
-    URL.createObjectURL(
-      file
-    );
+    URL.createObjectURL(file);
 
   state.photoObjectUrl =
     url;
 
-  if (stagePhoto){
+  if (stagePhoto) {
+    stagePhoto.onload = () => {
+      if (
+        token !== state.photoToken ||
+        state.photoObjectUrl !== url
+      ) {
+        return;
+      }
 
-    stagePhoto.onload =
-      () => {
+      state.photoReady = true;
 
-        state.photoReady =
-          true;
+      if (photoFrame) {
+        photoFrame.hidden = false;
+      }
 
-        if (photoFrame){
-          photoFrame.hidden =
-            false;
-        }
+      updateControls();
+    };
 
-        updateControls();
-      };
+    stagePhoto.onerror = () => {
+      if (
+        token !== state.photoToken ||
+        state.photoObjectUrl !== url
+      ) {
+        return;
+      }
 
-    stagePhoto.onerror =
-      () => {
+      clearPhotoObjectUrl();
 
-        clearPhotoObjectUrl();
+      state.photoReady = false;
 
-        state.photoReady =
-          false;
+      if (stagePhoto) {
+        stagePhoto.removeAttribute('src');
+      }
 
-        stagePhoto.removeAttribute(
-          'src'
-        );
+      if (photoFrame) {
+        photoFrame.hidden = true;
+      }
 
-        if (photoFrame){
-          photoFrame.hidden =
-            true;
-        }
+      if (photoStatus) {
+        photoStatus.textContent =
+          'फोटो load नहीं हो सकी।';
+      }
 
-        if (photoStatus){
-          photoStatus.textContent =
-            'फोटो load नहीं हो सकी।';
-        }
+      updateControls();
 
-        updateControls();
-
-        msg(
-          'फोटो load नहीं हो सकी।'
-        );
-      };
+      msg(
+        'फोटो load नहीं हो सकी।'
+      );
+    };
 
     stagePhoto.src =
       url;
   }
 
-  if (photoStatus){
+  if (photoStatus) {
     photoStatus.textContent =
       `चयनित: ${file.name}`;
   }
@@ -1110,91 +802,77 @@ function photoSelected(event){
   );
 }
 
-function clearVideoObjectUrl(){
-
-  if (state.videoObjectUrl){
-
+function clearVideoObjectUrl() {
+  if (state.videoObjectUrl) {
     URL.revokeObjectURL(
       state.videoObjectUrl
     );
 
-    state.videoObjectUrl =
-      '';
+    state.videoObjectUrl = '';
   }
 }
 
-function removeVideo(){
+function removeVideo() {
+  state.videoToken += 1;
 
-  if (videoPlayer){
-
+  if (videoPlayer) {
     videoPlayer.pause();
-
-    videoPlayer.removeAttribute(
-      'src'
-    );
-
+    videoPlayer.removeAttribute('src');
     videoPlayer.load();
   }
 
   clearVideoObjectUrl();
 
-  state.videoReady =
-    false;
+  state.videoReady = false;
 
-  if (videoPlaceholder){
-    videoPlaceholder.hidden =
-      false;
+  if (videoPlaceholder) {
+    videoPlaceholder.hidden = false;
   }
 
-  if (videoUploadStatus){
+  if (videoUploadStatus) {
     videoUploadStatus.textContent =
       'कोई वीडियो चयनित नहीं है।';
   }
 
-  if (videoUpload){
-    videoUpload.value =
-      '';
+  if (videoUpload) {
+    videoUpload.value = '';
   }
 
-  if (videoPlayer){
+  if (videoPlayer) {
+    videoPlayer.onloadedmetadata = null;
+  }
 
-    videoPlayer.onloadedmetadata =
-      null;
+  if (videoPlayer) {
+    videoPlayer.oncanplay = null;
+  }
 
-    videoPlayer.onerror =
-      null;
+  if (videoPlayer) {
+    videoPlayer.onerror = null;
   }
 
   updateControls();
 
-  if (videoStatus){
+  if (videoStatus) {
     videoStatus.textContent =
       'वीडियो तैयार नहीं है।';
   }
 }
 
-function videoSelected(event){
-
+function videoSelected(event) {
   const file =
     event.target.files?.[0];
 
-  if (!file){
+  if (!file) {
     return;
   }
 
-  if (
-    !file.type.startsWith(
-      'video/'
-    )
-  ){
-
-    if (videoUploadStatus){
+  if (!file.type.startsWith('video/')) {
+    if (videoUploadStatus) {
       videoUploadStatus.textContent =
         'मान्य video file चुनें।';
     }
 
-    event.target.value =
-      '';
+    event.target.value = '';
 
     msg(
       'अमान्य video file अस्वीकार कर दी गई।'
@@ -1205,87 +883,100 @@ function videoSelected(event){
 
   removeVideo();
 
+  const token =
+    ++state.videoToken;
+
   const url =
-    URL.createObjectURL(
-      file
-    );
+    URL.createObjectURL(file);
 
   state.videoObjectUrl =
     url;
 
-  if (videoPlayer){
+  if (videoPlayer) {
+    videoPlayer.muted = true;
+    videoPlayer.playsInline = true;
+    videoPlayer.loop = true;
+    videoPlayer.preload = 'metadata';
 
-    videoPlayer.muted =
-      true;
+    videoPlayer.onloadedmetadata = () => {
+      if (
+        token !== state.videoToken ||
+        state.videoObjectUrl !== url
+      ) {
+        return;
+      }
 
-    videoPlayer.playsInline =
-      true;
+      state.videoReady = true;
 
-    videoPlayer.loop =
-      true;
+      if (videoPlaceholder) {
+        videoPlaceholder.hidden = true;
+      }
 
-    videoPlayer.preload =
-      'metadata';
+      if (videoUploadStatus) {
+        videoUploadStatus.textContent =
+          `चयनित: ${file.name}`;
+      }
 
-    videoPlayer.onloadedmetadata =
-      () => {
+      if (videoStatus) {
+        videoStatus.textContent =
+          `वीडियो तैयार — ${Math.round(videoPlayer.videoWidth)}×${Math.round(videoPlayer.videoHeight)} px`;
+      }
 
-        state.videoReady =
-          true;
+      updateControls();
+    };
 
-        if (videoPlaceholder){
-          videoPlaceholder.hidden =
-            true;
-        }
+    videoPlayer.oncanplay = () => {
+      if (
+        token !== state.videoToken ||
+        state.videoObjectUrl !== url
+      ) {
+        return;
+      }
 
-        if (videoUploadStatus){
-          videoUploadStatus.textContent =
-            `चयनित: ${file.name}`;
-        }
+      if (videoStatus) {
+        videoStatus.textContent =
+          'वीडियो तैयार है; Play पर चलेगी और repeat होगी।';
+      }
+    };
 
-        if (videoStatus){
-          videoStatus.textContent =
-            `वीडियो तैयार — ${Math.round(videoPlayer.videoWidth)}×${Math.round(videoPlayer.videoHeight)} px`;
-        }
+    videoPlayer.onerror = () => {
+      if (
+        token !== state.videoToken ||
+        state.videoObjectUrl !== url
+      ) {
+        return;
+      }
 
-        updateControls();
-      };
+      state.videoReady = false;
 
-    videoPlayer.onerror =
-      () => {
+      clearVideoObjectUrl();
 
-        state.videoReady =
-          false;
+      videoPlayer.removeAttribute('src');
+      videoPlayer.onloadedmetadata = null;
+      videoPlayer.oncanplay = null;
+      videoPlayer.onerror = null;
+      videoPlayer.load();
 
-        clearVideoObjectUrl();
+      if (videoPlaceholder) {
+        videoPlaceholder.hidden = false;
+      }
 
-        videoPlayer.removeAttribute(
-          'src'
-        );
+      if (videoUploadStatus) {
+        videoUploadStatus.textContent =
+          'वीडियो load नहीं हो सकी।';
+      }
 
-        videoPlayer.load();
+      if (videoStatus) {
+        videoStatus.textContent =
+          'वीडियो load error।';
+      }
 
-        if (videoPlaceholder){
-          videoPlaceholder.hidden =
-            false;
-        }
+      updateControls();
 
-        if (videoUploadStatus){
-          videoUploadStatus.textContent =
-            'वीडियो load नहीं हो सकी।';
-        }
-
-        if (videoStatus){
-          videoStatus.textContent =
-            'वीडियो load error।';
-        }
-
-        updateControls();
-
-        msg(
-          'वीडियो load नहीं हो सकी।'
-        );
-      };
+      msg(
+        'वीडियो load नहीं हो सकी।'
+      );
+    };
 
     videoPlayer.src =
       url;
@@ -1293,41 +984,38 @@ function videoSelected(event){
     videoPlayer.load();
   }
 
-  if (videoUploadStatus){
+  if (videoUploadStatus) {
     videoUploadStatus.textContent =
       `लोड हो रहा है: ${file.name}`;
   }
 
-  if (videoStatus){
+  if (videoStatus) {
     videoStatus.textContent =
       'वीडियो metadata लोड हो रहा है…';
   }
 }
 
-function setPlayingStatus(){
-
-  if (completionGate){
+function setPlayingStatus() {
+  if (completionGate) {
     completionGate.textContent =
       'वाचन चल रहा है';
   }
 
-  if (ttsStatus){
+  if (ttsStatus) {
     ttsStatus.textContent =
       `सुविचार ${state.index + 1} / ${state.quotes.length} पढ़ा जा रहा है।`;
   }
 }
 
 function setPausedStatus(
-  message =
-    'वाचन विराम पर है। Resume दबाएँ।'
-){
-
-  if (completionGate){
+  message = 'वाचन विराम पर है। Resume दबाएँ।'
+) {
+  if (completionGate) {
     completionGate.textContent =
       'वाचन विराम पर है';
   }
 
-  if (ttsStatus){
+  if (ttsStatus) {
     ttsStatus.textContent =
       message;
   }
@@ -1337,8 +1025,7 @@ function makeUtterance(
   text,
   token,
   index
-){
-
+) {
   const utterance =
     new SpeechSynthesisUtterance(
       speechText(text)
@@ -1360,174 +1047,135 @@ function makeUtterance(
   utterance.volume =
     1;
 
-  utterance.onstart =
-    () => {
+  utterance.onstart = () => {
+    if (
+      token !== state.speechToken
+    ) {
+      return;
+    }
 
-      if (
-        token !==
-        state.speechToken
-      ){
-        return;
-      }
+    state.playback =
+      PLAYBACK.PLAYING;
 
+    showQuote(index);
+    setPlayingStatus();
+    updateControls();
+  };
+
+  utterance.onend = () => {
+    if (
+      token !== state.speechToken
+    ) {
+      return;
+    }
+
+    if (
+      state.playback !== PLAYBACK.PLAYING
+    ) {
+      return;
+    }
+
+    state.index =
+      index + 1;
+
+    updateProgress();
+
+    if (
+      state.index >=
+      state.quotes.length
+    ) {
       state.playback =
-        PLAYBACK.PLAYING;
+        PLAYBACK.COMPLETED;
 
-      showQuote(
-        index
-      );
-
-      setPlayingStatus();
-      updateControls();
-    };
-
-  utterance.onend =
-    () => {
-
-      if (
-        token !==
-        state.speechToken
-      ){
-        return;
-      }
-
-      if (
-        state.playback !==
-        PLAYBACK.PLAYING
-      ){
-        return;
-      }
-
-      /*
-       * The current item is counted complete
-       * only here — after the real onend event.
-       */
-      state.index =
-        index + 1;
-
-      updateProgress();
-
-      if (
-        state.index >=
-        state.quotes.length
-      ){
-
-        state.playback =
-          PLAYBACK.COMPLETED;
-
-        if (videoPlayer){
-          videoPlayer.pause();
-        }
-
-        if (completionGate){
-          completionGate.textContent =
-            'सभी सुविचार पूर्ण';
-        }
-
-        if (ttsStatus){
-          ttsStatus.textContent =
-            'पूरी सुविचार कतार का वाचन पूर्ण हुआ।';
-        }
-
-        updateQueueHighlight();
-        updateControls();
-
-        msg(
-          'सभी सुविचार पूर्ण हो गए।'
-        );
-
-        return;
-      }
-
-      /*
-       * Only after onend does the next
-       * logical item become eligible.
-       */
-      if (
-        state.playback ===
-        PLAYBACK.PLAYING
-      ){
-
-        speakQuote(
-          state.index
-        );
-      }
-    };
-
-  utterance.onerror =
-    event => {
-
-      if (
-        token !==
-        state.speechToken
-      ){
-        return;
-      }
-
-      /*
-       * cancel()/interrupted events generated
-       * by an invalidated session must not
-       * corrupt a newer session.
-       */
-      if (
-        event?.error ===
-          'canceled' ||
-        event?.error ===
-          'interrupted'
-      ){
-        return;
-      }
-
-      state.playback =
-        PLAYBACK.PAUSED;
-
-      if (videoPlayer){
+      if (videoPlayer) {
         videoPlayer.pause();
       }
 
-      setPausedStatus(
-        `TTS त्रुटि: ${event?.error || 'अज्ञात त्रुटि'} — Resume दबाएँ।`
-      );
+      if (completionGate) {
+        completionGate.textContent =
+          'सभी सुविचार पूर्ण';
+      }
 
+      if (ttsStatus) {
+        ttsStatus.textContent =
+          'पूरी सुविचार कतार का वाचन पूर्ण हुआ।';
+      }
+
+      updateQueueHighlight();
       updateControls();
 
       msg(
-        'TTS त्रुटि के कारण वाचन paused है।'
+        'सभी सुविचार पूर्ण हो गए।'
       );
-    };
+
+      return;
+    }
+
+    if (
+      state.playback ===
+      PLAYBACK.PLAYING
+    ) {
+      speakQuote(
+        state.index
+      );
+    }
+  };
+
+  utterance.onerror = event => {
+    if (
+      token !== state.speechToken
+    ) {
+      return;
+    }
+
+    state.playback =
+      PLAYBACK.PAUSED;
+
+    if (videoPlayer) {
+      videoPlayer.pause();
+    }
+
+    setPausedStatus(
+      `TTS त्रुटि: ${event?.error || 'अज्ञात त्रुटि'} — Resume दबाएँ।`
+    );
+
+    updateControls();
+
+    msg(
+      'TTS त्रुटि के कारण वाचन paused है।'
+    );
+  };
 
   return utterance;
 }
 
-function speakQuote(index){
-
+function speakQuote(index) {
   const api =
     synth();
 
   if (
     !api ||
     !state.ttsSupported ||
-    state.playback !==
-      PLAYBACK.PLAYING ||
+    state.playback !== PLAYBACK.PLAYING ||
     !state.quotes[index] ||
     !state.voice
-  ){
+  ) {
     return false;
-  }
-
-  /*
-   * Defensive protection against duplicate
-   * browser speech queue entries.
-   */
-  if (
-    api.speaking ||
-    api.pending
-  ){
-    api.cancel();
   }
 
   const token =
     ++state.speechToken;
+
+  if (
+    api.speaking ||
+    api.pending
+  ) {
+    try {
+      api.cancel();
+    } catch (error) {
+      /* non-fatal cancellation failure */
+    }
+  }
 
   const utterance =
     makeUtterance(
@@ -1536,27 +1184,23 @@ function speakQuote(index){
       index
     );
 
-  try{
-
+  try {
     api.speak(
       utterance
     );
 
     return true;
-
-  }catch(error){
-
+  } catch (error) {
     if (
-      token !==
-      state.speechToken
-    ){
+      token !== state.speechToken
+    ) {
       return false;
     }
 
     state.playback =
       PLAYBACK.PAUSED;
 
-    if (videoPlayer){
+    if (videoPlayer) {
       videoPlayer.pause();
     }
 
@@ -1574,16 +1218,14 @@ function speakQuote(index){
   }
 }
 
-async function startPlayback(){
-
+async function startPlayback() {
   const api =
     synth();
 
   if (
     !api ||
     !state.ttsSupported
-  ){
-
+  ) {
     msg(
       'इस browser में Speech Synthesis उपलब्ध नहीं है।'
     );
@@ -1591,10 +1233,7 @@ async function startPlayback(){
     return false;
   }
 
-  if (
-    !state.quotes.length
-  ){
-
+  if (!state.quotes.length) {
     msg(
       'पहले कम-से-कम एक सुविचार queue में जोड़ें।'
     );
@@ -1602,8 +1241,7 @@ async function startPlayback(){
     return false;
   }
 
-  if (!state.voice){
-
+  if (!state.voice) {
     msg(
       'कोई TTS voice उपलब्ध/चयनित नहीं है।'
     );
@@ -1612,26 +1250,21 @@ async function startPlayback(){
   }
 
   if (
-    state.playback ===
-      PLAYBACK.PLAYING ||
-    state.playback ===
-      PLAYBACK.PAUSED
-  ){
+    state.playback === PLAYBACK.PLAYING ||
+    state.playback === PLAYBACK.PAUSED
+  ) {
     return false;
   }
 
-  api.cancel();
-
-  /*
-   * New playback session.
-   * Any callbacks belonging to an older
-   * session become stale immediately.
-   */
   state.speechToken += 1;
 
-  state.index =
-    0;
+  try {
+    api.cancel();
+  } catch (error) {
+    /* non-fatal cancellation failure */
+  }
 
+  state.index = 0;
   state.playback =
     PLAYBACK.PLAYING;
 
@@ -1641,26 +1274,26 @@ async function startPlayback(){
   if (
     videoPlayer &&
     state.videoReady
-  ){
-
+  ) {
     videoPlayer.loop =
       true;
 
     videoPlayer.muted =
       true;
 
-    try{
-
+    try {
       await videoPlayer.play();
 
-      if (videoStatus){
+      if (
+        state.playback ===
+        PLAYBACK.PLAYING &&
+        videoStatus
+      ) {
         videoStatus.textContent =
           'वीडियो चल रही है और repeat होगी।';
       }
-
-    }catch(error){
-
-      if (videoStatus){
+    } catch (error) {
+      if (videoStatus) {
         videoStatus.textContent =
           'वीडियो autoplay नहीं हो सकी; TTS जारी रहेगा।';
       }
@@ -1674,12 +1307,11 @@ async function startPlayback(){
   const started =
     speakQuote(0);
 
-  if (!started){
-
+  if (!started) {
     state.playback =
       PLAYBACK.PAUSED;
 
-    if (videoPlayer){
+    if (videoPlayer) {
       videoPlayer.pause();
     }
 
@@ -1691,8 +1323,7 @@ async function startPlayback(){
   if (
     videoStatus &&
     state.videoReady
-  ){
-
+  ) {
     videoStatus.textContent =
       'वीडियो + TTS सक्रिय हैं।';
   }
@@ -1704,30 +1335,26 @@ async function startPlayback(){
   return true;
 }
 
-function pausePlayback(){
-
+function pausePlayback() {
   const api =
     synth();
 
   if (
     state.playback !==
     PLAYBACK.PLAYING
-  ){
+  ) {
     return;
   }
 
-  try{
-
+  try {
     api?.pause();
-
-  }catch(error){
-
+  } catch (error) {
     msg(
       'TTS pause नहीं हो सका।'
     );
   }
 
-  if (videoPlayer){
+  if (videoPlayer) {
     videoPlayer.pause();
   }
 
@@ -1743,51 +1370,33 @@ function pausePlayback(){
   );
 }
 
-async function resumePlayback(){
-
+async function resumePlayback() {
   const api =
     synth();
 
   if (
     !api ||
-    state.playback !==
-      PLAYBACK.PAUSED ||
+    state.playback !== PLAYBACK.PAUSED ||
     !state.voice
-  ){
+  ) {
     return false;
   }
 
   state.playback =
     PLAYBACK.PLAYING;
 
-  try{
-
-    /*
-     * Prefer resuming the existing utterance.
-     * Do not create a new utterance when the
-     * browser still owns a paused utterance.
-     */
-    if (
-      api.paused
-    ){
-
+  try {
+    if (api.paused) {
       api.resume();
-
-    }else if (
+    } else if (
       !api.speaking &&
       !api.pending
-    ){
-
-      /*
-       * Browser may have discarded speech state.
-       * Only then recreate the current item.
-       */
+    ) {
       if (
         !speakQuote(
           state.index
         )
-      ){
-
+      ) {
         state.playback =
           PLAYBACK.PAUSED;
 
@@ -1796,13 +1405,11 @@ async function resumePlayback(){
         return false;
       }
     }
-
-  }catch(error){
-
+  } catch (error) {
     state.playback =
       PLAYBACK.PAUSED;
 
-    if (videoPlayer){
+    if (videoPlayer) {
       videoPlayer.pause();
     }
 
@@ -1818,29 +1425,21 @@ async function resumePlayback(){
   if (
     videoPlayer &&
     state.videoReady
-  ){
-
-    try{
-
+  ) {
+    try {
       await videoPlayer.play();
-
-    }catch(error){
-
-      /*
-       * If video cannot resume, do not falsely
-       * claim synchronized playback.
-       */
+    } catch (error) {
       if (
         api.speaking ||
         api.paused
-      ){
+      ) {
         api.pause();
       }
 
       state.playback =
         PLAYBACK.PAUSED;
 
-      if (videoStatus){
+      if (videoStatus) {
         videoStatus.textContent =
           'वीडियो resume नहीं हो सकी; TTS paused है।';
       }
@@ -1868,31 +1467,19 @@ async function resumePlayback(){
 
 function stopPlayback(
   silent = false
-){
-
-  /*
-   * Invalidate callbacks BEFORE cancel().
-   * This prevents delayed onend/onerror events
-   * from modifying the next session.
-   */
+) {
   state.speechToken += 1;
 
   const api =
     synth();
 
-  try{
-
+  try {
     api?.cancel();
-
-  }catch(error){
-
-    /*
-     * Cancellation failure must not prevent
-     * local state cleanup.
-     */
+  } catch (error) {
+    /* cancellation failure is non-fatal */
   }
 
-  if (videoPlayer){
+  if (videoPlayer) {
     videoPlayer.pause();
   }
 
@@ -1906,12 +1493,12 @@ function stopPlayback(
   renderQueue();
   clearDisplay();
 
-  if (ttsStatus){
+  if (ttsStatus) {
     ttsStatus.textContent =
       'वाचन प्रारंभ नहीं हुआ है।';
   }
 
-  if (videoStatus){
+  if (videoStatus) {
     videoStatus.textContent =
       state.videoReady
         ? 'वीडियो तैयार है; Play की प्रतीक्षा है।'
@@ -1920,16 +1507,14 @@ function stopPlayback(
 
   updateControls();
 
-  if (!silent){
-
+  if (!silent) {
     msg(
       'वाचन और वीडियो रोक दिए गए; स्थिति reset है।'
     );
   }
 }
 
-function bindEvents(){
-
+function bindEvents() {
   addQuoteButton?.addEventListener(
     'click',
     addQuote
@@ -1989,16 +1574,12 @@ function bindEvents(){
   ttsRate?.addEventListener(
     'input',
     () => {
-
       updateRateLabel();
 
       if (
-        state.playback ===
-          PLAYBACK.PLAYING ||
-        state.playback ===
-          PLAYBACK.PAUSED
-      ){
-
+        state.playback === PLAYBACK.PLAYING ||
+        state.playback === PLAYBACK.PAUSED
+      ) {
         msg(
           'नई वाचन गति अगले utterance पर लागू होगी।'
         );
@@ -2009,18 +1590,12 @@ function bindEvents(){
   quoteInput?.addEventListener(
     'keydown',
     event => {
-
       if (
-        (
-          event.ctrlKey ||
-          event.metaKey
-        ) &&
-        event.key ===
-          'Enter'
-      ){
-
+        (event.ctrlKey ||
+          event.metaKey) &&
+        event.key === 'Enter'
+      ) {
         event.preventDefault();
-
         addQuote();
       }
     }
@@ -2029,12 +1604,7 @@ function bindEvents(){
   const api =
     synth();
 
-  if (api){
-
-    /*
-     * Registered exactly once because init()
-     * itself is guarded.
-     */
+  if (api) {
     api.addEventListener?.(
       'voiceschanged',
       refreshVoices
@@ -2044,13 +1614,11 @@ function bindEvents(){
   videoPlayer?.addEventListener(
     'play',
     () => {
-
       if (
         state.playback ===
-          PLAYBACK.PLAYING &&
+        PLAYBACK.PLAYING &&
         videoStatus
-      ){
-
+      ) {
         videoStatus.textContent =
           'वीडियो चल रही है और repeat होगी।';
       }
@@ -2060,13 +1628,11 @@ function bindEvents(){
   videoPlayer?.addEventListener(
     'pause',
     () => {
-
       if (
         state.playback ===
-          PLAYBACK.PAUSED &&
+        PLAYBACK.PAUSED &&
         videoStatus
-      ){
-
+      ) {
         videoStatus.textContent =
           'वीडियो paused है।';
       }
@@ -2074,24 +1640,20 @@ function bindEvents(){
   );
 }
 
-function browserCheck(){
-
+function browserCheck() {
   state.ttsSupported =
-    typeof window !==
-      'undefined' &&
-    'speechSynthesis' in
-      window &&
+    typeof window !== 'undefined' &&
+    'speechSynthesis' in window &&
     typeof window.SpeechSynthesisUtterance ===
       'function';
 
-  if (!state.ttsSupported){
-
-    if (ttsVoiceStatus){
+  if (!state.ttsSupported) {
+    if (ttsVoiceStatus) {
       ttsVoiceStatus.textContent =
         'Speech Synthesis API उपलब्ध नहीं है। TTS प्रारंभ नहीं किया जा सकता।';
     }
 
-    if (ttsStatus){
+    if (ttsStatus) {
       ttsStatus.textContent =
         'TTS उपलब्ध नहीं है।';
     }
@@ -2102,9 +1664,8 @@ function browserCheck(){
   }
 }
 
-function init(){
-
-  if (state.initialized){
+function init() {
+  if (state.initialized) {
     return;
   }
 
@@ -2112,36 +1673,21 @@ function init(){
     true;
 
   browserCheck();
-
   updateRateLabel();
-
   renderQueue();
-
   updateProgress();
-
   clearDisplay();
-
   bindEvents();
-
   refreshVoices();
-
   updateControls();
 
-  /*
-   * Some Chromium/browser environments initially
-   * return an empty voice list. Retry once after
-   * a short delay; voiceschanged remains the
-   * primary event-based mechanism.
-   */
   if (
     state.ttsSupported &&
     !state.voices.length
-  ){
-
+  ) {
     state.voiceLoadTimer =
       window.setTimeout(
         () => {
-
           state.voiceLoadTimer =
             null;
 
@@ -2151,8 +1697,7 @@ function init(){
       );
   }
 
-  if (videoPlayer){
-
+  if (videoPlayer) {
     videoPlayer.loop =
       true;
 
@@ -2167,24 +1712,17 @@ function init(){
 window.addEventListener(
   'beforeunload',
   () => {
-
-    /*
-     * Invalidate any pending speech callbacks
-     * before browser teardown.
-     */
     state.speechToken += 1;
+    state.photoToken += 1;
+    state.videoToken += 1;
 
-    try{
-
+    try {
       synth()?.cancel();
-
-    }catch(error){
-
+    } catch (error) {
       /* no-op during unload */
     }
 
-    if (state.voiceLoadTimer){
-
+    if (state.voiceLoadTimer) {
       window.clearTimeout(
         state.voiceLoadTimer
       );
@@ -2198,7 +1736,5 @@ window.addEventListener(
 document.addEventListener(
   'DOMContentLoaded',
   init,
-  {
-    once:true
-  }
+  { once: true }
 );
