@@ -1,0 +1,2211 @@
+{
+  "schemaVersion": 1,
+  "name": "श्रुति वैदिक उच्चारण कोश",
+  "language": "sa-IN",
+  "purpose": "Sanskrit/Hindi TTS input normalization, Devanagari/Vedic Unicode inventory, and an extensible lexicon for difficult recitation words.",
+  "importantLimit": "This file inventories assigned characters in the Devanagari, Vedic Extensions and Devanagari Extended Unicode ranges and includes a curated starter word list. Not every codepoint is used in every Vedic recension, and the word list is not exhaustive for all Vedic texts or words. Exact Vedic svara (udātta, anudātta, svarita), pluta duration, and śākhā-specific recitation must be checked against a qualified reciter; the general Sanskrit TTS model is not certified for every Vedic chant tradition.",
+  "normalizations": [
+    {
+      "from": "ॐ",
+      "to": "ओम्",
+      "mode": "token",
+      "note": "Common spoken rendering of Om. For a tradition requiring a specific mātrā or pluta, edit the line and verify the recitation."
+    },
+    {
+      "from": "ओं",
+      "to": "ओम्",
+      "mode": "token",
+      "note": "Common script variant; does not encode Vedic pitch."
+    },
+    {
+      "from": "मृत्योर्मुक्षीय",
+      "to": "मृत्योर् मुक्षीय",
+      "mode": "token",
+      "note": "Optional sandhi-aware reading aid for the Mahāmṛtyuñjaya mantra; verify against the chosen textual recension."
+    },
+    {
+      "from": "सुगन्धिं",
+      "to": "सुगन्धिम्",
+      "mode": "token",
+      "note": "Explicit nasal realization before the following labial consonant; verify against the intended recitation style."
+    }
+  ],
+  "vedicCharacters": [
+    {
+      "character": "ऀ",
+      "display": "◌ऀ",
+      "codepoint": "U+0900",
+      "name": "DEVANAGARI SIGN INVERTED CANDRABINDU",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ँ",
+      "display": "◌ँ",
+      "codepoint": "U+0901",
+      "name": "DEVANAGARI SIGN CANDRABINDU",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ं",
+      "display": "◌ं",
+      "codepoint": "U+0902",
+      "name": "DEVANAGARI SIGN ANUSVARA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ः",
+      "display": "◌ः",
+      "codepoint": "U+0903",
+      "name": "DEVANAGARI SIGN VISARGA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ऄ",
+      "display": "ऄ",
+      "codepoint": "U+0904",
+      "name": "DEVANAGARI LETTER SHORT A",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "अ",
+      "display": "अ",
+      "codepoint": "U+0905",
+      "name": "DEVANAGARI LETTER A",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "आ",
+      "display": "आ",
+      "codepoint": "U+0906",
+      "name": "DEVANAGARI LETTER AA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "इ",
+      "display": "इ",
+      "codepoint": "U+0907",
+      "name": "DEVANAGARI LETTER I",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ई",
+      "display": "ई",
+      "codepoint": "U+0908",
+      "name": "DEVANAGARI LETTER II",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "उ",
+      "display": "उ",
+      "codepoint": "U+0909",
+      "name": "DEVANAGARI LETTER U",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ऊ",
+      "display": "ऊ",
+      "codepoint": "U+090A",
+      "name": "DEVANAGARI LETTER UU",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ऋ",
+      "display": "ऋ",
+      "codepoint": "U+090B",
+      "name": "DEVANAGARI LETTER VOCALIC R",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ऌ",
+      "display": "ऌ",
+      "codepoint": "U+090C",
+      "name": "DEVANAGARI LETTER VOCALIC L",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ऍ",
+      "display": "ऍ",
+      "codepoint": "U+090D",
+      "name": "DEVANAGARI LETTER CANDRA E",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ऎ",
+      "display": "ऎ",
+      "codepoint": "U+090E",
+      "name": "DEVANAGARI LETTER SHORT E",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ए",
+      "display": "ए",
+      "codepoint": "U+090F",
+      "name": "DEVANAGARI LETTER E",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ऐ",
+      "display": "ऐ",
+      "codepoint": "U+0910",
+      "name": "DEVANAGARI LETTER AI",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ऑ",
+      "display": "ऑ",
+      "codepoint": "U+0911",
+      "name": "DEVANAGARI LETTER CANDRA O",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ऒ",
+      "display": "ऒ",
+      "codepoint": "U+0912",
+      "name": "DEVANAGARI LETTER SHORT O",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ओ",
+      "display": "ओ",
+      "codepoint": "U+0913",
+      "name": "DEVANAGARI LETTER O",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "औ",
+      "display": "औ",
+      "codepoint": "U+0914",
+      "name": "DEVANAGARI LETTER AU",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "क",
+      "display": "क",
+      "codepoint": "U+0915",
+      "name": "DEVANAGARI LETTER KA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ख",
+      "display": "ख",
+      "codepoint": "U+0916",
+      "name": "DEVANAGARI LETTER KHA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ग",
+      "display": "ग",
+      "codepoint": "U+0917",
+      "name": "DEVANAGARI LETTER GA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "घ",
+      "display": "घ",
+      "codepoint": "U+0918",
+      "name": "DEVANAGARI LETTER GHA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ङ",
+      "display": "ङ",
+      "codepoint": "U+0919",
+      "name": "DEVANAGARI LETTER NGA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "च",
+      "display": "च",
+      "codepoint": "U+091A",
+      "name": "DEVANAGARI LETTER CA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "छ",
+      "display": "छ",
+      "codepoint": "U+091B",
+      "name": "DEVANAGARI LETTER CHA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ज",
+      "display": "ज",
+      "codepoint": "U+091C",
+      "name": "DEVANAGARI LETTER JA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "झ",
+      "display": "झ",
+      "codepoint": "U+091D",
+      "name": "DEVANAGARI LETTER JHA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ञ",
+      "display": "ञ",
+      "codepoint": "U+091E",
+      "name": "DEVANAGARI LETTER NYA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ट",
+      "display": "ट",
+      "codepoint": "U+091F",
+      "name": "DEVANAGARI LETTER TTA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ठ",
+      "display": "ठ",
+      "codepoint": "U+0920",
+      "name": "DEVANAGARI LETTER TTHA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ड",
+      "display": "ड",
+      "codepoint": "U+0921",
+      "name": "DEVANAGARI LETTER DDA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ढ",
+      "display": "ढ",
+      "codepoint": "U+0922",
+      "name": "DEVANAGARI LETTER DDHA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ण",
+      "display": "ण",
+      "codepoint": "U+0923",
+      "name": "DEVANAGARI LETTER NNA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "त",
+      "display": "त",
+      "codepoint": "U+0924",
+      "name": "DEVANAGARI LETTER TA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "थ",
+      "display": "थ",
+      "codepoint": "U+0925",
+      "name": "DEVANAGARI LETTER THA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "द",
+      "display": "द",
+      "codepoint": "U+0926",
+      "name": "DEVANAGARI LETTER DA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ध",
+      "display": "ध",
+      "codepoint": "U+0927",
+      "name": "DEVANAGARI LETTER DHA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "न",
+      "display": "न",
+      "codepoint": "U+0928",
+      "name": "DEVANAGARI LETTER NA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ऩ",
+      "display": "ऩ",
+      "codepoint": "U+0929",
+      "name": "DEVANAGARI LETTER NNNA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "प",
+      "display": "प",
+      "codepoint": "U+092A",
+      "name": "DEVANAGARI LETTER PA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "फ",
+      "display": "फ",
+      "codepoint": "U+092B",
+      "name": "DEVANAGARI LETTER PHA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ब",
+      "display": "ब",
+      "codepoint": "U+092C",
+      "name": "DEVANAGARI LETTER BA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "भ",
+      "display": "भ",
+      "codepoint": "U+092D",
+      "name": "DEVANAGARI LETTER BHA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "म",
+      "display": "म",
+      "codepoint": "U+092E",
+      "name": "DEVANAGARI LETTER MA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "य",
+      "display": "य",
+      "codepoint": "U+092F",
+      "name": "DEVANAGARI LETTER YA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "र",
+      "display": "र",
+      "codepoint": "U+0930",
+      "name": "DEVANAGARI LETTER RA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ऱ",
+      "display": "ऱ",
+      "codepoint": "U+0931",
+      "name": "DEVANAGARI LETTER RRA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ल",
+      "display": "ल",
+      "codepoint": "U+0932",
+      "name": "DEVANAGARI LETTER LA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ळ",
+      "display": "ळ",
+      "codepoint": "U+0933",
+      "name": "DEVANAGARI LETTER LLA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ऴ",
+      "display": "ऴ",
+      "codepoint": "U+0934",
+      "name": "DEVANAGARI LETTER LLLA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "व",
+      "display": "व",
+      "codepoint": "U+0935",
+      "name": "DEVANAGARI LETTER VA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "श",
+      "display": "श",
+      "codepoint": "U+0936",
+      "name": "DEVANAGARI LETTER SHA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ष",
+      "display": "ष",
+      "codepoint": "U+0937",
+      "name": "DEVANAGARI LETTER SSA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "स",
+      "display": "स",
+      "codepoint": "U+0938",
+      "name": "DEVANAGARI LETTER SA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ह",
+      "display": "ह",
+      "codepoint": "U+0939",
+      "name": "DEVANAGARI LETTER HA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ऺ",
+      "display": "◌ऺ",
+      "codepoint": "U+093A",
+      "name": "DEVANAGARI VOWEL SIGN OE",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ऻ",
+      "display": "◌ऻ",
+      "codepoint": "U+093B",
+      "name": "DEVANAGARI VOWEL SIGN OOE",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "़",
+      "display": "◌़",
+      "codepoint": "U+093C",
+      "name": "DEVANAGARI SIGN NUKTA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ऽ",
+      "display": "ऽ",
+      "codepoint": "U+093D",
+      "name": "DEVANAGARI SIGN AVAGRAHA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ा",
+      "display": "◌ा",
+      "codepoint": "U+093E",
+      "name": "DEVANAGARI VOWEL SIGN AA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ि",
+      "display": "◌ि",
+      "codepoint": "U+093F",
+      "name": "DEVANAGARI VOWEL SIGN I",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ी",
+      "display": "◌ी",
+      "codepoint": "U+0940",
+      "name": "DEVANAGARI VOWEL SIGN II",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ु",
+      "display": "◌ु",
+      "codepoint": "U+0941",
+      "name": "DEVANAGARI VOWEL SIGN U",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ू",
+      "display": "◌ू",
+      "codepoint": "U+0942",
+      "name": "DEVANAGARI VOWEL SIGN UU",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ृ",
+      "display": "◌ृ",
+      "codepoint": "U+0943",
+      "name": "DEVANAGARI VOWEL SIGN VOCALIC R",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॄ",
+      "display": "◌ॄ",
+      "codepoint": "U+0944",
+      "name": "DEVANAGARI VOWEL SIGN VOCALIC RR",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॅ",
+      "display": "◌ॅ",
+      "codepoint": "U+0945",
+      "name": "DEVANAGARI VOWEL SIGN CANDRA E",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॆ",
+      "display": "◌ॆ",
+      "codepoint": "U+0946",
+      "name": "DEVANAGARI VOWEL SIGN SHORT E",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "े",
+      "display": "◌े",
+      "codepoint": "U+0947",
+      "name": "DEVANAGARI VOWEL SIGN E",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ै",
+      "display": "◌ै",
+      "codepoint": "U+0948",
+      "name": "DEVANAGARI VOWEL SIGN AI",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॉ",
+      "display": "◌ॉ",
+      "codepoint": "U+0949",
+      "name": "DEVANAGARI VOWEL SIGN CANDRA O",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॊ",
+      "display": "◌ॊ",
+      "codepoint": "U+094A",
+      "name": "DEVANAGARI VOWEL SIGN SHORT O",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ो",
+      "display": "◌ो",
+      "codepoint": "U+094B",
+      "name": "DEVANAGARI VOWEL SIGN O",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ौ",
+      "display": "◌ौ",
+      "codepoint": "U+094C",
+      "name": "DEVANAGARI VOWEL SIGN AU",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "्",
+      "display": "◌्",
+      "codepoint": "U+094D",
+      "name": "DEVANAGARI SIGN VIRAMA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॎ",
+      "display": "◌ॎ",
+      "codepoint": "U+094E",
+      "name": "DEVANAGARI VOWEL SIGN PRISHTHAMATRA E",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॏ",
+      "display": "◌ॏ",
+      "codepoint": "U+094F",
+      "name": "DEVANAGARI VOWEL SIGN AW",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॐ",
+      "display": "ॐ",
+      "codepoint": "U+0950",
+      "name": "DEVANAGARI OM",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "॑",
+      "display": "◌॑",
+      "codepoint": "U+0951",
+      "name": "DEVANAGARI STRESS SIGN UDATTA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "॒",
+      "display": "◌॒",
+      "codepoint": "U+0952",
+      "name": "DEVANAGARI STRESS SIGN ANUDATTA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "॓",
+      "display": "◌॓",
+      "codepoint": "U+0953",
+      "name": "DEVANAGARI GRAVE ACCENT",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "॔",
+      "display": "◌॔",
+      "codepoint": "U+0954",
+      "name": "DEVANAGARI ACUTE ACCENT",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॕ",
+      "display": "◌ॕ",
+      "codepoint": "U+0955",
+      "name": "DEVANAGARI VOWEL SIGN CANDRA LONG E",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॖ",
+      "display": "◌ॖ",
+      "codepoint": "U+0956",
+      "name": "DEVANAGARI VOWEL SIGN UE",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॗ",
+      "display": "◌ॗ",
+      "codepoint": "U+0957",
+      "name": "DEVANAGARI VOWEL SIGN UUE",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "क़",
+      "display": "क़",
+      "codepoint": "U+0958",
+      "name": "DEVANAGARI LETTER QA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ख़",
+      "display": "ख़",
+      "codepoint": "U+0959",
+      "name": "DEVANAGARI LETTER KHHA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ग़",
+      "display": "ग़",
+      "codepoint": "U+095A",
+      "name": "DEVANAGARI LETTER GHHA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ज़",
+      "display": "ज़",
+      "codepoint": "U+095B",
+      "name": "DEVANAGARI LETTER ZA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ड़",
+      "display": "ड़",
+      "codepoint": "U+095C",
+      "name": "DEVANAGARI LETTER DDDHA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ढ़",
+      "display": "ढ़",
+      "codepoint": "U+095D",
+      "name": "DEVANAGARI LETTER RHA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "फ़",
+      "display": "फ़",
+      "codepoint": "U+095E",
+      "name": "DEVANAGARI LETTER FA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "य़",
+      "display": "य़",
+      "codepoint": "U+095F",
+      "name": "DEVANAGARI LETTER YYA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॠ",
+      "display": "ॠ",
+      "codepoint": "U+0960",
+      "name": "DEVANAGARI LETTER VOCALIC RR",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॡ",
+      "display": "ॡ",
+      "codepoint": "U+0961",
+      "name": "DEVANAGARI LETTER VOCALIC LL",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॢ",
+      "display": "◌ॢ",
+      "codepoint": "U+0962",
+      "name": "DEVANAGARI VOWEL SIGN VOCALIC L",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॣ",
+      "display": "◌ॣ",
+      "codepoint": "U+0963",
+      "name": "DEVANAGARI VOWEL SIGN VOCALIC LL",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "।",
+      "display": "।",
+      "codepoint": "U+0964",
+      "name": "DEVANAGARI DANDA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "॥",
+      "display": "॥",
+      "codepoint": "U+0965",
+      "name": "DEVANAGARI DOUBLE DANDA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "०",
+      "display": "०",
+      "codepoint": "U+0966",
+      "name": "DEVANAGARI DIGIT ZERO",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "१",
+      "display": "१",
+      "codepoint": "U+0967",
+      "name": "DEVANAGARI DIGIT ONE",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "२",
+      "display": "२",
+      "codepoint": "U+0968",
+      "name": "DEVANAGARI DIGIT TWO",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "३",
+      "display": "३",
+      "codepoint": "U+0969",
+      "name": "DEVANAGARI DIGIT THREE",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "४",
+      "display": "४",
+      "codepoint": "U+096A",
+      "name": "DEVANAGARI DIGIT FOUR",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "५",
+      "display": "५",
+      "codepoint": "U+096B",
+      "name": "DEVANAGARI DIGIT FIVE",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "६",
+      "display": "६",
+      "codepoint": "U+096C",
+      "name": "DEVANAGARI DIGIT SIX",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "७",
+      "display": "७",
+      "codepoint": "U+096D",
+      "name": "DEVANAGARI DIGIT SEVEN",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "८",
+      "display": "८",
+      "codepoint": "U+096E",
+      "name": "DEVANAGARI DIGIT EIGHT",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "९",
+      "display": "९",
+      "codepoint": "U+096F",
+      "name": "DEVANAGARI DIGIT NINE",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "॰",
+      "display": "॰",
+      "codepoint": "U+0970",
+      "name": "DEVANAGARI ABBREVIATION SIGN",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॱ",
+      "display": "ॱ",
+      "codepoint": "U+0971",
+      "name": "DEVANAGARI SIGN HIGH SPACING DOT",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॲ",
+      "display": "ॲ",
+      "codepoint": "U+0972",
+      "name": "DEVANAGARI LETTER CANDRA A",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॳ",
+      "display": "ॳ",
+      "codepoint": "U+0973",
+      "name": "DEVANAGARI LETTER OE",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॴ",
+      "display": "ॴ",
+      "codepoint": "U+0974",
+      "name": "DEVANAGARI LETTER OOE",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॵ",
+      "display": "ॵ",
+      "codepoint": "U+0975",
+      "name": "DEVANAGARI LETTER AW",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॶ",
+      "display": "ॶ",
+      "codepoint": "U+0976",
+      "name": "DEVANAGARI LETTER UE",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॷ",
+      "display": "ॷ",
+      "codepoint": "U+0977",
+      "name": "DEVANAGARI LETTER UUE",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॸ",
+      "display": "ॸ",
+      "codepoint": "U+0978",
+      "name": "DEVANAGARI LETTER MARWARI DDA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॹ",
+      "display": "ॹ",
+      "codepoint": "U+0979",
+      "name": "DEVANAGARI LETTER ZHA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॺ",
+      "display": "ॺ",
+      "codepoint": "U+097A",
+      "name": "DEVANAGARI LETTER HEAVY YA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॻ",
+      "display": "ॻ",
+      "codepoint": "U+097B",
+      "name": "DEVANAGARI LETTER GGA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॼ",
+      "display": "ॼ",
+      "codepoint": "U+097C",
+      "name": "DEVANAGARI LETTER JJA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॽ",
+      "display": "ॽ",
+      "codepoint": "U+097D",
+      "name": "DEVANAGARI LETTER GLOTTAL STOP",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॾ",
+      "display": "ॾ",
+      "codepoint": "U+097E",
+      "name": "DEVANAGARI LETTER DDDA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ॿ",
+      "display": "ॿ",
+      "codepoint": "U+097F",
+      "name": "DEVANAGARI LETTER BBA",
+      "block": "Devanagari",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳐",
+      "display": "◌᳐",
+      "codepoint": "U+1CD0",
+      "name": "VEDIC TONE KARSHANA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳑",
+      "display": "◌᳑",
+      "codepoint": "U+1CD1",
+      "name": "VEDIC TONE SHARA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳒",
+      "display": "◌᳒",
+      "codepoint": "U+1CD2",
+      "name": "VEDIC TONE PRENKHA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳓",
+      "display": "᳓",
+      "codepoint": "U+1CD3",
+      "name": "VEDIC SIGN NIHSHVASA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳔",
+      "display": "◌᳔",
+      "codepoint": "U+1CD4",
+      "name": "VEDIC SIGN YAJURVEDIC MIDLINE SVARITA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳕",
+      "display": "◌᳕",
+      "codepoint": "U+1CD5",
+      "name": "VEDIC TONE YAJURVEDIC AGGRAVATED INDEPENDENT SVARITA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳖",
+      "display": "◌᳖",
+      "codepoint": "U+1CD6",
+      "name": "VEDIC TONE YAJURVEDIC INDEPENDENT SVARITA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳗",
+      "display": "◌᳗",
+      "codepoint": "U+1CD7",
+      "name": "VEDIC TONE YAJURVEDIC KATHAKA INDEPENDENT SVARITA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳘",
+      "display": "◌᳘",
+      "codepoint": "U+1CD8",
+      "name": "VEDIC TONE CANDRA BELOW",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳙",
+      "display": "◌᳙",
+      "codepoint": "U+1CD9",
+      "name": "VEDIC TONE YAJURVEDIC KATHAKA INDEPENDENT SVARITA SCHROEDER",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳚",
+      "display": "◌᳚",
+      "codepoint": "U+1CDA",
+      "name": "VEDIC TONE DOUBLE SVARITA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳛",
+      "display": "◌᳛",
+      "codepoint": "U+1CDB",
+      "name": "VEDIC TONE TRIPLE SVARITA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳜",
+      "display": "◌᳜",
+      "codepoint": "U+1CDC",
+      "name": "VEDIC TONE KATHAKA ANUDATTA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳝",
+      "display": "◌᳝",
+      "codepoint": "U+1CDD",
+      "name": "VEDIC TONE DOT BELOW",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳞",
+      "display": "◌᳞",
+      "codepoint": "U+1CDE",
+      "name": "VEDIC TONE TWO DOTS BELOW",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳟",
+      "display": "◌᳟",
+      "codepoint": "U+1CDF",
+      "name": "VEDIC TONE THREE DOTS BELOW",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳠",
+      "display": "◌᳠",
+      "codepoint": "U+1CE0",
+      "name": "VEDIC TONE RIGVEDIC KASHMIRI INDEPENDENT SVARITA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳡",
+      "display": "◌᳡",
+      "codepoint": "U+1CE1",
+      "name": "VEDIC TONE ATHARVAVEDIC INDEPENDENT SVARITA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳢",
+      "display": "◌᳢",
+      "codepoint": "U+1CE2",
+      "name": "VEDIC SIGN VISARGA SVARITA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳣",
+      "display": "◌᳣",
+      "codepoint": "U+1CE3",
+      "name": "VEDIC SIGN VISARGA UDATTA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳤",
+      "display": "◌᳤",
+      "codepoint": "U+1CE4",
+      "name": "VEDIC SIGN REVERSED VISARGA UDATTA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳥",
+      "display": "◌᳥",
+      "codepoint": "U+1CE5",
+      "name": "VEDIC SIGN VISARGA ANUDATTA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳦",
+      "display": "◌᳦",
+      "codepoint": "U+1CE6",
+      "name": "VEDIC SIGN REVERSED VISARGA ANUDATTA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳧",
+      "display": "◌᳧",
+      "codepoint": "U+1CE7",
+      "name": "VEDIC SIGN VISARGA UDATTA WITH TAIL",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳨",
+      "display": "◌᳨",
+      "codepoint": "U+1CE8",
+      "name": "VEDIC SIGN VISARGA ANUDATTA WITH TAIL",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ᳩ",
+      "display": "ᳩ",
+      "codepoint": "U+1CE9",
+      "name": "VEDIC SIGN ANUSVARA ANTARGOMUKHA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ᳪ",
+      "display": "ᳪ",
+      "codepoint": "U+1CEA",
+      "name": "VEDIC SIGN ANUSVARA BAHIRGOMUKHA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ᳫ",
+      "display": "ᳫ",
+      "codepoint": "U+1CEB",
+      "name": "VEDIC SIGN ANUSVARA VAMAGOMUKHA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ᳬ",
+      "display": "ᳬ",
+      "codepoint": "U+1CEC",
+      "name": "VEDIC SIGN ANUSVARA VAMAGOMUKHA WITH TAIL",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳭",
+      "display": "◌᳭",
+      "codepoint": "U+1CED",
+      "name": "VEDIC SIGN TIRYAK",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ᳮ",
+      "display": "ᳮ",
+      "codepoint": "U+1CEE",
+      "name": "VEDIC SIGN HEXIFORM LONG ANUSVARA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ᳯ",
+      "display": "ᳯ",
+      "codepoint": "U+1CEF",
+      "name": "VEDIC SIGN LONG ANUSVARA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ᳰ",
+      "display": "ᳰ",
+      "codepoint": "U+1CF0",
+      "name": "VEDIC SIGN RTHANG LONG ANUSVARA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ᳱ",
+      "display": "ᳱ",
+      "codepoint": "U+1CF1",
+      "name": "VEDIC SIGN ANUSVARA UBHAYATO MUKHA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ᳲ",
+      "display": "ᳲ",
+      "codepoint": "U+1CF2",
+      "name": "VEDIC SIGN ARDHAVISARGA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ᳳ",
+      "display": "ᳳ",
+      "codepoint": "U+1CF3",
+      "name": "VEDIC SIGN ROTATED ARDHAVISARGA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳴",
+      "display": "◌᳴",
+      "codepoint": "U+1CF4",
+      "name": "VEDIC TONE CANDRA ABOVE",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ᳵ",
+      "display": "ᳵ",
+      "codepoint": "U+1CF5",
+      "name": "VEDIC SIGN JIHVAMULIYA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ᳶ",
+      "display": "ᳶ",
+      "codepoint": "U+1CF6",
+      "name": "VEDIC SIGN UPADHMANIYA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳷",
+      "display": "◌᳷",
+      "codepoint": "U+1CF7",
+      "name": "VEDIC SIGN ATIKRAMA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳸",
+      "display": "◌᳸",
+      "codepoint": "U+1CF8",
+      "name": "VEDIC TONE RING ABOVE",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "᳹",
+      "display": "◌᳹",
+      "codepoint": "U+1CF9",
+      "name": "VEDIC TONE DOUBLE RING ABOVE",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ᳺ",
+      "display": "ᳺ",
+      "codepoint": "U+1CFA",
+      "name": "VEDIC SIGN DOUBLE ANUSVARA ANTARGOMUKHA",
+      "block": "Vedic Extensions",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣠",
+      "display": "◌꣠",
+      "codepoint": "U+A8E0",
+      "name": "COMBINING DEVANAGARI DIGIT ZERO",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣡",
+      "display": "◌꣡",
+      "codepoint": "U+A8E1",
+      "name": "COMBINING DEVANAGARI DIGIT ONE",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣢",
+      "display": "◌꣢",
+      "codepoint": "U+A8E2",
+      "name": "COMBINING DEVANAGARI DIGIT TWO",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣣",
+      "display": "◌꣣",
+      "codepoint": "U+A8E3",
+      "name": "COMBINING DEVANAGARI DIGIT THREE",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣤",
+      "display": "◌꣤",
+      "codepoint": "U+A8E4",
+      "name": "COMBINING DEVANAGARI DIGIT FOUR",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣥",
+      "display": "◌꣥",
+      "codepoint": "U+A8E5",
+      "name": "COMBINING DEVANAGARI DIGIT FIVE",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣦",
+      "display": "◌꣦",
+      "codepoint": "U+A8E6",
+      "name": "COMBINING DEVANAGARI DIGIT SIX",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣧",
+      "display": "◌꣧",
+      "codepoint": "U+A8E7",
+      "name": "COMBINING DEVANAGARI DIGIT SEVEN",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣨",
+      "display": "◌꣨",
+      "codepoint": "U+A8E8",
+      "name": "COMBINING DEVANAGARI DIGIT EIGHT",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣩",
+      "display": "◌꣩",
+      "codepoint": "U+A8E9",
+      "name": "COMBINING DEVANAGARI DIGIT NINE",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣪",
+      "display": "◌꣪",
+      "codepoint": "U+A8EA",
+      "name": "COMBINING DEVANAGARI LETTER A",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣫",
+      "display": "◌꣫",
+      "codepoint": "U+A8EB",
+      "name": "COMBINING DEVANAGARI LETTER U",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣬",
+      "display": "◌꣬",
+      "codepoint": "U+A8EC",
+      "name": "COMBINING DEVANAGARI LETTER KA",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣭",
+      "display": "◌꣭",
+      "codepoint": "U+A8ED",
+      "name": "COMBINING DEVANAGARI LETTER NA",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣮",
+      "display": "◌꣮",
+      "codepoint": "U+A8EE",
+      "name": "COMBINING DEVANAGARI LETTER PA",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣯",
+      "display": "◌꣯",
+      "codepoint": "U+A8EF",
+      "name": "COMBINING DEVANAGARI LETTER RA",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣰",
+      "display": "◌꣰",
+      "codepoint": "U+A8F0",
+      "name": "COMBINING DEVANAGARI LETTER VI",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣱",
+      "display": "◌꣱",
+      "codepoint": "U+A8F1",
+      "name": "COMBINING DEVANAGARI SIGN AVAGRAHA",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ꣲ",
+      "display": "ꣲ",
+      "codepoint": "U+A8F2",
+      "name": "DEVANAGARI SIGN SPACING CANDRABINDU",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ꣳ",
+      "display": "ꣳ",
+      "codepoint": "U+A8F3",
+      "name": "DEVANAGARI SIGN CANDRABINDU VIRAMA",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ꣴ",
+      "display": "ꣴ",
+      "codepoint": "U+A8F4",
+      "name": "DEVANAGARI SIGN DOUBLE CANDRABINDU VIRAMA",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ꣵ",
+      "display": "ꣵ",
+      "codepoint": "U+A8F5",
+      "name": "DEVANAGARI SIGN CANDRABINDU TWO",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ꣶ",
+      "display": "ꣶ",
+      "codepoint": "U+A8F6",
+      "name": "DEVANAGARI SIGN CANDRABINDU THREE",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ꣷ",
+      "display": "ꣷ",
+      "codepoint": "U+A8F7",
+      "name": "DEVANAGARI SIGN CANDRABINDU AVAGRAHA",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣸",
+      "display": "꣸",
+      "codepoint": "U+A8F8",
+      "name": "DEVANAGARI SIGN PUSHPIKA",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣹",
+      "display": "꣹",
+      "codepoint": "U+A8F9",
+      "name": "DEVANAGARI GAP FILLER",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣺",
+      "display": "꣺",
+      "codepoint": "U+A8FA",
+      "name": "DEVANAGARI CARET",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ꣻ",
+      "display": "ꣻ",
+      "codepoint": "U+A8FB",
+      "name": "DEVANAGARI HEADSTROKE",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "꣼",
+      "display": "꣼",
+      "codepoint": "U+A8FC",
+      "name": "DEVANAGARI SIGN SIDDHAM",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ꣽ",
+      "display": "ꣽ",
+      "codepoint": "U+A8FD",
+      "name": "DEVANAGARI JAIN OM",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ꣾ",
+      "display": "ꣾ",
+      "codepoint": "U+A8FE",
+      "name": "DEVANAGARI LETTER AY",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    },
+    {
+      "character": "ꣿ",
+      "display": "◌ꣿ",
+      "codepoint": "U+A8FF",
+      "name": "DEVANAGARI VOWEL SIGN AY",
+      "block": "Devanagari Extended",
+      "handling": "preserve",
+      "note": "मूल Unicode वर्ण/चिह्न को सुरक्षित रखें। इसके वैदिक स्वर-मूल्य और परंपरागत वाचन की पुष्टि अलग से करें।"
+    }
+  ],
+  "pronunciationEntries": [
+    {
+      "term": "ॐ",
+      "spoken": "ओम्",
+      "category": "बीज/प्रणव",
+      "guide": "ओम्; परंपरा के अनुसार मात्रा अलग हो सकती है।"
+    },
+    {
+      "term": "स्वाहा",
+      "spoken": "स्वाहा",
+      "category": "यज्ञीय पद",
+      "guide": "स्वा-हा; दीर्घ आ स्पष्ट रखें।"
+    },
+    {
+      "term": "स्वधा",
+      "spoken": "स्वधा",
+      "category": "यज्ञीय पद",
+      "guide": "स्व-धा; ध महाप्राण है।"
+    },
+    {
+      "term": "नमः",
+      "spoken": "नमः",
+      "category": "मन्त्र-पद",
+      "guide": "न-मः; विसर्ग का श्रवणीय रूप संदर्भ और परंपरा पर निर्भर कर सकता है।"
+    },
+    {
+      "term": "त्र्यम्बकं",
+      "spoken": "त्र्यम्बकं",
+      "category": "मन्त्र-पद",
+      "guide": "त्र्य-म्-ब-कं; संयुक्त व्यंजन त्र्य को स्पष्ट पढ़ें।"
+    },
+    {
+      "term": "सुगन्धिं",
+      "spoken": "सुगन्धिम्",
+      "category": "मन्त्र-पद",
+      "guide": "सु-गन्-धिम्; अगले पकार से पहले अनुस्वार की ध्वनि होंठों पर बनती है।"
+    },
+    {
+      "term": "पुष्टिवर्धनम्",
+      "spoken": "पुष्टि-वर्धनम्",
+      "category": "मन्त्र-पद",
+      "guide": "पुष्टि-वर्धनम्; ष्टि और वर्ध स्पष्ट रखें।"
+    },
+    {
+      "term": "उर्वारुकमिव",
+      "spoken": "उर्वारुकम् इव",
+      "category": "मन्त्र-पद",
+      "guide": "उर्-वा-रु-कम् इ-व; सन्धि सहित पाठ परंपरा के अनुसार जाँचें।"
+    },
+    {
+      "term": "बन्धनान्मृत्योर्मुक्षीय",
+      "spoken": "बन्धनान् मृत्योर् मुक्षीय",
+      "category": "मन्त्र-पद",
+      "guide": "बन्ध-नान् मृत्-योर् मुक्षी-य; मूल पाठ और सन्धि अपनी शाखा के अनुसार जाँचें।"
+    },
+    {
+      "term": "मामृतात्",
+      "spoken": "मामृतात्",
+      "category": "मन्त्र-पद",
+      "guide": "मा-मृ-तात्; ऋ का उच्चारण स्पष्ट रखें।"
+    },
+    {
+      "term": "ऋत्विजम्",
+      "spoken": "ऋत्विजम्",
+      "category": "वैदिक पद",
+      "guide": "ऋ-त्वि-जम्; ऋ को 'रि' में न बदलें।"
+    },
+    {
+      "term": "यज्ञ",
+      "spoken": "यज्ञ",
+      "category": "वैदिक पद",
+      "guide": "य-ज्ञ; ज्ञ संयुक्ताक्षर को स्पष्ट रखें।"
+    },
+    {
+      "term": "प्रज्ञा",
+      "spoken": "प्रज्ञा",
+      "category": "संयुक्ताक्षर",
+      "guide": "प्र-ज्ञा; ज्ञ का उच्चारण अभ्यास से सत्यापित करें।"
+    },
+    {
+      "term": "क्षेत्र",
+      "spoken": "क्षेत्र",
+      "category": "संयुक्ताक्षर",
+      "guide": "क्षे-त्र; क्ष और त्र दोनों स्पष्ट हों।"
+    },
+    {
+      "term": "श्रौत",
+      "spoken": "श्रौत",
+      "category": "वैदिक पद",
+      "guide": "श्रौ-त; श्र संयुक्ताक्षर और औ दीर्घ द्विस्वर स्पष्ट रखें।"
+    },
+    {
+      "term": "स्वरित",
+      "spoken": "स्वरित",
+      "category": "स्वर-शास्त्र",
+      "guide": "स्व-रि-त; तकनीकी पद, स्वर-चिह्न का प्रतिस्थापन नहीं।"
+    },
+    {
+      "term": "उदात्त",
+      "spoken": "उदात्त",
+      "category": "स्वर-शास्त्र",
+      "guide": "उ-दात्त; दात्त में दीर्घ आ और द्वित्व त्त।"
+    },
+    {
+      "term": "अनुदात्त",
+      "spoken": "अनुदात्त",
+      "category": "स्वर-शास्त्र",
+      "guide": "अ-नु-दात्त; दात्त में द्वित्व त्त।"
+    },
+    {
+      "term": "ऋचः",
+      "spoken": "ऋचः",
+      "category": "वैदिक पद",
+      "guide": "ऋ-चः; ऋ और विसर्ग को बिना जाँच हटाएँ नहीं।"
+    },
+    {
+      "term": "स्तोत्रम्",
+      "spoken": "स्तोत्रम्",
+      "category": "वैदिक पद",
+      "guide": "स्तो-त्रम्; स्त्र/त्र समूह स्पष्ट रखें।"
+    },
+    {
+      "term": "ब्रह्मन्",
+      "spoken": "ब्रह्मन्",
+      "category": "वैदिक पद",
+      "guide": "ब्र-ह्मन्; ह्म संयुक्त ध्वनि को स्पष्ट रखें।"
+    },
+    {
+      "term": "अग्निमीळे",
+      "spoken": "अग्निम् ईळे",
+      "category": "ऋग्वेद मन्त्र",
+      "guide": "अग्निम् ई-ळे; दीर्घ ई और ळ की जाँच करें।"
+    },
+    {
+      "term": "पुरोहितं",
+      "spoken": "पुरोहितम्",
+      "category": "ऋग्वेद मन्त्र",
+      "guide": "पु-रो-हि-तम्; दीर्घ स्वर और हकार स्पष्ट रखें।"
+    },
+    {
+      "term": "देवमृत्विजम्",
+      "spoken": "देवम् ऋत्विजम्",
+      "category": "ऋग्वेद मन्त्र",
+      "guide": "देवम् ऋ-त्वि-जम्; संधि के भीतर ऋ स्पष्ट रखें।"
+    },
+    {
+      "term": "होतारं",
+      "spoken": "होतारम्",
+      "category": "ऋग्वेद मन्त्र",
+      "guide": "हो-ता-रम्; आ दीर्घ है।"
+    },
+    {
+      "term": "रत्नधातमम्",
+      "spoken": "रत्न धातमम्",
+      "category": "ऋग्वेद मन्त्र",
+      "guide": "रत्न धा-त-मम्; संयुक्त रत्न को स्पष्ट रखें।"
+    },
+    {
+      "term": "अध्वर्यु",
+      "spoken": "अध्वर्यु",
+      "category": "वैदिक पद",
+      "guide": "अ-ध्वर्-यु; ध्व संयुक्त ध्वनि पर ध्यान दें।"
+    },
+    {
+      "term": "उद्गाता",
+      "spoken": "उद्गाता",
+      "category": "वैदिक पद",
+      "guide": "उद्-गा-ता; गा और ता दीर्घ हैं।"
+    },
+    {
+      "term": "यजमान",
+      "spoken": "यजमान",
+      "category": "वैदिक पद",
+      "guide": "य-ज-मा-न; जमान को अलग-अलग स्पष्ट करें।"
+    },
+    {
+      "term": "ऋग्वेद",
+      "spoken": "ऋग्वेद",
+      "category": "वेद-नाम",
+      "guide": "ऋग्-वेद; ऋ को 'रि' न पढ़ें।"
+    },
+    {
+      "term": "यजुर्वेद",
+      "spoken": "यजुर्वेद",
+      "category": "वेद-नाम",
+      "guide": "य-जुर्-वेद; संयुक्त व्यंजन सहज पर स्पष्ट हों।"
+    },
+    {
+      "term": "सामवेद",
+      "spoken": "सामवेद",
+      "category": "वेद-नाम",
+      "guide": "सा-म-वेद; दोनों दीर्घ स्वर सुनाई दें।"
+    },
+    {
+      "term": "अथर्ववेद",
+      "spoken": "अथर्ववेद",
+      "category": "वेद-नाम",
+      "guide": "अ-थर्-व-वेद; थ महाप्राण है।"
+    },
+    {
+      "term": "संहिता",
+      "spoken": "संहिता",
+      "category": "वैदिक साहित्य",
+      "guide": "सं-हि-ता; अनुस्वार और दीर्घ आ स्पष्ट रखें।"
+    },
+    {
+      "term": "ब्राह्मण",
+      "spoken": "ब्राह्मण",
+      "category": "वैदिक साहित्य",
+      "guide": "ब्राह्-म-ण; ह्म संयुक्ताक्षर स्पष्ट रखें।"
+    },
+    {
+      "term": "आरण्यक",
+      "spoken": "आरण्यक",
+      "category": "वैदिक साहित्य",
+      "guide": "आ-रण्य-क; ण्य संयुक्त ध्वनि पर ध्यान दें।"
+    },
+    {
+      "term": "उपनिषद्",
+      "spoken": "उपनिषद्",
+      "category": "वैदिक साहित्य",
+      "guide": "उ-प-नि-षद्; ष और अंतिम द् स्पष्ट रखें।"
+    },
+    {
+      "term": "गायत्री",
+      "spoken": "गायत्री",
+      "category": "मन्त्र-पद",
+      "guide": "गा-य-त्री; गायत्री की लय अलग परंपरा से सत्यापित करें।"
+    },
+    {
+      "term": "महामृत्युंजय",
+      "spoken": "महामृत्युंजय",
+      "category": "मन्त्र-पद",
+      "guide": "महा-मृत्युं-जय; संयुक्त व्यंजन और अनुस्वार स्पष्ट रखें।"
+    },
+    {
+      "term": "रुद्रम्",
+      "spoken": "रुद्रम्",
+      "category": "मन्त्र-पद",
+      "guide": "रुद्-रम्; द्वित्व/संयुक्त ध्वनि को न निगलें।"
+    },
+    {
+      "term": "नमकम्",
+      "spoken": "नमकम्",
+      "category": "मन्त्र-पद",
+      "guide": "न-म-कम्; अंतिम म् स्पष्ट रखें।"
+    },
+    {
+      "term": "चमकम्",
+      "spoken": "चमकम्",
+      "category": "मन्त्र-पद",
+      "guide": "च-म-कम्; समान मात्रा रखें।"
+    },
+    {
+      "term": "शान्तिः",
+      "spoken": "शान्तिः",
+      "category": "शान्ति-पाठ",
+      "guide": "शान्-तिः; दीर्घ आ और अंतिम विसर्ग सुरक्षित रखें।"
+    },
+    {
+      "term": "कर्णेभिः",
+      "spoken": "कर्णेभिः",
+      "category": "शान्ति-पाठ",
+      "guide": "कर्-णे-भिः; ण और भ महाप्राण स्पष्ट रखें।"
+    },
+    {
+      "term": "शृणुयाम",
+      "spoken": "शृणुयाम",
+      "category": "शान्ति-पाठ",
+      "guide": "शृ-णु-याम; ऋ-संबंधी स्वर की पुष्टि करें।"
+    },
+    {
+      "term": "व्यशेम",
+      "spoken": "व्यशेम",
+      "category": "शान्ति-पाठ",
+      "guide": "व्य-शे-म; व्य संयुक्त ध्वनि स्पष्ट रखें।"
+    },
+    {
+      "term": "स्वस्ति",
+      "spoken": "स्वस्ति",
+      "category": "शान्ति-पाठ",
+      "guide": "स्वस्-ति; स्व संयुक्त ध्वनि और हलंत का ध्यान रखें।"
+    },
+    {
+      "term": "बृहस्पति",
+      "spoken": "बृहस्पति",
+      "category": "देवता-नाम",
+      "guide": "बृ-हस्-प-ति; बृ और हस् स्पष्ट रखें।"
+    },
+    {
+      "term": "वैश्वानर",
+      "spoken": "वैश्वानर",
+      "category": "वैदिक पद",
+      "guide": "वैश्-वा-न-र; श्व संयुक्त ध्वनि स्पष्ट रखें।"
+    },
+    {
+      "term": "प्रजापतये",
+      "spoken": "प्रजापतये",
+      "category": "वैदिक पद",
+      "guide": "प्र-जा-प-त-ये; ज और प के बीच मात्रा न निगलें।"
+    },
+    {
+      "term": "आहुति",
+      "spoken": "आहुति",
+      "category": "यज्ञीय पद",
+      "guide": "आ-हु-ति; प्रारंभिक आ दीर्घ है।"
+    },
+    {
+      "term": "हविः",
+      "spoken": "हविः",
+      "category": "यज्ञीय पद",
+      "guide": "ह-विः; विसर्ग को संदर्भानुसार पढ़ें।"
+    },
+    {
+      "term": "प्राणायाम",
+      "spoken": "प्राणायाम",
+      "category": "संस्कृत पद",
+      "guide": "प्रा-णा-या-म; सभी दीर्घ स्वर स्पष्ट रखें।"
+    },
+    {
+      "term": "अनुस्वार",
+      "spoken": "अनुस्वार",
+      "category": "उच्चारण-शास्त्र",
+      "guide": "अ-नु-स्वार; अनुस्वार की ध्वनि संदर्भ के अनुसार बदल सकती है।"
+    },
+    {
+      "term": "विसर्ग",
+      "spoken": "विसर्ग",
+      "category": "उच्चारण-शास्त्र",
+      "guide": "वि-सर्ग; अंतिम विसर्ग को चुपचाप न हटाएँ।"
+    },
+    {
+      "term": "चन्द्रबिन्दु",
+      "spoken": "चन्द्रबिन्दु",
+      "category": "उच्चारण-शास्त्र",
+      "guide": "चन्-द्र-बिन्-दु; चन्द्रबिन्दु नासिक्य स्वर चिह्न है।"
+    },
+    {
+      "term": "प्लुत",
+      "spoken": "प्लुत",
+      "category": "स्वर-शास्त्र",
+      "guide": "प्लु-त; त्रिमात्रिक अवधि TTS की स्वतः गारंटी नहीं है।"
+    }
+  ],
+  "accentPolicy": {
+    "preserveMarksInDisplay": true,
+    "preserveMarksInTtsInput": true,
+    "note": "स्वर-चिह्न display और मॉडल input में सुरक्षित रखे जाते हैं। केवल चिह्न मौजूद होने से मॉडल सही pitch contour उत्पन्न करेगा, यह सुनिश्चित नहीं है। Vedic recitation के लिए reference audio और domain-specific evaluation आवश्यक है।"
+  }
+}
