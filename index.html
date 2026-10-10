@@ -1,40 +1,24 @@
-
 <!doctype html>
 <html lang="hi">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    />
-
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#101713" />
-    <meta name="color-scheme" content="dark" />
-
+    <meta name="color-scheme" content="dark light" />
     <meta
       name="description"
-      content="श्रुति — संस्कृत, हिंदी और वैदिक पाठ के लिए स्थानीय वाचन तथा 9:16 वीडियो स्टूडियो।"
+      content="श्रुति — संस्कृत और हिंदी पाठ के साथ वैदिक वीडियो वाचन स्टूडियो।"
     />
-    <meta
-      name="application-name"
-      content="श्रुति — वैदिक वीडियो वाचन"
-    />
-    <meta name="referrer" content="no-referrer" />
-
-    <title>श्रुति | वैदिक वीडियो वाचन स्टूडियो</title>
+    <meta name="application-name" content="श्रुति" />
+    <title>श्रुति — वैदिक वीडियो वाचन स्टूडियो</title>
 
     <style>
       :root {
         color-scheme: dark;
-        font-family:
-          system-ui,
-          -apple-system,
-          BlinkMacSystemFont,
-          "Noto Sans Devanagari",
-          "Nirmala UI",
-          sans-serif;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans Devanagari", "Nirmala UI", sans-serif;
         background: #101713;
-        color: #f4f4ed;
+        color: #f5f4ed;
         font-synthesis: none;
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
@@ -49,6 +33,7 @@
 
       html,
       body {
+        width: 100%;
         min-width: 320px;
         min-height: 100%;
         margin: 0;
@@ -57,6 +42,9 @@
       body {
         min-height: 100vh;
         min-height: 100dvh;
+        background:
+          radial-gradient(ellipse at 50% 0%, rgba(183, 135, 59, 0.12), transparent 55%),
+          #101713;
       }
 
       #root {
@@ -68,83 +56,78 @@
         display: grid;
         min-height: 100vh;
         min-height: 100dvh;
-        place-items: center;
-        padding: 24px;
-        background:
-          radial-gradient(
-            ellipse at 50% 0%,
-            rgba(183, 133, 55, 0.13),
-            transparent 48%
-          ),
-          #101713;
-      }
-
-      .boot-card {
-        width: min(100%, 440px);
-        padding: 32px;
-        border: 1px solid #354039;
-        border-radius: 20px;
-        background: rgba(24, 33, 27, 0.92);
+        place-content: center;
+        justify-items: center;
+        gap: 0.75rem;
+        padding: 2rem 1.25rem;
         text-align: center;
       }
 
-      .boot-mark {
+      .boot-emblem {
         display: grid;
-        width: 56px;
-        height: 56px;
-        margin: 0 auto 18px;
+        width: 4.5rem;
+        height: 4.5rem;
         place-items: center;
-        border: 1px solid #987342;
-        border-radius: 16px;
-        color: #f0d19a;
-        font-size: 28px;
+        margin-bottom: 0.5rem;
+        border: 1px solid rgba(224, 183, 105, 0.55);
+        border-radius: 1.4rem;
+        background: linear-gradient(145deg, rgba(224, 183, 105, 0.16), rgba(224, 183, 105, 0.035));
+        color: #e0b769;
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.22);
       }
 
-      .boot-card h1 {
+      .boot-screen h1 {
         margin: 0;
-        font-size: 25px;
-        font-weight: 650;
-        letter-spacing: 0.01em;
+        font-size: clamp(2rem, 8vw, 2.75rem);
+        font-weight: 750;
+        letter-spacing: 0.02em;
       }
 
-      .boot-card p {
-        margin: 10px 0 0;
-        color: #bac4bb;
-        font-size: 14px;
+      .boot-subtitle {
+        max-width: 32rem;
+        margin: 0;
+        color: #c1c8c1;
+        font-size: 1rem;
         line-height: 1.7;
       }
 
-      .boot-progress {
-        height: 3px;
-        margin-top: 24px;
-        overflow: hidden;
-        border-radius: 99px;
-        background: #354039;
+      .boot-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.65rem;
+        margin-top: 1.25rem;
+        color: #e0b769;
+        font-size: 0.9rem;
       }
 
-      .boot-progress span {
-        display: block;
-        width: 35%;
-        height: 100%;
-        border-radius: inherit;
-        background: #d6b16d;
-        animation: boot-slide 1.4s ease-in-out infinite alternate;
+      .boot-spinner {
+        width: 1rem;
+        height: 1rem;
+        border: 2px solid rgba(224, 183, 105, 0.25);
+        border-top-color: #e0b769;
+        border-radius: 50%;
+        animation: boot-spin 0.8s linear infinite;
       }
 
-      @keyframes boot-slide {
-        from {
-          transform: translateX(0);
-        }
-
-        to {
-          transform: translateX(185%);
-        }
+      .boot-error {
+        max-width: 34rem;
+        margin: 0.75rem 0 0;
+        color: #f0c3a9;
+        font-size: 0.9rem;
+        line-height: 1.65;
       }
 
-      @media (max-width: 480px) {
-        .boot-card {
-          padding: 26px 20px;
-        }
+      .noscript-message {
+        margin: 1rem;
+        padding: 1rem;
+        border: 1px solid #74513a;
+        border-radius: 0.75rem;
+        color: #f0c3a9;
+        text-align: center;
+      }
+
+      @keyframes boot-spin {
+        to { transform: rotate(360deg); }
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -161,54 +144,61 @@
 
   <body>
     <div id="root">
-      <main
-        class="boot-screen"
-        aria-live="polite"
-        aria-busy="true"
-      >
-        <section
-          class="boot-card"
-          aria-label="श्रुति ऐप लोड हो रहा है"
-        >
-          <div class="boot-mark" aria-hidden="true">श्री</div>
-
-          <h1>श्रुति</h1>
-
-          <p>
-            वैदिक वीडियो वाचन स्टूडियो<br />
-            ऐप तैयार किया जा रहा है…
-          </p>
-
-          <div
-            class="boot-progress"
-            role="progressbar"
-            aria-label="ऐप लोड हो रहा है"
-          >
-            <span aria-hidden="true"></span>
-          </div>
-        </section>
+      <main class="boot-screen" aria-live="polite" aria-busy="true">
+        <div class="boot-emblem" aria-hidden="true">
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 3.5C13.2 9.2 8.1 11.2 8.1 18.1C8.1 23.1 11.8 27.1 17 30.5C22.2 27.1 25.9 23.1 25.9 18.1C25.9 11.2 20.8 9.2 17 3.5Z" stroke="currentColor" stroke-width="1.6" />
+            <path d="M17 10V24M12.1 14.1C14.1 15.1 15.5 16.5 17 18.5C18.5 16.5 19.9 15.1 21.9 14.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <h1>श्रुति</h1>
+        <p class="boot-subtitle">वैदिक वीडियो वाचन स्टूडियो</p>
+        <div class="boot-status" id="boot-status">
+          <span class="boot-spinner" aria-hidden="true"></span>
+          <span id="boot-status-text">ऐप शुरू हो रहा है…</span>
+        </div>
+        <p class="boot-error" id="boot-error" hidden>
+          ऐप शुरू नहीं हो पाया। पेज को एक बार फिर खोलें। अगर समस्या बनी रहे, तो बिल्ड और प्रकाशित फ़ाइलों की जाँच आवश्यक है।
+        </p>
       </main>
     </div>
 
     <noscript>
-      <div
-        style="
-          max-width: 640px;
-          margin: 48px auto;
-          padding: 24px;
-          font-family: sans-serif;
-          line-height: 1.7;
-        "
-      >
-        <h1>श्रुति — वैदिक वीडियो वाचन</h1>
-        <p>
-          इस ऐप को चलाने के लिए JavaScript सक्षम होना आवश्यक है।
-          कृपया अपने ब्राउज़र में JavaScript चालू करके पृष्ठ फिर खोलें।
-        </p>
-      </div>
+      <p class="noscript-message">श्रुति ऐप चलाने के लिए अपने ब्राउज़र में JavaScript चालू करें।</p>
     </noscript>
 
-    <!-- React entry point: Vite इसे build के समय bundle करता है। -->
-    <script type="module" src="/src/main.tsx"></script>
+    <!-- Vite इस entry path को build के समय configured base path के अनुसार बदलता है। -->
+    <script type="module" src="/src/main.tsx" id="app-entry"></script>
+    <script>
+      (() => {
+        const entry = document.getElementById('app-entry');
+        const root = document.getElementById('root');
+        const statusText = document.getElementById('boot-status-text');
+        const status = document.getElementById('boot-status');
+        const error = document.getElementById('boot-error');
+        let settled = false;
+
+        const showStartupError = () => {
+          if (settled || !root || !root.querySelector('.boot-screen')) return;
+          settled = true;
+          if (status) status.hidden = true;
+          if (error) error.hidden = false;
+          const screen = root.querySelector('.boot-screen');
+          if (screen) screen.setAttribute('aria-busy', 'false');
+        };
+
+        if (entry) entry.addEventListener('error', showStartupError, { once: true });
+
+        // If the app has not replaced the boot screen, avoid an endless loading message.
+        window.setTimeout(() => {
+          if (root && !root.querySelector('.boot-screen')) {
+            settled = true;
+            return;
+          }
+          if (statusText) statusText.textContent = 'शुरुआत में देर हो रही है…';
+          window.setTimeout(showStartupError, 10000);
+        }, 12000);
+      })();
+    </script>
   </body>
 </html>
