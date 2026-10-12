@@ -2,25 +2,51 @@
 <html lang="hi">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+
     <meta name="theme-color" content="#17142b" />
-    <meta name="color-scheme" content="dark light" />
+    <meta name="color-scheme" content="dark" />
+
     <meta
       name="description"
       content="श्रुति — संस्कृत, हिंदी एवं वैदिक पाठ के वाचन और 9:16 वीडियो प्रदर्शन के लिए स्टूडियो।"
     />
+
     <meta name="application-name" content="श्रुति" />
+
     <title>श्रुति — वैदिक पाठ वाचन स्टूडियो</title>
+
     <style>
       :root {
         color-scheme: dark;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans Devanagari", "Mangal", sans-serif;
+
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Noto Sans Devanagari",
+          "Mangal",
+          sans-serif;
+
         background: #100f1e;
-        color: #fffaf0;
+        color: #fff7e8;
+
         font-synthesis: none;
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+
+        --shruti-bg: #100f1e;
+        --shruti-panel: #211b32;
+        --shruti-gold: #ffe1a0;
+        --shruti-text: #fff7e8;
+        --shruti-muted: #d8cce8;
+        --shruti-border: rgb(255 255 255 / 14%);
+        --shruti-warning: #ffe0a1;
       }
 
       *,
@@ -29,144 +55,384 @@
         box-sizing: border-box;
       }
 
-      html,
-      body {
+      html {
         width: 100%;
         min-width: 320px;
         min-height: 100%;
         margin: 0;
+        background: var(--shruti-bg);
       }
 
       body {
+        width: 100%;
+        min-width: 320px;
         min-height: 100vh;
         min-height: 100dvh;
+        margin: 0;
+
         background:
-          radial-gradient(ellipse at 50% 0%, rgb(117 72 179 / 25%), transparent 58%),
-          linear-gradient(155deg, #18152b 0%, #100f1e 54%, #1c132b 100%);
+          radial-gradient(
+            ellipse at 50% 8%,
+            rgb(117 72 179 / 24%),
+            transparent 55%
+          ),
+          linear-gradient(
+            155deg,
+            #18152b 0%,
+            #100f1e 55%,
+            #1c132b 100%
+          );
+
+        color: var(--shruti-text);
+      }
+
+      button,
+      input,
+      textarea,
+      select {
+        font: inherit;
       }
 
       #root {
+        width: 100%;
         min-height: 100vh;
         min-height: 100dvh;
       }
 
       .shruti-boot {
         display: grid;
+
+        width: 100%;
         min-height: 100vh;
         min-height: 100dvh;
+
         place-items: center;
-        padding: max(24px, env(safe-area-inset-top)) 20px max(24px, env(safe-area-inset-bottom));
+
+        padding:
+          max(24px, env(safe-area-inset-top))
+          max(16px, env(safe-area-inset-right))
+          max(24px, env(safe-area-inset-bottom))
+          max(16px, env(safe-area-inset-left));
       }
 
       .shruti-boot__panel {
-        width: min(100%, 440px);
-        padding: clamp(28px, 8vw, 44px) 24px;
-        border: 1px solid rgb(255 255 255 / 13%);
-        border-radius: 28px;
-        background: linear-gradient(145deg, rgb(255 255 255 / 9%), rgb(255 255 255 / 3%));
-        box-shadow: 0 24px 80px rgb(0 0 0 / 27%);
+        width: min(100%, 460px);
+
+        padding: clamp(26px, 7vw, 42px) clamp(20px, 6vw, 32px);
+
+        border: 1px solid var(--shruti-border);
+        border-radius: 26px;
+
+        background:
+          linear-gradient(
+            145deg,
+            rgb(255 255 255 / 9%),
+            rgb(255 255 255 / 3%)
+          );
+
+        box-shadow:
+          0 24px 80px rgb(0 0 0 / 28%),
+          inset 0 1px rgb(255 255 255 / 5%);
+
         text-align: center;
+        overflow-wrap: anywhere;
+
+        -webkit-backdrop-filter: blur(14px);
         backdrop-filter: blur(14px);
       }
 
       .shruti-boot__mark {
         display: grid;
+
         width: 76px;
         height: 76px;
-        margin: 0 auto 20px;
+
+        margin: 0 auto 18px;
+
         place-items: center;
-        border: 1px solid rgb(255 211 133 / 40%);
-        border-radius: 24px;
-        background: linear-gradient(145deg, #61418c, #2a2148);
-        color: #ffe2a7;
-        font-size: 38px;
+
+        border: 1px solid rgb(255 211 133 / 42%);
+        border-radius: 23px;
+
+        background: linear-gradient(
+          145deg,
+          #61418c,
+          #2a2148
+        );
+
+        color: var(--shruti-gold);
+
+        font-size: 36px;
+        font-weight: 700;
         line-height: 1;
-        box-shadow: inset 0 1px rgb(255 255 255 / 15%), 0 10px 28px rgb(0 0 0 / 22%);
+
+        box-shadow:
+          inset 0 1px rgb(255 255 255 / 15%),
+          0 10px 28px rgb(0 0 0 / 22%);
       }
 
       .shruti-boot__title {
         margin: 0;
-        color: #fff4dc;
-        font-size: clamp(30px, 8vw, 40px);
+
+        color: var(--shruti-gold);
+
+        font-size: clamp(32px, 8vw, 40px);
         font-weight: 750;
+        line-height: 1.5;
         letter-spacing: 0.02em;
       }
 
       .shruti-boot__subtitle {
         margin: 12px 0 0;
-        color: #e4d7f7;
-        font-size: 15px;
-        line-height: 1.8;
+
+        color: #f0e6fb;
+
+        font-size: clamp(15px, 3.8vw, 17px);
+        font-weight: 450;
+        line-height: 1.9;
       }
 
       .shruti-boot__status {
         display: flex;
+
         align-items: center;
         justify-content: center;
         gap: 10px;
-        margin-top: 26px;
-        color: #d8cce8;
-        font-size: 13px;
+
+        margin-top: 25px;
+
+        color: #f0e4fc;
+
+        font-size: 14px;
+        line-height: 1.8;
       }
 
       .shruti-boot__spinner {
-        width: 16px;
-        height: 16px;
-        flex: 0 0 16px;
-        border: 2px solid rgb(255 255 255 / 25%);
-        border-top-color: #ffcf80;
+        display: inline-block;
+
+        width: 17px;
+        height: 17px;
+        flex: 0 0 17px;
+
+        border: 2px solid rgb(255 255 255 / 28%);
+        border-top-color: var(--shruti-gold);
         border-radius: 50%;
+
         animation: shruti-spin 0.85s linear infinite;
       }
 
+      .shruti-boot__status--error {
+        color: var(--shruti-warning);
+        font-weight: 650;
+      }
+
+      .shruti-boot__status--error .shruti-boot__spinner {
+        display: none;
+      }
+
       .shruti-boot__note {
-        max-width: 32ch;
-        margin: 20px auto 0;
-        color: #b7acc8;
+        max-width: 38ch;
+
+        margin: 18px auto 0;
+
+        color: var(--shruti-muted);
+
+        font-size: 13px;
+        line-height: 1.9;
+        overflow-wrap: anywhere;
+      }
+
+      .shruti-boot__technical-note {
+        margin: 14px 0 0;
+        padding-top: 14px;
+
+        border-top: 1px solid rgb(255 255 255 / 10%);
+
+        color: #c4b6d7;
+
         font-size: 12px;
-        line-height: 1.7;
+        line-height: 1.8;
+      }
+
+      .shruti-boot__technical-note[hidden] {
+        display: none;
+      }
+
+      .shruti-boot__noscript {
+        margin: 0;
+        padding: 16px;
+
+        background: #6d203e;
+        color: #ffffff;
+
+        text-align: center;
+        font-size: 15px;
+        line-height: 1.8;
       }
 
       @keyframes shruti-spin {
-        to { transform: rotate(360deg); }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media (max-width: 380px) {
+        .shruti-boot__panel {
+          padding: 25px 18px;
+          border-radius: 22px;
+        }
+
+        .shruti-boot__mark {
+          width: 66px;
+          height: 66px;
+          border-radius: 20px;
+          font-size: 32px;
+        }
+
+        .shruti-boot__status {
+          font-size: 13px;
+        }
+
+        .shruti-boot__note {
+          font-size: 12px;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
         *,
         *::before,
         *::after {
+          scroll-behavior: auto !important;
           animation-duration: 0.01ms !important;
           animation-iteration-count: 1 !important;
-          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
         }
       }
     </style>
   </head>
+
   <body>
     <div id="root">
-      <main class="shruti-boot" aria-labelledby="shruti-boot-title">
-        <section class="shruti-boot__panel" aria-describedby="shruti-boot-subtitle shruti-boot-note">
-          <div class="shruti-boot__mark" aria-hidden="true">श्री</div>
-          <h1 class="shruti-boot__title" id="shruti-boot-title">श्रुति</h1>
-          <p class="shruti-boot__subtitle" id="shruti-boot-subtitle">
+      <main
+        class="shruti-boot"
+        data-shruti-boot
+        aria-labelledby="shruti-boot-title"
+      >
+        <section
+          class="shruti-boot__panel"
+          aria-describedby="shruti-boot-subtitle shruti-boot-note"
+        >
+          <div class="shruti-boot__mark" aria-hidden="true">
+            श्री
+          </div>
+
+          <h1
+            class="shruti-boot__title"
+            id="shruti-boot-title"
+          >
+            श्रुति
+          </h1>
+
+          <p
+            class="shruti-boot__subtitle"
+            id="shruti-boot-subtitle"
+          >
             संस्कृत, हिंदी एवं वैदिक पाठ वाचन स्टूडियो
           </p>
-          <div class="shruti-boot__status" role="status" aria-live="polite">
-            <span class="shruti-boot__spinner" aria-hidden="true"></span>
-            <span>स्टूडियो लोड हो रहा है…</span>
+
+          <div
+            class="shruti-boot__status"
+            id="shruti-boot-status"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            <span
+              class="shruti-boot__spinner"
+              aria-hidden="true"
+            ></span>
+
+            <span id="shruti-boot-status-text">
+              श्रुति स्टूडियो शुरू हो रहा है…
+            </span>
           </div>
-          <p class="shruti-boot__note" id="shruti-boot-note">
-            यदि यह स्क्रीन लगातार बनी रहे, तो ऐप की स्क्रिप्ट या प्रकाशित बिल्ड की जाँच आवश्यक है।
+
+          <p
+            class="shruti-boot__note"
+            id="shruti-boot-note"
+          >
+            संस्कृत एवं वैदिक पाठ के वाचन स्टूडियो को तैयार किया जा रहा है।
+          </p>
+
+          <p
+            class="shruti-boot__technical-note"
+            id="shruti-boot-technical-note"
+            hidden
+          >
+            ऐप का मुख्य इंटरफ़ेस शुरू नहीं हो पाया। GitHub Actions में
+            असफल बिल्ड की पहली वास्तविक त्रुटि जाँचें और सुनिश्चित करें
+            कि Vite का सफलतापूर्वक बना dist फ़ोल्डर प्रकाशित हो रहा है।
+            केवल इस स्क्रीन को बदलने से बिल्ड की त्रुटि ठीक नहीं होती।
           </p>
         </section>
       </main>
     </div>
 
     <noscript>
-      <p style="margin: 0; padding: 1rem; color: #fff; background: #8b1e3f; text-align: center;">
+      <p class="shruti-boot__noscript">
         श्रुति चलाने के लिए इस ब्राउज़र में JavaScript चालू होना आवश्यक है।
       </p>
     </noscript>
+
+    <!-- Vite production build इस स्रोत-पथ को प्रकाशित asset path में बदलता है। -->
     <script type="module" src="/src/main.tsx"></script>
+
+    <script>
+      (function () {
+        "use strict";
+
+        var warningDelay = 12000;
+
+        window.setTimeout(function () {
+          var bootPanel = document.querySelector("[data-shruti-boot]");
+
+          /*
+           * यदि React ने मुख्य इंटरफ़ेस रेंडर कर दिया है,
+           * तो प्रारंभिक स्क्रीन मौजूद नहीं होगी और कोई बदलाव नहीं होगा।
+           */
+          if (!bootPanel || !bootPanel.isConnected) {
+            return;
+          }
+
+          var status = document.getElementById("shruti-boot-status");
+          var statusText = document.getElementById(
+            "shruti-boot-status-text"
+          );
+          var note = document.getElementById("shruti-boot-note");
+          var technicalNote = document.getElementById(
+            "shruti-boot-technical-note"
+          );
+
+          if (status) {
+            status.classList.add("shruti-boot__status--error");
+            status.setAttribute("role", "alert");
+          }
+
+          if (statusText) {
+            statusText.textContent = "ऐप अभी शुरू नहीं हो पाया है।";
+          }
+
+          if (note) {
+            note.textContent =
+              "यह केवल लोडिंग स्क्रीन है, पूरा स्टूडियो नहीं। " +
+              "प्रकाशित बिल्ड और JavaScript की त्रुटि जाँचना आवश्यक है।";
+          }
+
+          if (technicalNote) {
+            technicalNote.hidden = false;
+          }
+        }, warningDelay);
+      })();
+    </script>
   </body>
 </html>
