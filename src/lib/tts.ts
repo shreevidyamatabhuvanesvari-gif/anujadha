@@ -1,4 +1,3 @@
-
 export interface TtsSettings {
   rate?: number;
   speed?: number;
@@ -10,15 +9,24 @@ export interface TtsSettings {
 
 type Callback = (...args: unknown[]) => void;
 
-let speechLines: string[] = [];
-let currentLineIndex = 0;
-let currentSettings: object = {};
+interface SpeechEntry {
+  text: string;
+  sourceIndex: number;
+}
+
+let speechQueue: SpeechEntry[] = [];
+let currentSpeechIndex = 0;
+let currentSettings: TtsSettings = {};
 let currentCallbacks: object = {};
+let currentVoice: SpeechSynthesisVoice | null = null;
 
 let runId = 0;
 let isActive = false;
 let isPaused = false;
 
+/**
+ * Browser Speech Synthesis उपलब्ध है या नहीं, जाँचें।
+ */
 function getSpeechSynthesis(): SpeechSynthesis | null {
   if (typeof window === 'undefined') {
     return null;
@@ -109,6 +117,134 @@ function reportError(message: string): void {
   );
 }
 
+/**
+ * केवल श्लोक के स्पष्ट संख्यात्मक क्रमांक हटाएँ।
+ *
+ * उदाहरण:
+ *   ॥१॥, ॥ १२ ॥, ।३।  -> वाचन से हटेंगे।
+ *
+ * मूल पाठ, संयुक्ताक्षर तथा वैदिक स्वर-चिह्नों को जानबूझकर
+ * नहीं हटाया या बदला जाता है।
+ *
+ * sourceIndex सुरक्षित रखने से स्क्रीन पर मूल पंक्ति और
+ * वाचन की पंक्ति का संबंध बना रहता है।
+ */
+function prepareSpeechText(source: string): string {
+  return source
+    .replace(
+      /(?:॥\s*[०-९0-9]+\s*॥|।\s*[०-९0-9]+\s*।)/gu,
+      ' ',
+    )
+    .replace(
+      /^\s*[(（]?\s*[०-९0-9]+\s*[)）.]?\s*$/u,
+      '',
+    )
+    .replace(/[ \t]+/gu, ' ')
+    .trim();
+}
+
+/**
+ * ब्राउज़र के उपलब्ध हिंदी/Sanskrit-संबंधी विकल्पों में
+ * महिला आवाज़ के संभावित संकेतों को प्राथमिकता दें।
+ *
+ * SpeechSynthesisVoice में मानकीकृत gender property नहीं है।
+ * इसलिए आवाज़ के नाम से किया गया चयन अनुमान-आधारित है,
+ * महिला आवाज़ की गारंटी नहीं।
+ */
+function choosePreferredVoice(
+  voices: SpeechSynthesisVoice[],
+  requestedLanguage: string,
+): SpeechSynthesisVoice | null {
+  if (voices.length === 0) {
+    return null;
+  }
+
+  const normalizedLanguage = requestedLanguage
+    .trim()
+    .toLowerCase();
+
+  const requestedPrefix =
+    normalizedLanguage.split('-')[0] || 'hi';
+
+  let candidates = voices.filter(
+    (voice) =>
+      voice.lang.toLowerCase().split('-')[0] ===
+      requestedPrefix,
+  );
+
+  /*
+   * यदि Sanskrit voice उपलब्ध नहीं है, तो संस्कृत पाठ के
+   * लिए हिंदी आवाज़ एक व्यावहारिक fallback हो सकती है।
+   */
+  if (candidates.length === 0 && requestedPrefix === 'sa') {
+    candidates = voices.filter(
+      (voice) =>
+        voice.lang.toLowerCase().split('-')[0] === 'hi',
+    );
+  }
+
+  if (candidates.length === 0) {
+    return null;
+  }
+
+  const femaleVoiceHints =
+    /female|woman|zira|heera|kalpana|swara|priya|neerja|lekha|aarti|aditi|samantha|veena|kavya|anjali/i;
+
+  const likelyFemaleVoiceHints =
+    /(?:wavenet|neural|standard)[\s_-]*a(?:\b|$)/i;
+
+  const scoreVoice = (
+    voice: SpeechSynthesisVoice,
+  ): number => {
+    const language = voice.lang.toLowerCase();
+    const voiceName = `${voice.name} ${voice.voiceURI}`;
+
+    let score = 0;
+
+    if (language === normalizedLanguage) {
+      score += 25;
+    }
+
+    if (femaleVoiceHints.test(voiceName)) {
+      score += 100;
+    } else if (likelyFemaleVoiceHints.test(voiceName)) {
+      score += 60;
+    }
+
+    if (voice.localService) {
+      score += 3;
+    }
+
+    if (voice.default) {
+      score += 1;
+    }
+
+    return score;
+  };
+
+  return candidates.reduce((best, candidate) =>
+    scoreVoice(candidate) > scoreVoice(best)
+      ? candidate
+      : best,
+  );
+}
+
+function getRequestedLanguage(): string {
+  const requestedLanguage = readSetting(
+    currentSettings,
+    ['lang', 'language', 'voiceLanguage'],
+  );
+
+  if (
+    typeof requestedLanguage === 'string' &&
+    requestedLanguage.trim()
+  ) {
+    return requestedLanguage.trim();
+  }
+
+  return 'hi-IN';
+}
+
 function finishRecitation(token: number): void {
   if (token !== runId || !isActive) {
     return;
@@ -125,48 +261,87 @@ function finishRecitation(token: number): void {
   );
 }
 
+function failRecitation(
+  token: number,
+  message: string,
+): void {
+  if (token !== runId) {
+    return;
+  }
+
+  isActive = false;
+  isPaused = false;
+
+  setStatus(message);
+  reportError(message);
+}
+
 function speakCurrentLine(token: number): void {
   if (token !== runId || !isActive || isPaused) {
     return;
   }
 
-  if (currentLineIndex >= speechLines.length) {
+  if (currentSpeechIndex >= speechQueue.length) {
     finishRecitation(token);
     return;
   }
 
   const synthesis = getSpeechSynthesis();
 
-  if (!synthesis || typeof SpeechSynthesisUtterance === 'undefined') {
-    isActive = false;
-    isPaused = false;
-
-    const message =
-      'इस ब्राउज़र में Speech Synthesis API उपलब्ध नहीं है।';
-
-    setStatus(message);
-    reportError(message);
+  if (
+    !synthesis ||
+    typeof SpeechSynthesisUtterance === 'undefined'
+  ) {
+    failRecitation(
+      token,
+      'इस ब्राउज़र में Speech Synthesis API उपलब्ध नहीं है।',
+    );
     return;
   }
 
-  const text = speechLines[currentLineIndex];
+  const entry = speechQueue[currentSpeechIndex];
 
-  const utterance = new SpeechSynthesisUtterance(text);
+  if (!entry) {
+    finishRecitation(token);
+    return;
+  }
 
-  const requestedLanguage = readSetting(
-    currentSettings,
-    ['lang', 'language', 'voiceLanguage'],
+  const utterance = new SpeechSynthesisUtterance(
+    entry.text,
   );
 
-  utterance.lang =
-    typeof requestedLanguage === 'string' && requestedLanguage.trim()
-      ? requestedLanguage.trim()
-      : 'hi-IN';
+  const requestedLanguage = getRequestedLanguage();
 
+  utterance.lang = requestedLanguage;
+
+  /*
+   * यदि ब्राउज़र ने आवाज़ें देर से उपलब्ध कराई हों, तो
+   * अगले वाचन चरण पर फिर विकल्प जाँचें।
+   */
+  if (!currentVoice) {
+    currentVoice = choosePreferredVoice(
+      synthesis.getVoices(),
+      requestedLanguage,
+    );
+  }
+
+  if (currentVoice) {
+    utterance.voice = currentVoice;
+
+    if (currentVoice.lang) {
+      utterance.lang = currentVoice.lang;
+    }
+  }
+
+  /*
+   * UI में दिखाई गई rate, pitch और volume सेटिंग लागू करें।
+   * Browser TTS की सीमा से बाहर प्राकृतिक संगीतात्मकता
+   * या वैदिक स्वराघात यहाँ से गारंटी नहीं किए जा सकते।
+   */
   utterance.rate = readNumber(
     currentSettings,
     ['rate', 'speed', 'speakingRate'],
-    1,
+    0.9,
     0.1,
     10,
   );
@@ -174,7 +349,7 @@ function speakCurrentLine(token: number): void {
   utterance.pitch = readNumber(
     currentSettings,
     ['pitch', 'voicePitch'],
-    1,
+    1.0,
     0,
     2,
   );
@@ -187,29 +362,12 @@ function speakCurrentLine(token: number): void {
     1,
   );
 
-  const voices = synthesis.getVoices();
-  const desiredLanguage = utterance.lang.toLowerCase();
-  const languagePrefix = desiredLanguage.split('-')[0];
-
-  const voice =
-    voices.find(
-      (item) => item.lang.toLowerCase() === desiredLanguage,
-    ) ??
-    voices.find(
-      (item) =>
-        item.lang.toLowerCase().split('-')[0] === languagePrefix,
-    );
-
-  if (voice) {
-    utterance.voice = voice;
-  }
-
   utterance.onstart = () => {
     if (token !== runId || !isActive) {
       return;
     }
 
-    updateLine(currentLineIndex);
+    updateLine(entry.sourceIndex);
     setStatus('वाचन जारी है');
   };
 
@@ -218,13 +376,8 @@ function speakCurrentLine(token: number): void {
       return;
     }
 
-    currentLineIndex += 1;
-
-    if (currentLineIndex < speechLines.length) {
-      speakCurrentLine(token);
-    } else {
-      finishRecitation(token);
-    }
+    currentSpeechIndex += 1;
+    speakCurrentLine(token);
   };
 
   utterance.onerror = (event) => {
@@ -232,33 +385,21 @@ function speakCurrentLine(token: number): void {
       return;
     }
 
-    isActive = false;
-    isPaused = false;
-
-    const message =
-      `वाचन में त्रुटि आई: ${event.error}`;
-
-    setStatus(message);
-    reportError(message);
+    failRecitation(
+      token,
+      `वाचन में त्रुटि आई: ${event.error}`,
+    );
   };
 
   try {
     synthesis.speak(utterance);
   } catch (error) {
-    if (token !== runId) {
-      return;
-    }
-
-    isActive = false;
-    isPaused = false;
-
     const message =
       error instanceof Error
-        ? error.message
+        ? `वाचन शुरू नहीं हो सका: ${error.message}`
         : 'ब्राउज़र वाचन शुरू नहीं कर सका।';
 
-    setStatus(message);
-    reportError(message);
+    failRecitation(token, message);
   }
 }
 
@@ -269,6 +410,10 @@ export function startRecitation(
 ): void {
   const synthesis = getSpeechSynthesis();
 
+  /*
+   * नए वाचन को पुराने वाचन से अलग पहचानें, ताकि पुराने
+   * utterance के देर से आए events नए वाचन को न बदलें।
+   */
   runId += 1;
   const token = runId;
 
@@ -276,20 +421,56 @@ export function startRecitation(
     synthesis.cancel();
   }
 
-  speechLines = lines.filter(
-    (line) => typeof line === 'string' && line.trim().length > 0,
-  );
-
-  currentLineIndex = 0;
-  currentSettings = settings;
+  currentSettings = settings as TtsSettings;
   currentCallbacks = callbacks;
+  currentSpeechIndex = 0;
+  currentVoice = null;
+
+  const requestedLanguage = getRequestedLanguage();
+
+  currentVoice = synthesis
+    ? choosePreferredVoice(
+        synthesis.getVoices(),
+        requestedLanguage,
+      )
+    : null;
+
+  /*
+   * मूल पंक्ति का index सुरक्षित रहता है, लेकिन उसके बोलने
+   * वाले पाठ से श्लोक-क्रमांक हटाया जाता है।
+   */
+  speechQueue = lines
+    .map((line, sourceIndex): SpeechEntry | null => {
+      if (typeof line !== 'string') {
+        return null;
+      }
+
+      const text = prepareSpeechText(line);
+
+      if (!text) {
+        return null;
+      }
+
+      return {
+        text,
+        sourceIndex,
+      };
+    })
+    .filter(
+      (entry): entry is SpeechEntry => entry !== null,
+    );
 
   isPaused = false;
   isActive = true;
 
-  if (speechLines.length === 0) {
+  if (speechQueue.length === 0) {
     isActive = false;
-    setStatus('वाचन के लिए कोई पाठ उपलब्ध नहीं है');
+
+    const message =
+      'वाचन के लिए कोई पढ़ने योग्य पाठ नहीं बचा। पाठ और श्लोक-क्रमांक जाँचें।';
+
+    setStatus(message);
+    reportError(message);
     return;
   }
 
@@ -333,6 +514,10 @@ export function resumeRecitation(): void {
 }
 
 export function stopRecitation(): void {
+  /*
+   * पहले token बदलें, फिर cancel करें ताकि पुराने callbacks
+   * वर्तमान वाचन की स्थिति को बदल न सकें।
+   */
   runId += 1;
 
   const synthesis = getSpeechSynthesis();
@@ -343,8 +528,9 @@ export function stopRecitation(): void {
 
   isActive = false;
   isPaused = false;
-  currentLineIndex = 0;
-  speechLines = [];
+  currentSpeechIndex = 0;
+  speechQueue = [];
+  currentVoice = null;
 
   setStatus('वाचन रोक दिया गया है');
 
