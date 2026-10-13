@@ -25,6 +25,24 @@ interface PreparedLine {
   sourceIndex: number;
 }
 
+interface PronunciationEntry {
+  surface: string;
+  domain?: string;
+  iast?: string;
+  pronunciationHint?: string;
+  hintHi?: string;
+  ttsCandidate?: string | null;
+  candidateStatus?: string;
+  pronunciationVerified?: boolean;
+  autoApply?: boolean;
+}
+
+interface PronunciationDictionary {
+  id?: unknown;
+  schemaVersion?: unknown;
+  lexiconEntries?: unknown;
+}
+
 let speechQueue: SpeechEntry[] = [];
 let currentSpeechIndex = 0;
 let currentSettings: TtsSettings = {};
@@ -34,12 +52,31 @@ let currentVoice: SpeechSynthesisVoice | null = null;
 let runId = 0;
 let isActive = false;
 let isPaused = false;
+let isQueueReady = false;
+
+let cachedPronunciationEntries: PronunciationEntry[] | null = null;
+let pronunciationDictionaryPromise: Promise<PronunciationEntry[]> | null = null;
 
 const MAX_UTTERANCE_CHARS = 180;
 
-/**
- * Browser Speech Synthesis उपलब्ध है या नहीं, जाँचें।
+/*
+ * JSON फ़ाइल repository के root में language/ फ़ोल्डर में है।
+ * Vite इस dynamic import को स्थानीय bundled module में बदलेगा।
+ * Runtime पर लोड विफल होने पर मूल पाठ से वाचन जारी रहेगा।
  */
+async function importPronunciationDictionaryModule(): Promise<unknown> {
+  // @ts-ignore Vite JSON module resolve करता है; runtime failure catch किया जाएगा।
+  const loadedModule: unknown = await import(
+    '../../language/sanskrit-vedic-pronunciation.json'
+  );
+
+  if (isRecord(loadedModule) && 'default' in loadedModule) {
+    return loadedModule.default;
+  }
+
+  return loadedModule;
+}
+
 function getSpeechSynthesis(): SpeechSynthesis | null {
   if (typeof window === 'undefined') {
     return null;
@@ -52,10 +89,7 @@ function getSpeechSynthesis(): SpeechSynthesis | null {
   return window.speechSynthesis;
 }
 
-function readSetting(
-  settings: object,
-  names: string[],
-): unknown {
+function readSetting(settings: object, names: string[]): unknown {
   const values = settings as Record<string, unknown>;
 
   for (const name of names) {
@@ -123,56 +157,173 @@ function updateLine(index: number): void {
 }
 
 function reportError(message: string): void {
-  invokeCallback(
-    currentCallbacks,
-    ['onError', 'onTtsError'],
-    message,
+  invokeCallback(currentCallbacks, ['onError', 'onTtsError'], message);
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    !Array.isArray(value)
+  );
+}
+
+function isPronunciationEntry(value: unknown): value is PronunciationEntry {
+  return (
+    isRecord(value) &&
+    typeof value.surface === 'string' &&
+    value.surface.length > 0
   );
 }
 
 /**
- * वाचन-पाठ की तैयारी।
+ * स्थानीय उच्चारण-शब्दकोश को एक बार लोड और validate करें।
  *
- * 1. श्लोक के संख्यात्मक क्रमांक आवाज़ से हटाएँ।
- * 2. क्रमांक हटाते समय श्लोक-अंत का विराम सुरक्षित रखें।
- * 3. "लम्बितां" के लिए लक्षित उच्चारण-सुधार करें।
- * 4. वैदिक स्वर-चिह्नों और अन्य देवनागरी चिह्नों को
- *    सामान्य रूप से न हटाएँ।
- *
- * यह केवल TTS के लिए तैयार किया गया पाठ है।
- * मूल स्क्रीन-पाठ अपरिवर्तित रहता है।
+ * ध्यान दें:
+ * - pronunciationHint स्वयं आवाज़ को प्रशिक्षित नहीं करता।
+ * - IAST स्वयं उच्चारण की शुद्धता प्रमाणित नहीं करता।
+ * - केवल सत्यापित और स्पष्ट रूप से अनुमोदित ttsCandidate लागू होगा।
  */
-function prepareSpeechText(source: string): string {
-  return source
-    .replace(
-      /॥\s*[०-९0-9]+\s*॥/gu,
-      '।',
-    )
-    .replace(
-      /।\s*[०-९0-9]+\s*।/gu,
-      '।',
-    )
-    .replace(
-      /^\s*[(（]?\s*[०-९0-9]+\s*[)）.]?\s*$/u,
-      '',
-    )
-    /*
-     * "लम्बितां" का अंतिम "ां" कई हिंदी TTS आवाज़ों में
-     * पर्याप्त स्पष्ट नहीं सुनाई दे सकता है।
-     * "लम्बिताम्" उसका लक्षित वाचन-रूप है।
-     */
-    .replace(/लम्बितां/gu, 'लम्बिताम्')
-    .replace(/[ \t]+/gu, ' ')
-    .replace(/^\s*(?:॥|।)+\s*$/u, '')
-    .trim();
+async function loadPronunciationDictionary(): Promise<PronunciationEntry[]> {
+  if (cachedPronunciationEntries !== null) {
+    return cachedPronunciationEntries;
+  }
+
+  if (pronunciationDictionaryPromise) {
+    return pronunciationDictionaryPromise;
+  }
+
+  pronunciationDictionaryPromise = importPronunciationDictionaryModule()
+    .then((raw: unknown): PronunciationEntry[] => {
+      if (!isRecord(raw)) {
+        throw new Error('JSON root must be an object');
+      }
+
+      const dictionary = raw as PronunciationDictionary;
+
+      if (
+        dictionary.id !== 'sanskrit-vedic-pronunciation' ||
+        !Array.isArray(dictionary.lexiconEntries)
+      ) {
+        throw new Error(
+          'Unexpected dictionary id or missing lexiconEntries',
+        );
+      }
+
+      const entries =
+        dictionary.lexiconEntries.filter(isPronunciationEntry);
+
+      if (entries.length === 0) {
+        throw new Error('No valid lexicon entries found');
+      }
+
+      cachedPronunciationEntries = entries;
+      return entries;
+    })
+    .catch((error: unknown): PronunciationEntry[] => {
+      pronunciationDictionaryPromise = null;
+
+      console.warn(
+        '[श्रुति] उच्चारण शब्दकोश लोड नहीं हुआ; मूल पाठ से वाचन जारी रहेगा।',
+        error,
+      );
+
+      return [];
+    });
+
+  return pronunciationDictionaryPromise;
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 /**
- * उपलब्ध आवाज़ों में पहले उपयुक्त भाषा चुनें और फिर
- * महिला होने के संभावित संकेतों वाली आवाज़ को प्राथमिकता दें।
+ * केवल उन उच्चारण-सुझावों को लागू करें जिनकी दोनों अनुमतियाँ
+ * स्पष्ट रूप से true हैं।
  *
- * SpeechSynthesisVoice में मानकीकृत gender property नहीं है।
- * नाम-आधारित चयन अनुमान है, सुनिश्चित पहचान नहीं।
+ * Original display text अलग रहता है। यह फ़ंक्शन केवल TTS के
+ * लिए तैयार किए जा रहे पाठ पर काम करता है।
+ */
+function applyApprovedPronunciationCandidates(
+  source: string,
+  dictionaryEntries: readonly PronunciationEntry[],
+): string {
+  const approved = dictionaryEntries
+    .filter(
+      (entry) =>
+        entry.autoApply === true &&
+        entry.pronunciationVerified === true &&
+        typeof entry.ttsCandidate === 'string' &&
+        entry.ttsCandidate.length > 0 &&
+        entry.ttsCandidate !== entry.surface,
+    )
+    .sort((a, b) => b.surface.length - a.surface.length);
+
+  let result = source;
+
+  for (const entry of approved) {
+    const surface = entry.surface;
+    const candidate = entry.ttsCandidate;
+
+    if (!candidate) {
+      continue;
+    }
+
+    /*
+     * Unicode-aware boundaries शब्द के किसी बड़े शब्द के भीतर
+     * अनचाहे replacement से बचाती हैं।
+     */
+    const pattern = new RegExp(
+      `(^|[^\\p{L}\\p{M}\\p{N}])(${escapeRegExp(surface)})(?=$|[^\\p{L}\\p{M}\\p{N}])`,
+      'gu',
+    );
+
+    result = result.replace(
+      pattern,
+      (_match: string, prefix: string) => `${prefix}${candidate}`,
+    );
+  }
+
+  return result;
+}
+
+/**
+ * TTS पाठ तैयार करें:
+ * - स्पष्ट श्लोक-क्रमांक आवाज़ में न पढ़ें।
+ * - क्रमांक हटाने के बाद विराम बनाए रखें।
+ * - अनुस्वार, चन्द्रबिन्दु, विसर्ग और वैदिक स्वर-चिह्नों को
+ *   किसी सामान्य replacement से न हटाएँ।
+ * - केवल dictionary से अनुमोदित candidate लागू करें।
+ */
+function prepareSpeechText(
+  source: string,
+  dictionaryEntries: readonly PronunciationEntry[],
+): string {
+  const withoutVerseNumber = source
+    .replace(/॥\s*[०-९0-9]+\s*॥/gu, '।')
+    .replace(/।\s*[०-९0-9]+\s*।/gu, '।')
+    .replace(/^\s*[(（]?\s*[०-९0-9]+\s*[)）.]?\s*$/u, '')
+    .replace(/[ \t]+/gu, ' ')
+    .replace(/^\s*(?:॥|।)+\s*$/u, '')
+    .trim();
+
+  if (!withoutVerseNumber) {
+    return '';
+  }
+
+  return applyApprovedPronunciationCandidates(
+    withoutVerseNumber,
+    dictionaryEntries,
+  );
+}
+
+/**
+ * उपलब्ध हिंदी/Sanskrit आवाज़ों में महिला-स्वर के संभावित
+ * नाम-संकेतों वाली आवाज़ को प्राथमिकता दें।
+ *
+ * SpeechSynthesisVoice में मानकीकृत gender property नहीं है,
+ * इसलिए नाम-आधारित चयन अनुमान है, सुनिश्चित पहचान नहीं।
  */
 function choosePreferredVoice(
   voices: SpeechSynthesisVoice[],
@@ -182,27 +333,17 @@ function choosePreferredVoice(
     return null;
   }
 
-  const normalizedLanguage = requestedLanguage
-    .trim()
-    .toLowerCase();
-
-  const requestedPrefix =
-    normalizedLanguage.split('-')[0] || 'hi';
+  const normalizedLanguage = requestedLanguage.trim().toLowerCase();
+  const requestedPrefix = normalizedLanguage.split('-')[0] || 'hi';
 
   let candidates = voices.filter(
     (voice) =>
-      voice.lang.toLowerCase().split('-')[0] ===
-      requestedPrefix,
+      voice.lang.toLowerCase().split('-')[0] === requestedPrefix,
   );
 
-  /*
-   * Sanskrit voice नहीं मिलने पर हिंदी आवाज़ को fallback
-   * के रूप में इस्तेमाल करने की कोशिश करें।
-   */
   if (candidates.length === 0 && requestedPrefix === 'sa') {
     candidates = voices.filter(
-      (voice) =>
-        voice.lang.toLowerCase().split('-')[0] === 'hi',
+      (voice) => voice.lang.toLowerCase().split('-')[0] === 'hi',
     );
   }
 
@@ -213,44 +354,24 @@ function choosePreferredVoice(
   const femaleVoiceHints =
     /female|woman|zira|heera|kalpana|swara|priya|neerja|lekha|aarti|aditi|samantha|veena|kavya|anjali|sara/i;
 
-  const naturalVoiceHints =
-    /neural|natural|wavenet/i;
+  const naturalVoiceHints = /neural|natural|wavenet/i;
 
-  const scoreVoice = (
-    voice: SpeechSynthesisVoice,
-  ): number => {
+  const scoreVoice = (voice: SpeechSynthesisVoice): number => {
     const language = voice.lang.toLowerCase();
     const voiceName = `${voice.name} ${voice.voiceURI}`;
-
     let score = 0;
 
-    if (language === normalizedLanguage) {
-      score += 25;
-    }
-
-    if (femaleVoiceHints.test(voiceName)) {
-      score += 100;
-    }
-
-    if (naturalVoiceHints.test(voiceName)) {
-      score += 15;
-    }
-
-    if (voice.localService) {
-      score += 3;
-    }
-
-    if (voice.default) {
-      score += 1;
-    }
+    if (language === normalizedLanguage) score += 25;
+    if (femaleVoiceHints.test(voiceName)) score += 100;
+    if (naturalVoiceHints.test(voiceName)) score += 15;
+    if (voice.localService) score += 3;
+    if (voice.default) score += 1;
 
     return score;
   };
 
   return candidates.reduce((best, candidate) =>
-    scoreVoice(candidate) > scoreVoice(best)
-      ? candidate
-      : best,
+    scoreVoice(candidate) > scoreVoice(best) ? candidate : best,
   );
 }
 
@@ -271,16 +392,14 @@ function getRequestedLanguage(): string {
 }
 
 /**
- * मूल पाठ की पंक्तियों को वाचन-अंशों में बदलें।
- *
- * - अन्त में hyphen वाली पंक्ति अगली पंक्ति से जोड़ी जाती है।
- * - ऐसे जुड़े हुए अंश एक ही utterance में पढ़े जाते हैं।
- * - सामान्य पंक्तियों को वाक्य/श्लोक-विराम पर समूहित किया जाता है।
- * - प्रत्येक शब्द के स्रोत-पंक्ति इंडेक्स को सुरक्षित रखा जाता है,
- *   ताकि उपलब्ध होने पर onboundary से कैप्शन बदला जा सके।
+ * दृश्य पाठ की पंक्तियों को वाचन-अंशों में समूहित करें।
+ * मूल पंक्ति का index सुरक्षित रहता है।
+ * पंक्ति-अंत hyphen पर अगली पंक्ति को उसी utterance में
+ * जोड़ा जाता है, ताकि केवल formatting के कारण विराम न आए।
  */
 function buildSpeechQueue(
   lines: readonly string[],
+  dictionaryEntries: readonly PronunciationEntry[],
 ): SpeechEntry[] {
   const prepared: PreparedLine[] = [];
 
@@ -289,22 +408,15 @@ function buildSpeechQueue(
       return;
     }
 
-    const text = prepareSpeechText(line);
+    const text = prepareSpeechText(line, dictionaryEntries);
 
     if (!text) {
       return;
     }
 
-    prepared.push({
-      text,
-      sourceIndex,
-    });
+    prepared.push({ text, sourceIndex });
   });
 
-  /*
-   * पहले हाइफ़न से जुड़ी पंक्तियों को एक वाचन-अंश में
-   * मिलाएँ। हाइफ़न पर कृत्रिम विराम न रहे।
-   */
   const linkedEntries: SpeechEntry[] = [];
 
   for (let i = 0; i < prepared.length; i += 1) {
@@ -327,9 +439,6 @@ function buildSpeechQueue(
     while (/-\s*$/u.test(text) && i + 1 < prepared.length) {
       text = text.replace(/-\s*$/u, '').trimEnd();
 
-      /*
-       * हटाए गए हाइफ़न का स्थान कैप्शन मैपिंग में न गिनें।
-       */
       const previousSegment = segments[segments.length - 1];
 
       if (previousSegment) {
@@ -360,19 +469,11 @@ function buildSpeechQueue(
     }
 
     if (text.trim()) {
-      linkedEntries.push({
-        text: text.trim(),
-        segments,
-      });
+      linkedEntries.push({ text: text.trim(), segments });
     }
   }
 
-  /*
-   * छोटे-छोटे chunks के कारण बार-बार नया TTS utterance
-   * शुरू न करना पड़े। वाक्य या श्लोक के विराम पर समूह बंद करें।
-   */
   const result: SpeechEntry[] = [];
-
   let currentText = '';
   let currentSegments: SpeechSegment[] = [];
 
@@ -404,9 +505,7 @@ function buildSpeechQueue(
       })),
     );
 
-    const endsAtPunctuation =
-      /[।॥.!?;:…]\s*$/u.test(entry.text);
-
+    const endsAtPunctuation = /[।॥.!?;:…]\s*$/u.test(entry.text);
     const reachedLengthLimit =
       currentText.length >= MAX_UTTERANCE_CHARS;
 
@@ -420,13 +519,6 @@ function buildSpeechQueue(
   return result;
 }
 
-/**
- * TTS के boundary event के character offset के आधार पर
- * वर्तमान कैप्शन की स्रोत-पंक्ति ढूँढ़ें।
- *
- * कुछ ब्राउज़र/आवाज़ें boundary events नहीं भेजतीं;
- * इसलिए कैप्शन अपडेट होने की पूर्ण गारंटी नहीं है।
- */
 function findSourceIndex(
   entry: SpeechEntry,
   charIndex: number,
@@ -438,10 +530,7 @@ function findSourceIndex(
   let previous = entry.segments[0];
 
   for (const segment of entry.segments) {
-    if (
-      charIndex >= segment.start &&
-      charIndex < segment.end
-    ) {
+    if (charIndex >= segment.start && charIndex < segment.end) {
       return segment.sourceIndex;
     }
 
@@ -462,6 +551,7 @@ function finishRecitation(token: number): void {
 
   isActive = false;
   isPaused = false;
+  isQueueReady = false;
 
   setStatus('वाचन पूर्ण हुआ');
 
@@ -471,16 +561,14 @@ function finishRecitation(token: number): void {
   );
 }
 
-function failRecitation(
-  token: number,
-  message: string,
-): void {
+function failRecitation(token: number, message: string): void {
   if (token !== runId) {
     return;
   }
 
   isActive = false;
   isPaused = false;
+  isQueueReady = false;
 
   setStatus(message);
   reportError(message);
@@ -498,10 +586,7 @@ function speakCurrentLine(token: number): void {
 
   const synthesis = getSpeechSynthesis();
 
-  if (
-    !synthesis ||
-    typeof SpeechSynthesisUtterance === 'undefined'
-  ) {
+  if (!synthesis || typeof SpeechSynthesisUtterance === 'undefined') {
     failRecitation(
       token,
       'इस ब्राउज़र में Speech Synthesis API उपलब्ध नहीं है।',
@@ -517,14 +602,10 @@ function speakCurrentLine(token: number): void {
   }
 
   const utterance = new SpeechSynthesisUtterance(entry.text);
-
   const requestedLanguage = getRequestedLanguage();
+
   utterance.lang = requestedLanguage;
 
-  /*
-   * आवाज़ें पहले अनुपलब्ध रही हों तो पुनः जाँचें।
-   * आवाज़ें उपलब्ध न होने पर ब्राउज़र की डिफ़ॉल्ट आवाज़ चलेगी।
-   */
   if (!currentVoice) {
     currentVoice = choosePreferredVoice(
       synthesis.getVoices(),
@@ -540,11 +621,6 @@ function speakCurrentLine(token: number): void {
     }
   }
 
-  /*
-   * ऐप की मौजूदा गति, पिच और वॉल्यूम सेटिंग का सम्मान करें।
-   * ब्राउज़र API से वास्तविक साँस की ध्वनि या मनचाहा timbre
-   * पैदा नहीं किया जा सकता।
-   */
   utterance.rate = readNumber(
     currentSettings,
     ['rate', 'speed', 'speakingRate'],
@@ -594,10 +670,6 @@ function speakCurrentLine(token: number): void {
     setStatus('वाचन जारी है');
   };
 
-  /*
-   * जहाँ ब्राउज़र word-boundary events भेजता है, वहाँ
-   * बोलते समय कैप्शन की स्रोत-पंक्ति भी बदल सकती है।
-   */
   utterance.onboundary = (event: SpeechSynthesisEvent) => {
     if (token !== runId || !isActive) {
       return;
@@ -607,12 +679,9 @@ function speakCurrentLine(token: number): void {
       typeof event.charIndex === 'number' &&
       Number.isFinite(event.charIndex)
     ) {
-      const sourceIndex = findSourceIndex(
-        entry,
-        event.charIndex,
+      reportCurrentSourceLine(
+        findSourceIndex(entry, event.charIndex),
       );
-
-      reportCurrentSourceLine(sourceIndex);
     }
   };
 
@@ -630,10 +699,7 @@ function speakCurrentLine(token: number): void {
       return;
     }
 
-    failRecitation(
-      token,
-      `वाचन में त्रुटि आई: ${event.error}`,
-    );
+    failRecitation(token, `वाचन में त्रुटि आई: ${event.error}`);
   };
 
   try {
@@ -648,45 +714,23 @@ function speakCurrentLine(token: number): void {
   }
 }
 
-export function startRecitation(
+async function startAfterDictionaryLoad(
   lines: readonly string[],
-  settings: object = {},
-  callbacks: object = {},
-): void {
-  const synthesis = getSpeechSynthesis();
+  token: number,
+): Promise<void> {
+  const dictionaryEntries = await loadPronunciationDictionary();
 
-  /*
-   * प्रत्येक नए वाचन को अलग token दें, ताकि पुराने वाचन
-   * के callbacks नए वाचन को प्रभावित न कर सकें।
-   */
-  runId += 1;
-  const token = runId;
-
-  if (synthesis) {
-    synthesis.cancel();
+  if (token !== runId || !isActive) {
+    return;
   }
 
-  currentSettings = settings as TtsSettings;
-  currentCallbacks = callbacks;
+  speechQueue = buildSpeechQueue(lines, dictionaryEntries);
   currentSpeechIndex = 0;
-  currentVoice = null;
-
-  const requestedLanguage = getRequestedLanguage();
-
-  currentVoice = synthesis
-    ? choosePreferredVoice(
-        synthesis.getVoices(),
-        requestedLanguage,
-      )
-    : null;
-
-  speechQueue = buildSpeechQueue(lines);
-
-  isPaused = false;
-  isActive = true;
+  isQueueReady = true;
 
   if (speechQueue.length === 0) {
     isActive = false;
+    isQueueReady = false;
 
     const message =
       'वाचन के लिए कोई पढ़ने योग्य पाठ नहीं बचा। पाठ और श्लोक-क्रमांक जाँचें।';
@@ -695,6 +739,59 @@ export function startRecitation(
     reportError(message);
     return;
   }
+
+  const synthesis = getSpeechSynthesis();
+
+  if (!synthesis) {
+    failRecitation(
+      token,
+      'इस ब्राउज़र में Speech Synthesis API उपलब्ध नहीं है।',
+    );
+    return;
+  }
+
+  const requestedLanguage = getRequestedLanguage();
+
+  currentVoice = choosePreferredVoice(
+    synthesis.getVoices(),
+    requestedLanguage,
+  );
+
+  if (dictionaryEntries.length > 0) {
+    setStatus(
+      `उच्चारण शब्दकोश तैयार है (${dictionaryEntries.length} प्रविष्टियाँ); वाचन शुरू हो रहा है।`,
+    );
+  } else {
+    setStatus(
+      'उच्चारण शब्दकोश उपलब्ध नहीं; मूल पाठ से वाचन जारी है।',
+    );
+  }
+
+  speakCurrentLine(token);
+}
+
+export function startRecitation(
+  lines: readonly string[],
+  settings: object = {},
+  callbacks: object = {},
+): void {
+  const synthesis = getSpeechSynthesis();
+
+  runId += 1;
+  const token = runId;
+
+  if (synthesis) {
+    synthesis.cancel();
+  }
+
+  speechQueue = [];
+  currentSpeechIndex = 0;
+  isQueueReady = false;
+  currentSettings = settings as TtsSettings;
+  currentCallbacks = callbacks;
+  currentVoice = null;
+  isPaused = false;
+  isActive = true;
 
   if (!synthesis) {
     isActive = false;
@@ -707,8 +804,8 @@ export function startRecitation(
     return;
   }
 
-  setStatus('वाचन शुरू हो रहा है');
-  speakCurrentLine(token);
+  setStatus('उच्चारण शब्दकोश तैयार किया जा रहा है…');
+  void startAfterDictionaryLoad(lines, token);
 }
 
 export function pauseRecitation(): void {
@@ -733,13 +830,14 @@ export function resumeRecitation(): void {
   isPaused = false;
   synthesis.resume();
   setStatus('वाचन जारी है');
+
+  // यदि Pause शब्दकोश लोड होते समय हुआ था, तो queue शुरू करें।
+  if (isQueueReady && !synthesis.speaking && !synthesis.pending) {
+    speakCurrentLine(runId);
+  }
 }
 
 export function stopRecitation(): void {
-  /*
-   * पहले token बदलें ताकि cancel से आने वाले पुराने
-   * events वर्तमान वाचन को प्रभावित न करें।
-   */
   runId += 1;
 
   const synthesis = getSpeechSynthesis();
@@ -753,11 +851,9 @@ export function stopRecitation(): void {
   currentSpeechIndex = 0;
   speechQueue = [];
   currentVoice = null;
+  isQueueReady = false;
 
   setStatus('वाचन रोक दिया गया है');
 
-  invokeCallback(
-    currentCallbacks,
-    ['onStop', 'onStopped'],
-  );
+  invokeCallback(currentCallbacks, ['onStop', 'onStopped']);
 }
