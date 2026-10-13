@@ -9,7 +9,18 @@ export interface TtsSettings {
 
 type Callback = (...args: unknown[]) => void;
 
+interface SpeechSegment {
+  sourceIndex: number;
+  start: number;
+  end: number;
+}
+
 interface SpeechEntry {
+  text: string;
+  segments: SpeechSegment[];
+}
+
+interface PreparedLine {
   text: string;
   sourceIndex: number;
 }
@@ -23,6 +34,8 @@ let currentVoice: SpeechSynthesisVoice | null = null;
 let runId = 0;
 let isActive = false;
 let isPaused = false;
+
+const MAX_UTTERANCE_CHARS = 180;
 
 /**
  * Browser Speech Synthesis उपलब्ध है या नहीं, जाँचें।
@@ -118,38 +131,48 @@ function reportError(message: string): void {
 }
 
 /**
- * केवल श्लोक के स्पष्ट संख्यात्मक क्रमांक हटाएँ।
+ * वाचन-पाठ की तैयारी।
  *
- * उदाहरण:
- *   ॥१॥, ॥ १२ ॥, ।३।  -> वाचन से हटेंगे।
+ * 1. श्लोक के संख्यात्मक क्रमांक आवाज़ से हटाएँ।
+ * 2. क्रमांक हटाते समय श्लोक-अंत का विराम सुरक्षित रखें।
+ * 3. "लम्बितां" के लिए लक्षित उच्चारण-सुधार करें।
+ * 4. वैदिक स्वर-चिह्नों और अन्य देवनागरी चिह्नों को
+ *    सामान्य रूप से न हटाएँ।
  *
- * मूल पाठ, संयुक्ताक्षर तथा वैदिक स्वर-चिह्नों को जानबूझकर
- * नहीं हटाया या बदला जाता है।
- *
- * sourceIndex सुरक्षित रखने से स्क्रीन पर मूल पंक्ति और
- * वाचन की पंक्ति का संबंध बना रहता है।
+ * यह केवल TTS के लिए तैयार किया गया पाठ है।
+ * मूल स्क्रीन-पाठ अपरिवर्तित रहता है।
  */
 function prepareSpeechText(source: string): string {
   return source
     .replace(
-      /(?:॥\s*[०-९0-9]+\s*॥|।\s*[०-९0-9]+\s*।)/gu,
-      ' ',
+      /॥\s*[०-९0-9]+\s*॥/gu,
+      '।',
+    )
+    .replace(
+      /।\s*[०-९0-9]+\s*।/gu,
+      '।',
     )
     .replace(
       /^\s*[(（]?\s*[०-९0-9]+\s*[)）.]?\s*$/u,
       '',
     )
+    /*
+     * "लम्बितां" का अंतिम "ां" कई हिंदी TTS आवाज़ों में
+     * पर्याप्त स्पष्ट नहीं सुनाई दे सकता है।
+     * "लम्बिताम्" उसका लक्षित वाचन-रूप है।
+     */
+    .replace(/लम्बितां/gu, 'लम्बिताम्')
     .replace(/[ \t]+/gu, ' ')
+    .replace(/^\s*(?:॥|।)+\s*$/u, '')
     .trim();
 }
 
 /**
- * ब्राउज़र के उपलब्ध हिंदी/Sanskrit-संबंधी विकल्पों में
- * महिला आवाज़ के संभावित संकेतों को प्राथमिकता दें।
+ * उपलब्ध आवाज़ों में पहले उपयुक्त भाषा चुनें और फिर
+ * महिला होने के संभावित संकेतों वाली आवाज़ को प्राथमिकता दें।
  *
  * SpeechSynthesisVoice में मानकीकृत gender property नहीं है।
- * इसलिए आवाज़ के नाम से किया गया चयन अनुमान-आधारित है,
- * महिला आवाज़ की गारंटी नहीं।
+ * नाम-आधारित चयन अनुमान है, सुनिश्चित पहचान नहीं।
  */
 function choosePreferredVoice(
   voices: SpeechSynthesisVoice[],
@@ -173,8 +196,8 @@ function choosePreferredVoice(
   );
 
   /*
-   * यदि Sanskrit voice उपलब्ध नहीं है, तो संस्कृत पाठ के
-   * लिए हिंदी आवाज़ एक व्यावहारिक fallback हो सकती है।
+   * Sanskrit voice नहीं मिलने पर हिंदी आवाज़ को fallback
+   * के रूप में इस्तेमाल करने की कोशिश करें।
    */
   if (candidates.length === 0 && requestedPrefix === 'sa') {
     candidates = voices.filter(
@@ -188,10 +211,10 @@ function choosePreferredVoice(
   }
 
   const femaleVoiceHints =
-    /female|woman|zira|heera|kalpana|swara|priya|neerja|lekha|aarti|aditi|samantha|veena|kavya|anjali/i;
+    /female|woman|zira|heera|kalpana|swara|priya|neerja|lekha|aarti|aditi|samantha|veena|kavya|anjali|sara/i;
 
-  const likelyFemaleVoiceHints =
-    /(?:wavenet|neural|standard)[\s_-]*a(?:\b|$)/i;
+  const naturalVoiceHints =
+    /neural|natural|wavenet/i;
 
   const scoreVoice = (
     voice: SpeechSynthesisVoice,
@@ -207,8 +230,10 @@ function choosePreferredVoice(
 
     if (femaleVoiceHints.test(voiceName)) {
       score += 100;
-    } else if (likelyFemaleVoiceHints.test(voiceName)) {
-      score += 60;
+    }
+
+    if (naturalVoiceHints.test(voiceName)) {
+      score += 15;
     }
 
     if (voice.localService) {
@@ -243,6 +268,191 @@ function getRequestedLanguage(): string {
   }
 
   return 'hi-IN';
+}
+
+/**
+ * मूल पाठ की पंक्तियों को वाचन-अंशों में बदलें।
+ *
+ * - अन्त में hyphen वाली पंक्ति अगली पंक्ति से जोड़ी जाती है।
+ * - ऐसे जुड़े हुए अंश एक ही utterance में पढ़े जाते हैं।
+ * - सामान्य पंक्तियों को वाक्य/श्लोक-विराम पर समूहित किया जाता है।
+ * - प्रत्येक शब्द के स्रोत-पंक्ति इंडेक्स को सुरक्षित रखा जाता है,
+ *   ताकि उपलब्ध होने पर onboundary से कैप्शन बदला जा सके।
+ */
+function buildSpeechQueue(
+  lines: readonly string[],
+): SpeechEntry[] {
+  const prepared: PreparedLine[] = [];
+
+  lines.forEach((line, sourceIndex) => {
+    if (typeof line !== 'string') {
+      return;
+    }
+
+    const text = prepareSpeechText(line);
+
+    if (!text) {
+      return;
+    }
+
+    prepared.push({
+      text,
+      sourceIndex,
+    });
+  });
+
+  /*
+   * पहले हाइफ़न से जुड़ी पंक्तियों को एक वाचन-अंश में
+   * मिलाएँ। हाइफ़न पर कृत्रिम विराम न रहे।
+   */
+  const linkedEntries: SpeechEntry[] = [];
+
+  for (let i = 0; i < prepared.length; i += 1) {
+    const first = prepared[i];
+
+    if (!first) {
+      continue;
+    }
+
+    let text = first.text;
+
+    const segments: SpeechSegment[] = [
+      {
+        sourceIndex: first.sourceIndex,
+        start: 0,
+        end: text.length,
+      },
+    ];
+
+    while (/-\s*$/u.test(text) && i + 1 < prepared.length) {
+      text = text.replace(/-\s*$/u, '').trimEnd();
+
+      /*
+       * हटाए गए हाइफ़न का स्थान कैप्शन मैपिंग में न गिनें।
+       */
+      const previousSegment = segments[segments.length - 1];
+
+      if (previousSegment) {
+        previousSegment.end = Math.min(
+          previousSegment.end,
+          text.length,
+        );
+      }
+
+      const next = prepared[i + 1];
+
+      if (!next) {
+        break;
+      }
+
+      i += 1;
+
+      const separator = text.length > 0 ? ' ' : '';
+      const start = text.length + separator.length;
+
+      text += separator + next.text;
+
+      segments.push({
+        sourceIndex: next.sourceIndex,
+        start,
+        end: start + next.text.length,
+      });
+    }
+
+    if (text.trim()) {
+      linkedEntries.push({
+        text: text.trim(),
+        segments,
+      });
+    }
+  }
+
+  /*
+   * छोटे-छोटे chunks के कारण बार-बार नया TTS utterance
+   * शुरू न करना पड़े। वाक्य या श्लोक के विराम पर समूह बंद करें।
+   */
+  const result: SpeechEntry[] = [];
+
+  let currentText = '';
+  let currentSegments: SpeechSegment[] = [];
+
+  const flushCurrent = (): void => {
+    const text = currentText.trim();
+
+    if (text) {
+      result.push({
+        text,
+        segments: currentSegments,
+      });
+    }
+
+    currentText = '';
+    currentSegments = [];
+  };
+
+  for (const entry of linkedEntries) {
+    const separator = currentText ? ' ' : '';
+    const offset = currentText.length + separator.length;
+
+    currentText += separator + entry.text;
+
+    currentSegments.push(
+      ...entry.segments.map((segment) => ({
+        sourceIndex: segment.sourceIndex,
+        start: segment.start + offset,
+        end: segment.end + offset,
+      })),
+    );
+
+    const endsAtPunctuation =
+      /[।॥.!?;:…]\s*$/u.test(entry.text);
+
+    const reachedLengthLimit =
+      currentText.length >= MAX_UTTERANCE_CHARS;
+
+    if (endsAtPunctuation || reachedLengthLimit) {
+      flushCurrent();
+    }
+  }
+
+  flushCurrent();
+
+  return result;
+}
+
+/**
+ * TTS के boundary event के character offset के आधार पर
+ * वर्तमान कैप्शन की स्रोत-पंक्ति ढूँढ़ें।
+ *
+ * कुछ ब्राउज़र/आवाज़ें boundary events नहीं भेजतीं;
+ * इसलिए कैप्शन अपडेट होने की पूर्ण गारंटी नहीं है।
+ */
+function findSourceIndex(
+  entry: SpeechEntry,
+  charIndex: number,
+): number {
+  if (entry.segments.length === 0) {
+    return 0;
+  }
+
+  let previous = entry.segments[0];
+
+  for (const segment of entry.segments) {
+    if (
+      charIndex >= segment.start &&
+      charIndex < segment.end
+    ) {
+      return segment.sourceIndex;
+    }
+
+    if (segment.start > charIndex) {
+      return previous.sourceIndex;
+    }
+
+    previous = segment;
+  }
+
+  return previous.sourceIndex;
 }
 
 function finishRecitation(token: number): void {
@@ -306,17 +516,14 @@ function speakCurrentLine(token: number): void {
     return;
   }
 
-  const utterance = new SpeechSynthesisUtterance(
-    entry.text,
-  );
+  const utterance = new SpeechSynthesisUtterance(entry.text);
 
   const requestedLanguage = getRequestedLanguage();
-
   utterance.lang = requestedLanguage;
 
   /*
-   * यदि ब्राउज़र ने आवाज़ें देर से उपलब्ध कराई हों, तो
-   * अगले वाचन चरण पर फिर विकल्प जाँचें।
+   * आवाज़ें पहले अनुपलब्ध रही हों तो पुनः जाँचें।
+   * आवाज़ें उपलब्ध न होने पर ब्राउज़र की डिफ़ॉल्ट आवाज़ चलेगी।
    */
   if (!currentVoice) {
     currentVoice = choosePreferredVoice(
@@ -334,14 +541,14 @@ function speakCurrentLine(token: number): void {
   }
 
   /*
-   * UI में दिखाई गई rate, pitch और volume सेटिंग लागू करें।
-   * Browser TTS की सीमा से बाहर प्राकृतिक संगीतात्मकता
-   * या वैदिक स्वराघात यहाँ से गारंटी नहीं किए जा सकते।
+   * ऐप की मौजूदा गति, पिच और वॉल्यूम सेटिंग का सम्मान करें।
+   * ब्राउज़र API से वास्तविक साँस की ध्वनि या मनचाहा timbre
+   * पैदा नहीं किया जा सकता।
    */
   utterance.rate = readNumber(
     currentSettings,
     ['rate', 'speed', 'speakingRate'],
-    0.9,
+    0.86,
     0.1,
     10,
   );
@@ -349,7 +556,7 @@ function speakCurrentLine(token: number): void {
   utterance.pitch = readNumber(
     currentSettings,
     ['pitch', 'voicePitch'],
-    1.0,
+    1.04,
     0,
     2,
   );
@@ -362,13 +569,51 @@ function speakCurrentLine(token: number): void {
     1,
   );
 
+  let lastReportedIndex = -1;
+
+  const reportCurrentSourceLine = (index: number): void => {
+    if (index === lastReportedIndex) {
+      return;
+    }
+
+    lastReportedIndex = index;
+    updateLine(index);
+  };
+
   utterance.onstart = () => {
     if (token !== runId || !isActive) {
       return;
     }
 
-    updateLine(entry.sourceIndex);
+    const firstSegment = entry.segments[0];
+
+    if (firstSegment) {
+      reportCurrentSourceLine(firstSegment.sourceIndex);
+    }
+
     setStatus('वाचन जारी है');
+  };
+
+  /*
+   * जहाँ ब्राउज़र word-boundary events भेजता है, वहाँ
+   * बोलते समय कैप्शन की स्रोत-पंक्ति भी बदल सकती है।
+   */
+  utterance.onboundary = (event: SpeechSynthesisEvent) => {
+    if (token !== runId || !isActive) {
+      return;
+    }
+
+    if (
+      typeof event.charIndex === 'number' &&
+      Number.isFinite(event.charIndex)
+    ) {
+      const sourceIndex = findSourceIndex(
+        entry,
+        event.charIndex,
+      );
+
+      reportCurrentSourceLine(sourceIndex);
+    }
   };
 
   utterance.onend = () => {
@@ -411,8 +656,8 @@ export function startRecitation(
   const synthesis = getSpeechSynthesis();
 
   /*
-   * नए वाचन को पुराने वाचन से अलग पहचानें, ताकि पुराने
-   * utterance के देर से आए events नए वाचन को न बदलें।
+   * प्रत्येक नए वाचन को अलग token दें, ताकि पुराने वाचन
+   * के callbacks नए वाचन को प्रभावित न कर सकें।
    */
   runId += 1;
   const token = runId;
@@ -435,30 +680,7 @@ export function startRecitation(
       )
     : null;
 
-  /*
-   * मूल पंक्ति का index सुरक्षित रहता है, लेकिन उसके बोलने
-   * वाले पाठ से श्लोक-क्रमांक हटाया जाता है।
-   */
-  speechQueue = lines
-    .map((line, sourceIndex): SpeechEntry | null => {
-      if (typeof line !== 'string') {
-        return null;
-      }
-
-      const text = prepareSpeechText(line);
-
-      if (!text) {
-        return null;
-      }
-
-      return {
-        text,
-        sourceIndex,
-      };
-    })
-    .filter(
-      (entry): entry is SpeechEntry => entry !== null,
-    );
+  speechQueue = buildSpeechQueue(lines);
 
   isPaused = false;
   isActive = true;
@@ -515,8 +737,8 @@ export function resumeRecitation(): void {
 
 export function stopRecitation(): void {
   /*
-   * पहले token बदलें, फिर cancel करें ताकि पुराने callbacks
-   * वर्तमान वाचन की स्थिति को बदल न सकें।
+   * पहले token बदलें ताकि cancel से आने वाले पुराने
+   * events वर्तमान वाचन को प्रभावित न करें।
    */
   runId += 1;
 
