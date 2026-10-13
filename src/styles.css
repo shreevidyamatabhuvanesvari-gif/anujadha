@@ -1,13 +1,38 @@
-
 :root {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  color-scheme: dark;
+  font-family:
+    "Noto Sans Devanagari",
+    "Nirmala UI",
+    "Mangal",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
-  color: #f8fafc;
-  background: #101827;
+
+  color: #f7f4ff;
+  background: #090c18;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --page-bg: #090c18;
+  --panel-bg: rgba(18, 23, 43, 0.92);
+  --panel-bg-soft: rgba(25, 31, 56, 0.78);
+  --border-color: rgba(181, 174, 255, 0.17);
+  --text-primary: #f7f4ff;
+  --text-secondary: #c3c6dc;
+  --text-muted: #969dbb;
+  --accent-violet: #a78bfa;
+  --accent-cyan: #67e8f9;
+  --accent-pink: #f9a8d4;
+  --success: #6ee7b7;
+  --danger: #fda4af;
+
+  --panel-radius: 22px;
+  --control-radius: 12px;
 }
 
 * {
@@ -17,13 +42,29 @@
 html {
   min-width: 320px;
   min-height: 100%;
-  background: #101827;
+  background: var(--page-bg);
+  scroll-behavior: smooth;
 }
 
 body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+
+  background:
+    radial-gradient(
+      ellipse at 10% 0%,
+      rgba(124, 58, 237, 0.17),
+      transparent 36rem
+    ),
+    radial-gradient(
+      ellipse at 100% 25%,
+      rgba(6, 182, 212, 0.09),
+      transparent 34rem
+    ),
+    var(--page-bg);
+
+  color: var(--text-primary);
 }
 
 body,
@@ -47,14 +88,14 @@ button {
 
 button:disabled {
   cursor: not-allowed;
-  opacity: 0.55;
+  opacity: 0.48;
 }
 
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 3px solid #67e8f9;
+  outline: 3px solid var(--accent-cyan);
   outline-offset: 3px;
 }
 
@@ -65,7 +106,7 @@ video {
 }
 
 video {
-  background: #05070c;
+  background: #03040a;
 }
 
 #root {
@@ -74,6 +115,1206 @@ video {
 }
 
 ::selection {
+  color: #fff;
+  background: #6d28d9;
+}
+
+/* =========================================
+   मुख्य ऐप और हेडर
+   ========================================= */
+
+.shruti-app {
+  width: min(100%, 1600px);
+  min-height: 100vh;
+  margin-inline: auto;
+  padding: clamp(16px, 3vw, 36px);
+}
+
+.shruti-header {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+
+  width: 100%;
+  margin-bottom: 30px;
+  padding: 21px 24px;
+
+  border: 1px solid var(--border-color);
+  border-radius: var(--panel-radius);
+
+  background:
+    linear-gradient(
+      110deg,
+      rgba(124, 58, 237, 0.17),
+      rgba(17, 24, 48, 0.91) 50%,
+      rgba(8, 145, 178, 0.11)
+    );
+
+  box-shadow:
+    0 18px 55px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+
+.shruti-brand-mark {
+  display: grid;
+  flex: 0 0 60px;
+  width: 60px;
+  height: 60px;
+  place-items: center;
+
+  border: 1px solid rgba(255, 221, 145, 0.55);
+  border-radius: 19px;
+
+  background: linear-gradient(145deg, #7c3aed, #4c1d95);
+  box-shadow: 0 8px 28px rgba(124, 58, 237, 0.28);
+
+  color: #fff1c7;
+  font-size: 1.65rem;
+  font-weight: 850;
+}
+
+.shruti-heading-group {
+  min-width: 0;
+  flex: 1;
+}
+
+.shruti-eyebrow,
+.shruti-kicker {
+  margin: 0 0 5px;
+  color: var(--accent-cyan);
+  font-size: 0.73rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.shruti-heading-group h1 {
+  margin: 0;
   color: #ffffff;
-  background: #0e7490;
+  font-size: clamp(1.9rem, 4vw, 2.65rem);
+  font-weight: 850;
+  line-height: 1.15;
+  letter-spacing: 0.015em;
+}
+
+.shruti-subtitle {
+  margin: 6px 0 0;
+  color: var(--text-secondary);
+  font-size: 0.91rem;
+  line-height: 1.65;
+}
+
+.shruti-save-state {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+
+  max-width: 230px;
+  color: var(--text-secondary);
+  font-size: 0.79rem;
+  line-height: 1.5;
+  text-align: right;
+}
+
+.shruti-save-dot {
+  flex: 0 0 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 12px rgba(110, 231, 183, 0.55);
+}
+
+/* =========================================
+   दो-कॉलम लेआउट
+   ========================================= */
+
+.shruti-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  align-items: start;
+  gap: 24px;
+  width: 100%;
+}
+
+.shruti-preview-section,
+.shruti-controls-section {
+  min-width: 0;
+  padding: clamp(17px, 2.2vw, 27px);
+
+  border: 1px solid var(--border-color);
+  border-radius: var(--panel-radius);
+
+  background: var(--panel-bg);
+
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.17),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.shruti-section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  margin-bottom: 22px;
+}
+
+.shruti-section-title-row h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: clamp(1.12rem, 2vw, 1.45rem);
+  font-weight: 780;
+  line-height: 1.45;
+}
+
+.shruti-ratio-badge {
+  flex-shrink: 0;
+  padding: 7px 10px;
+
+  border: 1px solid rgba(103, 232, 249, 0.25);
+  border-radius: 9px;
+
+  background: rgba(8, 145, 178, 0.1);
+  color: #a5f3fc;
+
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.055em;
+}
+
+/* =========================================
+   9:16 वीडियो स्टेज
+   ========================================= */
+
+.shruti-preview-frame {
+  position: relative;
+  isolation: isolate;
+
+  width: min(100%, 440px);
+  aspect-ratio: 9 / 16;
+  margin-inline: auto;
+
+  overflow: hidden;
+  border: 1px solid rgba(196, 181, 253, 0.35);
+  border-radius: 18px;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(76, 29, 149, 0.22),
+      transparent 65%
+    ),
+    #03040a;
+
+  box-shadow:
+    0 18px 48px rgba(0, 0, 0, 0.38),
+    0 0 0 4px rgba(167, 139, 250, 0.045);
+}
+
+.shruti-video {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+  max-width: none;
+
+  /* वीडियो के नियंत्रण और प्लेबैक को सुरक्षित रखते हुए
+     पोर्ट्रेट स्टेज को भरें। */
+  object-fit: cover;
+  object-position: center;
+
+  background: #03040a;
+}
+
+/* =========================================
+   वीडियो चुने जाने से पहले का दृश्य
+   ========================================= */
+
+.shruti-video-placeholder {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+
+  padding: 24px;
+  text-align: center;
+
+  background:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(124, 58, 237, 0.24),
+      transparent 50%
+    ),
+    linear-gradient(160deg, #17122d, #080b17 75%);
+}
+
+.shruti-play-symbol {
+  display: grid;
+  place-items: center;
+
+  width: 68px;
+  height: 68px;
+  padding-left: 4px;
+  margin-bottom: 5px;
+
+  border: 1px solid rgba(196, 181, 253, 0.45);
+  border-radius: 50%;
+
+  background: rgba(124, 58, 237, 0.24);
+  box-shadow: 0 0 35px rgba(124, 58, 237, 0.19);
+
+  color: #e9d5ff;
+  font-size: 1.45rem;
+}
+
+.shruti-video-placeholder strong {
+  color: #ffffff;
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+
+.shruti-video-placeholder > span {
+  color: var(--text-muted);
+  font-size: 0.83rem;
+}
+
+/* =========================================
+   बहुरंगी लाइव कैप्शन
+   ========================================= */
+
+.shruti-live-caption {
+  position: absolute;
+  z-index: 4;
+
+  /*
+   * कैप्शन वीडियो के निचले भाग में रहता है,
+   * लेकिन नियंत्रण पट्टी और नीचे के वॉटरमार्क से ऊपर।
+   */
+  right: 4%;
+  bottom: 20%;
+  left: 4%;
+
+  width: 92%;
+  max-height: 47%;
+  margin-inline: auto;
+  padding: 11px 10px;
+
+  overflow: hidden;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  white-space: normal;
+  text-align: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 13px;
+
+  background: rgba(4, 6, 16, 0.62);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+
+  color: #ffffff;
+  font-size: clamp(1rem, 3.4vw, 1.65rem);
+  font-weight: 900;
+  line-height: 1.8;
+  letter-spacing: 0.005em;
+
+  text-shadow:
+    0 2px 2px rgba(0, 0, 0, 0.98),
+    1px 0 2px rgba(0, 0, 0, 0.95),
+    -1px 0 2px rgba(0, 0, 0, 0.95),
+    0 0 9px rgba(0, 0, 0, 0.85);
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+
+  pointer-events: none;
+}
+
+/*
+ * हर शब्द एक स्वतंत्र रंगयुक्त इकाई है।
+ * inline-block शब्दों को उपलब्ध स्थान पर लपेटता है,
+ * लेकिन शब्द को सामान्य स्थिति में बीच से नहीं तोड़ता।
+ */
+.shruti-caption-word {
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: baseline;
+
+  font-weight: 900;
+  -webkit-text-stroke: 0.25px rgba(0, 0, 0, 0.75);
+
+  text-shadow:
+    0 2px 2px rgba(0, 0, 0, 0.98),
+    1px 0 2px rgba(0, 0, 0, 0.9),
+    -1px 0 2px rgba(0, 0, 0, 0.9),
+    0 0 8px rgba(0, 0, 0, 0.65);
+}
+
+.shruti-caption-space {
+  display: inline;
+  white-space: pre;
+}
+
+/* =========================================
+   MADE IN ANJALI गोल वॉटरमार्क
+   ========================================= */
+
+.made-in-anjali-logo {
+  position: absolute;
+  z-index: 5;
+  right: 13px;
+  bottom: 53px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: clamp(75px, 22%, 98px);
+  aspect-ratio: 1 / 1;
+  padding: 7px;
+
+  overflow: hidden;
+  border: 2px solid rgba(255, 226, 163, 0.95);
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 32% 24%,
+      rgba(167, 139, 250, 0.4),
+      transparent 45%
+    ),
+    rgba(8, 9, 25, 0.86);
+
+  box-shadow:
+    0 0 0 3px rgba(7, 9, 20, 0.5),
+    0 5px 18px rgba(0, 0, 0, 0.45),
+    0 0 18px rgba(196, 181, 253, 0.14);
+
+  color: #fff3c4;
+  line-height: 1.2;
+  text-align: center;
+
+  pointer-events: none;
+  user-select: none;
+}
+
+.made-in-anjali-top {
+  font-size: clamp(0.43rem, 1.45vw, 0.58rem);
+  font-weight: 850;
+  letter-spacing: 0.13em;
+}
+
+.made-in-anjali-name {
+  margin-top: 3px;
+  color: #ffffff;
+  font-size: clamp(0.76rem, 2.25vw, 1rem);
+  font-weight: 950;
+  letter-spacing: 0.04em;
+
+  text-shadow: 0 0 9px rgba(251, 191, 36, 0.38);
+}
+
+.made-in-anjali-bottom {
+  margin-top: 4px;
+  color: #ddd6fe;
+  font-size: clamp(0.34rem, 1.1vw, 0.46rem);
+  font-weight: 800;
+  letter-spacing: 0.055em;
+  white-space: nowrap;
+}
+
+.shruti-visually-hidden {
+  position: absolute !important;
+
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* =========================================
+   वीडियो की जानकारी और निर्देश
+   ========================================= */
+
+.shruti-video-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+
+  margin-top: 15px;
+  padding: 11px 13px;
+
+  border: 1px solid rgba(181, 174, 255, 0.1);
+  border-radius: 11px;
+
+  background: rgba(7, 10, 23, 0.55);
+  color: var(--text-secondary);
+  font-size: 0.79rem;
+}
+
+.shruti-file-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.shruti-time-code {
+  flex-shrink: 0;
+  color: #a5f3fc;
+  font-variant-numeric: tabular-nums;
+}
+
+.shruti-small-note {
+  margin: 14px 0 0;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.8;
+}
+
+.shruti-error {
+  margin: 13px 0 0;
+  padding: 11px 13px;
+
+  border: 1px solid rgba(253, 164, 175, 0.3);
+  border-radius: 10px;
+
+  background: rgba(190, 24, 93, 0.12);
+  color: #fecdd3;
+  font-size: 0.83rem;
+  line-height: 1.65;
+}
+
+/* =========================================
+   पाठ संपादक
+   ========================================= */
+
+.shruti-field-label {
+  display: block;
+  margin-bottom: 10px;
+
+  color: #e6e4ff;
+  font-size: 0.91rem;
+  font-weight: 750;
+}
+
+.shruti-script-input {
+  display: block;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 190px;
+  padding: 15px 16px;
+
+  resize: vertical;
+
+  border: 1px solid rgba(181, 174, 255, 0.22);
+  border-radius: var(--control-radius);
+
+  background: rgba(6, 9, 22, 0.72);
+  color: #fff8e7;
+
+  font-size: 1rem;
+  line-height: 2;
+  caret-color: var(--accent-cyan);
+
+  box-shadow: inset 0 2px 9px rgba(0, 0, 0, 0.15);
+
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.shruti-script-input::placeholder {
+  color: #8188a8;
+  opacity: 1;
+}
+
+.shruti-script-input:focus {
+  border-color: rgba(103, 232, 249, 0.65);
+  outline: none;
+
+  box-shadow:
+    0 0 0 3px rgba(103, 232, 249, 0.08),
+    inset 0 2px 9px rgba(0, 0, 0, 0.12);
+}
+
+.shruti-script-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  margin-top: 12px;
+
+  color: var(--text-muted);
+  font-size: 0.77rem;
+}
+
+.shruti-text-button {
+  padding: 5px 0;
+
+  border: 0;
+  background: transparent;
+  color: #fda4af;
+
+  font-size: 0.81rem;
+  font-weight: 750;
+  text-decoration: underline;
+  text-decoration-color: rgba(253, 164, 175, 0.45);
+  text-underline-offset: 4px;
+}
+
+.shruti-text-button:hover {
+  color: #ffe4e6;
+}
+
+/* =========================================
+   आवाज़ की सेटिंग
+   ========================================= */
+
+.shruti-settings-card {
+  margin-top: 24px;
+  padding: 17px;
+
+  border: 1px solid rgba(181, 174, 255, 0.15);
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(124, 58, 237, 0.085),
+      rgba(6, 9, 22, 0.42)
+    );
+}
+
+.shruti-settings-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  margin-bottom: 22px;
+}
+
+.shruti-settings-heading h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.shruti-settings-heading > span {
+  padding: 5px 8px;
+
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  border-radius: 7px;
+
+  background: rgba(124, 58, 237, 0.12);
+  color: #ddd6fe;
+
+  font-size: 0.7rem;
+  font-weight: 750;
+}
+
+.shruti-range-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px 16px;
+
+  margin-top: 19px;
+
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+}
+
+.shruti-range-row:first-of-type {
+  margin-top: 0;
+}
+
+.shruti-range-row > span {
+  min-width: 0;
+}
+
+.shruti-range-row > strong {
+  color: #e9d5ff;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.shruti-range-row input[type="range"] {
+  grid-column: 1 / -1;
+
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 22px;
+  margin: 0;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  background: transparent;
+  cursor: pointer;
+}
+
+.shruti-range-row input[type="range"]::-webkit-slider-runnable-track {
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    #7c3aed,
+    #a78bfa 52%,
+    #22d3ee
+  );
+}
+
+.shruti-range-row input[type="range"]::-moz-range-track {
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    #7c3aed,
+    #a78bfa 52%,
+    #22d3ee
+  );
+}
+
+.shruti-range-row input[type="range"]::-webkit-slider-thumb {
+  width: 17px;
+  height: 17px;
+  margin-top: -6px;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  border: 2px solid #f5f3ff;
+  border-radius: 50%;
+
+  background: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.18);
+}
+
+.shruti-range-row input[type="range"]::-moz-range-thumb {
+  width: 13px;
+  height: 13px;
+
+  border: 2px solid #f5f3ff;
+  border-radius: 50%;
+
+  background: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.18);
+}
+
+/* =========================================
+   वाचन बटन
+   ========================================= */
+
+.shruti-playback-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 10px;
+
+  margin-top: 22px;
+}
+
+.shruti-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  min-height: 45px;
+  padding: 11px 15px;
+
+  border: 1px solid transparent;
+  border-radius: 11px;
+
+  font-size: 0.86rem;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: center;
+
+  transition:
+    transform 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    opacity 150ms ease;
+}
+
+.shruti-button:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+
+.shruti-button:not(:disabled):active {
+  transform: translateY(0);
+}
+
+.shruti-button--primary {
+  flex: 1 1 155px;
+
+  border-color: rgba(196, 181, 253, 0.38);
+
+  background: linear-gradient(115deg, #7c3aed, #6d28d9);
+  color: #ffffff;
+
+  box-shadow: 0 6px 20px rgba(109, 40, 217, 0.2);
+}
+
+.shruti-button--primary:not(:disabled):hover {
+  background: linear-gradient(115deg, #8b5cf6, #7c3aed);
+  box-shadow: 0 8px 25px rgba(109, 40, 217, 0.28);
+}
+
+.shruti-button--secondary {
+  flex: 1 1 130px;
+
+  border-color: rgba(103, 232, 249, 0.28);
+  background: rgba(8, 145, 178, 0.13);
+  color: #a5f3fc;
+}
+
+.shruti-button--secondary:not(:disabled):hover {
+  background: rgba(8, 145, 178, 0.24);
+}
+
+.shruti-button--outline {
+  border-color: rgba(181, 174, 255, 0.27);
+  background: rgba(255, 255, 255, 0.035);
+  color: #e4defd;
+}
+
+.shruti-button--outline:not(:disabled):hover {
+  border-color: rgba(196, 181, 253, 0.55);
+  background: rgba(124, 58, 237, 0.12);
+}
+
+/* खाली वीडियो स्टेज का बटन पूरे आकार में न फैले। */
+.shruti-video-placeholder .shruti-button {
+  flex: 0 0 auto;
+  margin-top: 10px;
+}
+
+/* =========================================
+   वाचन स्थिति
+   ========================================= */
+
+.shruti-status-panel {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+
+  margin-top: 18px;
+  padding: 13px 14px;
+
+  border: 1px solid var(--border-color);
+  border-radius: 11px;
+
+  background: rgba(6, 9, 22, 0.51);
+  color: var(--text-secondary);
+
+  font-size: 0.82rem;
+  line-height: 1.75;
+}
+
+.shruti-status-light {
+  flex: 0 0 9px;
+  width: 9px;
+  height: 9px;
+  margin-top: 6px;
+
+  border-radius: 50%;
+  background: #a5b4fc;
+  box-shadow: 0 0 9px rgba(165, 180, 252, 0.36);
+}
+
+.shruti-status-panel--playing {
+  border-color: rgba(110, 231, 183, 0.22);
+  background: rgba(6, 78, 59, 0.13);
+  color: #d1fae5;
+}
+
+.shruti-status-panel--playing .shruti-status-light {
+  background: var(--success);
+  box-shadow: 0 0 11px rgba(110, 231, 183, 0.55);
+}
+
+.shruti-status-panel--paused {
+  border-color: rgba(253, 224, 71, 0.2);
+  color: #fef3c7;
+}
+
+.shruti-status-panel--paused .shruti-status-light {
+  background: #facc15;
+}
+
+.shruti-status-panel--finished {
+  border-color: rgba(103, 232, 249, 0.25);
+  color: #cffafe;
+}
+
+.shruti-status-panel--finished .shruti-status-light {
+  background: var(--accent-cyan);
+}
+
+.shruti-status-panel--error {
+  border-color: rgba(253, 164, 175, 0.27);
+  background: rgba(190, 24, 93, 0.09);
+  color: #fecdd3;
+}
+
+.shruti-status-panel--error .shruti-status-light {
+  background: var(--danger);
+}
+
+/* =========================================
+   वर्तमान उच्चरित पंक्ति
+   ========================================= */
+
+.shruti-current-line {
+  margin-top: 17px;
+  padding: 15px;
+
+  border: 1px solid rgba(196, 181, 253, 0.16);
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124, 58, 237, 0.11),
+      rgba(6, 9, 22, 0.4)
+    );
+}
+
+.shruti-current-line-label {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: #c4b5fd;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.015em;
+}
+
+.shruti-current-line p {
+  margin: 0;
+
+  overflow-wrap: anywhere;
+
+  color: #fff3d6;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 2;
+}
+
+/* =========================================
+   पादलेख
+   ========================================= */
+
+.shruti-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  margin-top: 24px;
+  padding: 17px 5px 6px;
+
+  border-top: 1px solid rgba(181, 174, 255, 0.12);
+
+  color: var(--text-muted);
+  font-size: 0.77rem;
+  line-height: 1.7;
+}
+
+.shruti-footer span:last-child {
+  color: #d8c8ff;
+  font-size: 0.7rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+}
+
+/* =========================================
+   टैबलेट और छोटे लैपटॉप
+   ========================================= */
+
+@media (max-width: 1000px) {
+  .shruti-app {
+    padding: 20px;
+  }
+
+  .shruti-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .shruti-preview-section,
+  .shruti-controls-section {
+    padding: clamp(17px, 3vw, 27px);
+  }
+
+  .shruti-preview-frame {
+    width: min(100%, 420px);
+  }
+
+  .shruti-live-caption {
+    font-size: clamp(1rem, 4vw, 1.65rem);
+  }
+}
+
+/* =========================================
+   मोबाइल
+   ========================================= */
+
+@media (max-width: 600px) {
+  .shruti-app {
+    padding: 12px;
+  }
+
+  .shruti-header {
+    align-items: flex-start;
+    gap: 12px;
+
+    margin-bottom: 17px;
+    padding: 15px 13px;
+
+    border-radius: 17px;
+  }
+
+  .shruti-brand-mark {
+    flex-basis: 47px;
+    width: 47px;
+    height: 47px;
+
+    border-radius: 14px;
+    font-size: 1.34rem;
+  }
+
+  .shruti-eyebrow {
+    font-size: 0.63rem;
+    letter-spacing: 0.065em;
+  }
+
+  .shruti-heading-group h1 {
+    font-size: 1.85rem;
+  }
+
+  .shruti-subtitle {
+    font-size: 0.77rem;
+    line-height: 1.55;
+  }
+
+  .shruti-save-state {
+    flex: 0 0 auto;
+    gap: 6px;
+
+    max-width: 118px;
+    padding-top: 4px;
+
+    font-size: 0.67rem;
+  }
+
+  .shruti-save-dot {
+    flex-basis: 7px;
+    width: 7px;
+    height: 7px;
+  }
+
+  .shruti-layout {
+    gap: 15px;
+  }
+
+  .shruti-preview-section,
+  .shruti-controls-section {
+    padding: 15px 12px;
+    border-radius: 17px;
+  }
+
+  .shruti-section-title-row {
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 17px;
+  }
+
+  .shruti-section-title-row h2 {
+    font-size: 1.08rem;
+  }
+
+  .shruti-kicker {
+    font-size: 0.62rem;
+    letter-spacing: 0.09em;
+  }
+
+  .shruti-ratio-badge {
+    padding: 6px 7px;
+    font-size: 0.58rem;
+  }
+
+  .shruti-preview-frame {
+    width: min(100%, 360px);
+    border-radius: 14px;
+  }
+
+  .shruti-live-caption {
+    right: 3%;
+    bottom: 20%;
+    left: 3%;
+
+    width: 94%;
+    max-height: 49%;
+    padding: 8px 6px;
+
+    border-radius: 10px;
+    font-size: clamp(0.92rem, 4.1vw, 1.4rem);
+    line-height: 1.75;
+  }
+
+  .made-in-anjali-logo {
+    right: 9px;
+    bottom: 47px;
+    width: clamp(68px, 22%, 84px);
+    padding: 5px;
+  }
+
+  .made-in-anjali-top {
+    font-size: 0.42rem;
+  }
+
+  .made-in-anjali-name {
+    font-size: 0.76rem;
+  }
+
+  .made-in-anjali-bottom {
+    font-size: 0.34rem;
+  }
+
+  .shruti-video-meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .shruti-small-note {
+    font-size: 0.75rem;
+  }
+
+  .shruti-script-input {
+    min-height: 170px;
+    padding: 12px;
+    font-size: 0.94rem;
+  }
+
+  .shruti-settings-card {
+    padding: 13px;
+  }
+
+  .shruti-playback-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .shruti-button {
+    min-width: 0;
+    min-height: 43px;
+    padding: 10px 9px;
+    font-size: 0.79rem;
+  }
+
+  .shruti-button--primary {
+    grid-column: 1 / -1;
+  }
+
+  .shruti-status-panel {
+    padding: 11px;
+    font-size: 0.78rem;
+  }
+
+  .shruti-current-line {
+    padding: 12px;
+  }
+
+  .shruti-current-line p {
+    font-size: 0.94rem;
+  }
+
+  .shruti-footer {
+    font-size: 0.7rem;
+  }
+}
+
+/* बहुत संकरी स्क्रीन */
+@media (max-width: 360px) {
+  .shruti-app {
+    padding: 8px;
+  }
+
+  .shruti-header {
+    gap: 9px;
+    padding: 12px 9px;
+  }
+
+  .shruti-brand-mark {
+    flex-basis: 40px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .shruti-heading-group h1 {
+    font-size: 1.6rem;
+  }
+
+  .shruti-save-state {
+    max-width: 93px;
+    font-size: 0.62rem;
+  }
+
+  .shruti-preview-section,
+  .shruti-controls-section {
+    padding: 12px 9px;
+  }
+
+  .shruti-ratio-badge {
+    font-size: 0.52rem;
+  }
+
+  .shruti-live-caption {
+    font-size: 0.92rem;
+  }
+}
+
+/* गति कम करने की सिस्टम प्राथमिकता का सम्मान करें */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
