@@ -21,7 +21,18 @@ const DEFAULT_SCRIPT =
   'ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम्।\n\nउर्वारुकमिव बन्धनान्मृत्योर्मुक्षीय मामृतात्॥';
 const MAX_SPEECH_LINE_LENGTH = 42;
 
-/** Wrap long text at whitespace so a spoken/caption line never splits a word. */
+const CAPTION_COLORS = [
+  '#ff5252',
+  '#ffb300',
+  '#ffee58',
+  '#69f0ae',
+  '#40c4ff',
+  '#b388ff',
+  '#ff80ab',
+  '#ffffff',
+];
+
+/** पाठ को शब्दों की सीमाओं पर बाँटें; किसी शब्द को बीच से न तोड़ें। */
 function splitIntoSpeechLines(text: string): string[] {
   const result: string[] = [];
 
@@ -32,7 +43,10 @@ function splitIntoSpeechLines(text: string): string[] {
     for (const word of words) {
       const candidate = current ? `${current} ${word}` : word;
 
-      if (current && Array.from(candidate).length > MAX_SPEECH_LINE_LENGTH) {
+      if (
+        current &&
+        Array.from(candidate).length > MAX_SPEECH_LINE_LENGTH
+      ) {
         result.push(current);
         current = word;
       } else {
@@ -113,7 +127,6 @@ export default function App() {
     };
   }, [videoUrl]);
 
-  // Stop speech and video when this screen is removed.
   useEffect(() => {
     return () => {
       stopRecitation();
@@ -131,12 +144,10 @@ export default function App() {
         setVideoError(
           'कृपया MP4, WebM या ब्राउज़र में समर्थित वीडियो फ़ाइल चुनें।',
         );
-
         event.target.value = '';
         return;
       }
 
-      // Stop current playback before replacing the media source.
       stopRecitation();
       videoRef.current?.pause();
 
@@ -151,7 +162,6 @@ export default function App() {
       setCurrentLineIndex(-1);
       setStatus('idle');
 
-      // Allows the same file to be selected again.
       event.target.value = '';
     },
     [],
@@ -164,7 +174,6 @@ export default function App() {
       return;
     }
 
-    // Avoid overlap with an earlier speech queue.
     stopRecitation();
 
     setStatus('playing');
@@ -264,6 +273,13 @@ export default function App() {
   const currentLine =
     currentLineIndex >= 0 ? lines[currentLineIndex] ?? '' : '';
 
+  // प्रत्येक शब्द को अलग रंग दें; मूल शब्द और उनके क्रम को न बदलें।
+  const captionWords = currentLine
+    ? currentLine.split(/(\s+)/).filter((part) => part.length > 0)
+    : [];
+
+  let captionWordIndex = 0;
+
   return (
     <main className="shruti-app">
       <header className="shruti-header">
@@ -346,8 +362,40 @@ export default function App() {
             </div>
 
             {currentLine && (
-              <div className="shruti-live-caption" aria-live="polite">
-                <span>{currentLine}</span>
+              <div
+                className="shruti-live-caption"
+                aria-live="polite"
+                aria-label={currentLine}
+              >
+                {captionWords.map((part, index) => {
+                  if (/^\s+$/.test(part)) {
+                    return (
+                      <span
+                        className="shruti-caption-space"
+                        aria-hidden="true"
+                        key={`space-${index}`}
+                      >
+                        {part}
+                      </span>
+                    );
+                  }
+
+                  const color =
+                    CAPTION_COLORS[
+                      captionWordIndex++ % CAPTION_COLORS.length
+                    ];
+
+                  return (
+                    <span
+                      className="shruti-caption-word"
+                      aria-hidden="true"
+                      key={`word-${index}`}
+                      style={{ color }}
+                    >
+                      {part}
+                    </span>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -380,9 +428,9 @@ export default function App() {
           )}
 
           <p className="shruti-small-note">
-            वीडियो आपके डिवाइस पर ही पूर्वावलोकित होता है। गोल लोगो वीडियो
-            के ऊपर दिखता है; MP4 निर्यात या मूल फ़ाइल में स्थायी एम्बेडिंग
-            शामिल नहीं है।
+            वीडियो आपके डिवाइस पर ही पूर्वावलोकित होता है। गोल लोगो और
+            बहुरंगी पाठ पूर्वावलोकन के ऊपर दिखते हैं; MP4 निर्यात या मूल
+            फ़ाइल में स्थायी एम्बेडिंग शामिल नहीं है।
           </p>
         </section>
 
