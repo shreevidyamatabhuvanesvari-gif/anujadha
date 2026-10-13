@@ -1,0 +1,3051 @@
+{
+  "schemaVersion": "1.0.0",
+  "datasetVersion": "2026-10-13.3",
+  "id": "sanskrit-vedic-pronunciation",
+  "title": "श्रुति — संस्कृत एवं वैदिक उच्चारण सहायता शब्दकोश",
+  "filePath": "language/sanskrit-vedic-pronunciation.json",
+  "language": [
+    "sa",
+    "sa-Deva",
+    "hi-IN"
+  ],
+  "status": "expanded-curated-starter-dataset",
+  "coverageNotice": "यह विस्तारित स्थानीय उच्चारण-सहायता शब्दकोश है, सम्पूर्ण वैदिक कोश नहीं। इसमें चारों वेदों, विभिन्न शाखाओं, ब्राह्मणों, आरण्यकों, उपनिषदों, पुराणों और समस्त संस्कृत साहित्य के हर शब्द का दावा नहीं किया जाता। बिना संदर्भ-संस्करण और लक्षित Android/Chrome आवाज़ में मानवीय जाँच के किसी प्रविष्टि को सत्यापित न मानें।",
+  "enginePolicy": {
+    "provider": "browser-speech-synthesis",
+    "externalTTS": false,
+    "cloudTTS": false,
+    "apiKeyRequired": false,
+    "modelTraining": false,
+    "note": "यह स्थानीय डेटा-आधारित lookup/सुझाव देता है; यह SpeechSynthesis के ध्वनि-मॉडल को train नहीं करता। बाहरी/क्लाउड TTS और API key निषिद्ध हैं।"
+  },
+  "integrationContract": {
+    "intendedConsumer": "src/lib/tts.ts",
+    "recommendedFunctions": [
+      "loadPronunciationDictionary()",
+      "lookupPronunciationEntry(surface)",
+      "prepareTtsTextWithoutMutatingDisplayText(text)",
+      "detectVedicAccentMarks(text)"
+    ],
+    "failureMode": "JSON लोड/parse न हो तो मूल पाठ से वाचन जारी रखें; कोई चिह्न या अज्ञात अक्षर न हटाएँ।",
+    "datasetLoading": "Fetch relative to the deployed application base, handle non-OK responses and JSON parse failures, and retain original source text."
+  },
+  "defaultEntryPolicy": {
+    "autoApply": false,
+    "pronunciationVerified": false,
+    "ttsCandidatePolicy": "ttsCandidate केवल समीक्षा के लिए है; स्वचालित रूप से तब तक लागू न करें जब तक मानव द्वारा लक्षित आवाज़ में परीक्षण कर मंजूरी न दी जाए।",
+    "displayTextImmutable": true,
+    "preserveOriginalText": true,
+    "preserveVedicAccents": true,
+    "preserveAnusvara": true,
+    "preserveCandrabindu": true,
+    "preserveVisarga": true,
+    "preservePlutaMarkers": true,
+    "preserveUnknownCharacters": true,
+    "preserveWordOrder": true,
+    "normalizeSourceInPlace": false,
+    "allEntriesRequireRuntimeTest": true
+  },
+  "characterInventory": {
+    "independentVowels": [
+      "अ",
+      "आ",
+      "इ",
+      "ई",
+      "उ",
+      "ऊ",
+      "ऋ",
+      "ॠ",
+      "ऌ",
+      "ॡ",
+      "ए",
+      "ऐ",
+      "ओ",
+      "औ"
+    ],
+    "nasalAndSanskritMarks": [
+      {
+        "char": "ं",
+        "name": "अनुस्वार",
+        "policy": "preserve; context-sensitive; do not globally replace with म्"
+      },
+      {
+        "char": "ँ",
+        "name": "चन्द्रबिन्दु",
+        "policy": "preserve; do not substitute anusvara"
+      },
+      {
+        "char": "ः",
+        "name": "विसर्ग",
+        "policy": "preserve; pronunciation/sandhi depends on context"
+      },
+      {
+        "char": "्",
+        "name": "हलन्त/विराम",
+        "policy": "preserve; important for final consonants and conjuncts"
+      },
+      {
+        "char": "ऽ",
+        "name": "अवग्रह",
+        "policy": "preserve; sandhi-related marker"
+      }
+    ],
+    "vedicAccentMarks": [
+      {
+        "char": "॑",
+        "codePoint": "U+0951",
+        "name": "उदात्त चिह्न",
+        "policy": "preserve; browser TTS accent realization is not guaranteed"
+      },
+      {
+        "char": "॒",
+        "codePoint": "U+0952",
+        "name": "अनुदात्त चिह्न",
+        "policy": "preserve; browser TTS accent realization is not guaranteed"
+      },
+      {
+        "char": "᳚",
+        "codePoint": "U+1CDA",
+        "name": "Vedic tone double svarita",
+        "policy": "preserve"
+      },
+      {
+        "char": "᳛",
+        "codePoint": "U+1CDB",
+        "name": "Vedic tone triple svarita",
+        "policy": "preserve"
+      },
+      {
+        "char": "᳴",
+        "codePoint": "U+1CF4",
+        "name": "Vedic tone candra above",
+        "policy": "preserve"
+      },
+      {
+        "char": "३",
+        "name": "प्लुत मात्रा में प्रयुक्त अंक का उदाहरण",
+        "policy": "preserve; interpret only with known transcription convention"
+      }
+    ],
+    "conjunctExamples": [
+      "क्ष",
+      "क्ष्ण",
+      "क्ष्म",
+      "क्ष्व",
+      "क्ष्य",
+      "त्र",
+      "त्र्य",
+      "ज्ञ",
+      "श्र",
+      "स्त्र",
+      "ष्ठ",
+      "ष्ण",
+      "क्त",
+      "क्त्व",
+      "ङ्क",
+      "ङ्ख",
+      "ङ्ग",
+      "ङ्घ",
+      "ञ्च",
+      "ञ्ज",
+      "ण्ड",
+      "ण्ठ",
+      "द्ग",
+      "द्घ",
+      "द्भ",
+      "न्ध",
+      "म्न",
+      "ह्न",
+      "ह्म",
+      "ह्य",
+      "ह्व"
+    ],
+    "dependentVowelSigns": [
+      {
+        "char": "ा",
+        "name": "आ की मात्रा",
+        "soundClass": "दीर्घ आ",
+        "policy": "preserve"
+      },
+      {
+        "char": "ि",
+        "name": "इ की मात्रा",
+        "soundClass": "ह्रस्व इ",
+        "policy": "preserve"
+      },
+      {
+        "char": "ी",
+        "name": "ई की मात्रा",
+        "soundClass": "दीर्घ ई",
+        "policy": "preserve"
+      },
+      {
+        "char": "ु",
+        "name": "उ की मात्रा",
+        "soundClass": "ह्रस्व उ",
+        "policy": "preserve"
+      },
+      {
+        "char": "ू",
+        "name": "ऊ की मात्रा",
+        "soundClass": "दीर्घ ऊ",
+        "policy": "preserve"
+      },
+      {
+        "char": "ृ",
+        "name": "ऋ की मात्रा",
+        "soundClass": "ऋ स्वर",
+        "policy": "preserve"
+      },
+      {
+        "char": "ॄ",
+        "name": "ॠ की मात्रा",
+        "soundClass": "दीर्घ ऋ",
+        "policy": "preserve"
+      },
+      {
+        "char": "ॅ",
+        "name": "चन्द्र ए की मात्रा (Devanagari Vowel Sign Candra E)",
+        "soundClass": "विशेष ए स्वर-चिह्न; वास्तविक मान स्रोत/लिपि-परम्परा से जाँचें",
+        "policy": "preserve; interpret by orthographic context"
+      },
+      {
+        "char": "े",
+        "name": "ए की मात्रा",
+        "soundClass": "ए",
+        "policy": "preserve"
+      },
+      {
+        "char": "ै",
+        "name": "ऐ की मात्रा",
+        "soundClass": "ऐ",
+        "policy": "preserve"
+      },
+      {
+        "char": "ॉ",
+        "name": "ऑ मात्रा चिह्न",
+        "soundClass": "आधुनिक/विशेष लेखन",
+        "policy": "preserve"
+      },
+      {
+        "char": "ो",
+        "name": "ओ की मात्रा",
+        "soundClass": "ओ",
+        "policy": "preserve"
+      },
+      {
+        "char": "ौ",
+        "name": "औ की मात्रा",
+        "soundClass": "औ",
+        "policy": "preserve"
+      },
+      {
+        "char": "ॢ",
+        "name": "ऌ की मात्रा",
+        "soundClass": "ऌ",
+        "policy": "preserve"
+      },
+      {
+        "char": "ॣ",
+        "name": "ॡ की मात्रा",
+        "soundClass": "दीर्घ ऌ",
+        "policy": "preserve"
+      }
+    ],
+    "consonantsByArticulation": [
+      {
+        "group": "कण्ठ्य/velar",
+        "letters": [
+          "क",
+          "ख",
+          "ग",
+          "घ",
+          "ङ"
+        ],
+        "contrast": "अल्पप्राण/महाप्राण, अघोष/घोष और नासिक्य भेद सुरक्षित रखें"
+      },
+      {
+        "group": "तालव्य/palatal",
+        "letters": [
+          "च",
+          "छ",
+          "ज",
+          "झ",
+          "ञ"
+        ],
+        "contrast": "च/छ और ज/झ का महाप्राण भेद सुरक्षित रखें"
+      },
+      {
+        "group": "मूर्धन्य/retroflex",
+        "letters": [
+          "ट",
+          "ठ",
+          "ड",
+          "ढ",
+          "ण"
+        ],
+        "contrast": "मूर्धन्य वर्णों को दन्त्य वर्णों से न मिलाएँ"
+      },
+      {
+        "group": "दन्त्य/dental",
+        "letters": [
+          "त",
+          "थ",
+          "द",
+          "ध",
+          "न"
+        ],
+        "contrast": "दन्त्य स्थान और महाप्राण भेद सुरक्षित रखें"
+      },
+      {
+        "group": "ओष्ठ्य/labial",
+        "letters": [
+          "प",
+          "फ",
+          "ब",
+          "भ",
+          "म"
+        ],
+        "contrast": "प/फ और ब/भ के महाप्राण भेद सुरक्षित रखें"
+      },
+      {
+        "group": "अन्तःस्थ/approximants",
+        "letters": [
+          "य",
+          "र",
+          "ल",
+          "व"
+        ],
+        "contrast": "संयुक्ताक्षरों में इन व्यंजनों को न हटाएँ"
+      },
+      {
+        "group": "ऊष्म/sibilants-and-glottal",
+        "letters": [
+          "श",
+          "ष",
+          "स",
+          "ह"
+        ],
+        "contrast": "श, ष और स का भेद सुरक्षित रखें"
+      }
+    ],
+    "vedicExtensionRangesToPreserve": [
+      {
+        "range": "U+0951–U+0952",
+        "name": "Devanagari stress signs",
+        "policy": "preserve"
+      },
+      {
+        "range": "U+1CD0–U+1CFF",
+        "name": "Vedic Extensions block",
+        "policy": "preserve every present code point; do not assume every sign is an accent"
+      },
+      {
+        "range": "U+A8E0–U+A8FF",
+        "name": "Devanagari Extended block",
+        "policy": "preserve every present code point; check specific glyph before interpreting"
+      }
+    ]
+  },
+  "pronunciationRules": [
+    {
+      "id": "anusvara-context",
+      "scope": "contextual",
+      "description": "अनुस्वार का साकार उच्चारण पड़ोसी वर्ण, पद-सन्धि, छन्द और पाठ-परम्परा पर निर्भर हो सकता है।",
+      "autoApply": false
+    },
+    {
+      "id": "candrabindu",
+      "scope": "character",
+      "description": "चन्द्रबिन्दु अनुनासिकता से संबंधित है; इसे अनुस्वार से न बदलें।",
+      "autoApply": false
+    },
+    {
+      "id": "visarga-context",
+      "scope": "contextual",
+      "description": "विसर्ग को बिना संदर्भ-प्रमाण हटाएँ या बदलें नहीं।",
+      "autoApply": false
+    },
+    {
+      "id": "vedic-accent-preservation",
+      "scope": "vedic",
+      "description": "उदात्त/अनुदात्त/स्वरित चिह्न सुरक्षित रखें; सामान्य browser TTS से शाखा-विशिष्ट स्वराघात की गारंटी न दें।",
+      "autoApply": false
+    },
+    {
+      "id": "retroflex-dental-contrast",
+      "scope": "character",
+      "description": "ट/ठ/ड/ढ/ण और त/थ/द/ध/न के भेद को बनाए रखें।",
+      "autoApply": false
+    },
+    {
+      "id": "aspiration-contrast",
+      "scope": "character",
+      "description": "क/ख, ग/घ, च/छ, ज/झ, ट/ठ, ड/ढ, त/थ, द/ध, प/फ और ब/भ के महाप्राण-अल्पप्राण भेद को rewrite से न मिटाएँ।",
+      "autoApply": false
+    },
+    {
+      "id": "soft-line-hyphen",
+      "scope": "formatting",
+      "description": "पंक्ति-अंत hyphen टाइपसेटिंग हो तो अगला भाग एक utterance में जोड़ना संभव है, पर पद-विच्छेद और स्रोत-पाठ जाँचना आवश्यक है।",
+      "autoApply": false
+    },
+    {
+      "id": "do-not-infer-spoken-form-from-IAST",
+      "scope": "global",
+      "description": "IAST पाठ transliteration aid है; इसे TTS का स्वतः प्रतिस्थापन न मानें।",
+      "autoApply": false
+    },
+    {
+      "id": "final-consonants",
+      "scope": "phonology",
+      "description": "हलन्त और शब्दान्त व्यंजनों को बिना प्रसंग/स्रोत जाँच हटाएँ नहीं।",
+      "autoApply": false
+    },
+    {
+      "id": "long-vowel-duration",
+      "scope": "phonology",
+      "description": "दीर्घ स्वर की ध्वनि अवधि आवाज़-निर्भर है; pitch/rate से सही मात्रा की गारंटी नहीं।",
+      "autoApply": false
+    },
+    {
+      "id": "sandhi-boundaries",
+      "scope": "orthography",
+      "description": "समास, सन्धि और editorial hyphen को स्रोत संस्करण की पुष्टि के बिना एक ही अनुमानित शब्द में न बदलें।",
+      "autoApply": false
+    },
+    {
+      "id": "human-breathing",
+      "scope": "prosody",
+      "description": "श्वास-सदृश विराम punctuation/phrase grouping से सीमित रूप में सम्भव हैं; वास्तविक मानवीय श्वास/स्वर-गुण browser SpeechSynthesis API से उत्पन्न नहीं होते।",
+      "autoApply": false
+    },
+    {
+      "id": "dictionary-lookup-never-rewrites-display",
+      "scope": "safety",
+      "description": "Dictionary lookup must only annotate or propose a candidate. Display text remains exact source.",
+      "autoApply": false
+    }
+  ],
+  "lexiconEntries": [
+    {
+      "surface": "अग्निमीळे",
+      "domain": "vedic_samhita",
+      "iast": "agnimīḷe",
+      "pronunciationHint": "‘मीळे’ में दीर्घ ई और ळ का पृथक् ध्यान रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "पुरोहितम्",
+      "domain": "vedic_samhita",
+      "iast": "purohitam",
+      "pronunciationHint": "पुरो-हितम्; अंतिम म् स्पष्ट रहे।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "यज्ञस्य",
+      "domain": "vedic_samhita",
+      "iast": "yajñasya",
+      "pronunciationHint": "य-ज्ञ संयुक्ताक्षर को एक पद-समूह की तरह पढ़ें; इसे मनमाने ढंग से अलग न करें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "देवमृत्विजम्",
+      "domain": "vedic_samhita",
+      "iast": "devamṛtvijam",
+      "pronunciationHint": "देवम्-ऋत्विजम्; ऋ की ध्वनि और संयुक्त पद-सीमा पर ध्यान दें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "होतारम्",
+      "domain": "vedic_samhita",
+      "iast": "hotāram",
+      "pronunciationHint": "हो-ता-रम्; आ दीर्घ है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "रत्नधातमम्",
+      "domain": "vedic_samhita",
+      "iast": "ratnadhātamam",
+      "pronunciationHint": "रत्न-धा-तमम्; संयुक्त व्यंजन-समूह को न गिराएँ।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "दधिक्राव्णः",
+      "domain": "vedic_samhita",
+      "iast": "dadhikrāvṇaḥ",
+      "pronunciationHint": "क्राव्ण में व्ण संयुक्त व्यंजन-समूह और अन्तिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "दधिक्राव्णो",
+      "domain": "vedic_samhita",
+      "iast": "dadhikrāvṇo",
+      "pronunciationHint": "क्राव्ण में व्ण समूह स्पष्ट रखें; यह पाठ-रूप संदर्भ पर निर्भर हो सकता है।",
+      "pronunciationVerified": false,
+      "autoApply": false,
+      "reviewNote": "स्वतंत्र रूप से प्रमाणित पाठ-भेद नहीं; स्रोत-संस्करण जोड़ें।"
+    },
+    {
+      "surface": "अकारिषम्",
+      "domain": "vedic_samhita",
+      "iast": "akāriṣam",
+      "pronunciationHint": "का दीर्घ; ष को श न पढ़ें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ऋतम्",
+      "domain": "vedic_samhita",
+      "iast": "ṛtam",
+      "pronunciationHint": "ऋ स्वतंत्र स्वर है; इसे सामान्य ‘रि’ मानकर न बदलें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ऋतस्य",
+      "domain": "vedic_samhita",
+      "iast": "ṛtasya",
+      "pronunciationHint": "ऋ और तस्य को स्पष्ट रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ऋतावृधः",
+      "domain": "vedic_samhita",
+      "iast": "ṛtāvṛdhaḥ",
+      "pronunciationHint": "ऋ तथा वृ में ऋ-स्वर और अन्तिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ऋतजातः",
+      "domain": "vedic_samhita",
+      "iast": "ṛtajātaḥ",
+      "pronunciationHint": "ऋ से आरम्भ; अन्तिम विसर्ग न हटाएँ।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ऋतावान्",
+      "domain": "vedic_samhita",
+      "iast": "ṛtāvān",
+      "pronunciationHint": "ऋ तथा दीर्घ आ सुरक्षित रखें; अंतिम न् स्पष्ट हो।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "बृहस्पतिः",
+      "domain": "vedic_samhita",
+      "iast": "bṛhaspatiḥ",
+      "pronunciationHint": "बृ में ऋ-स्वर; अन्तिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ऋत्विज्",
+      "domain": "vedic_ritual",
+      "iast": "ṛtvij",
+      "pronunciationHint": "ऋत्-विज्; ऋ को अलग स्वर के रूप में रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "होतृ",
+      "domain": "vedic_ritual",
+      "iast": "hotṛ",
+      "pronunciationHint": "अंतिम ऋ स्वर का उच्चारण स्थानीय आवाज़ पर निर्भर हो सकता है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "उद्गातृ",
+      "domain": "vedic_ritual",
+      "iast": "udgātṛ",
+      "pronunciationHint": "उद्-गा-तृ; दीर्घ आ और अंतिम ऋ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "पुरोडाश",
+      "domain": "vedic_ritual",
+      "iast": "puroḍāśa",
+      "pronunciationHint": "ड और द में भेद रखें; श को ष न पढ़ें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ब्रह्मणस्पतिः",
+      "domain": "vedic_deity_name",
+      "iast": "brahmaṇaspatiḥ",
+      "pronunciationHint": "ब्रह्मण-स्पतिः; ण, प और अंतिम विसर्ग स्पष्ट रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "प्रज्ञानं ब्रह्म",
+      "domain": "upanishadic_phrase",
+      "iast": "prajñānaṃ brahma",
+      "pronunciationHint": "ज्ञ संयुक्ताक्षर; आनुस्वारयुक्त ‘नं’ को बिना सन्दर्भ म् में न बदलें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सच्चिदानन्द",
+      "domain": "philosophical_term",
+      "iast": "saccidānanda",
+      "pronunciationHint": "सत्-चित्-आनन्द के परम्परागत संयोग का प्रचलित लिखित रूप; स्रोत-वर्तनी सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "महात्रिपुरसुन्दरी",
+      "domain": "devotional_name",
+      "iast": "mahātripurasundarī",
+      "pronunciationHint": "त्रि, पुर, सुन्दरी के अक्षर-समूह स्पष्ट रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "जटाटवी",
+      "domain": "shiva_tandava",
+      "iast": "jaṭāṭavī",
+      "pronunciationHint": "ट-वर्ग के मूर्धन्य ट/ट् पर ध्यान दें; आ और ई दीर्घ हैं।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "गलज्जलप्रवाहपावितस्थले",
+      "domain": "shiva_tandava",
+      "iast": "galajjalapravāhapāvitasthale",
+      "pronunciationHint": "समास को शब्दों के भीतर अनावश्यक विराम दिए बिना पढ़ें; दीर्घ आ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "अवलम्ब्य",
+      "domain": "sanskrit_compound",
+      "iast": "avalambya",
+      "pronunciationHint": "लम्ब में अनुस्वार नहीं, बल्कि म्ब संयुक्त ध्वनि है; ब को न गिराएँ।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "लम्बितां",
+      "domain": "shiva_tandava",
+      "iast": "lambitāṃ",
+      "pronunciationHint": "अंत में अनुस्वार है। शब्द के बाद आने वाले ध्वनि-सन्दर्भ और पाठ-परम्परा के अनुसार उसकी साकार ध्वनि बदल सकती है; सार्वत्रिक म्-प्रतिस्थापन न करें।",
+      "ttsCandidate": "लम्बिताम्",
+      "candidateStatus": "unverified-manual-review-required",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "भुजङ्गतुङ्गमालिकाम्",
+      "domain": "shiva_tandava",
+      "iast": "bhujaṅgatuṅgamālikām",
+      "pronunciationHint": "ङ्ग और ङ्ग/ङ्गतुङ्ग समूहों में ङ् की नासिक्य ध्वनि सुरक्षित रखें; आ दीर्घ हैं।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "डमड्डमड्डमड्डमन्",
+      "domain": "shiva_tandava",
+      "iast": "ḍamaḍḍamaḍḍamaḍḍaman",
+      "pronunciationHint": "ड मूर्धन्य है; ड्ड समूहों को न हटाएँ। यह ध्वन्यात्मक पद है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "निनादवड्डमर्वयम्",
+      "domain": "shiva_tandava",
+      "iast": "ninādavaḍḍamarvayam",
+      "pronunciationHint": "यह पाठ-रूप संस्करणानुसार जाँचा जाए; संयुक्त व्यंजन यथावत रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false,
+      "reviewNote": "स्त्रोत-पाठ के संस्करण में वर्तनी सत्यापित करें।"
+    },
+    {
+      "surface": "जटाकटाहसम्भ्रमभ्रमन्निलिम्पनिर्झरी",
+      "domain": "shiva_tandava",
+      "iast": "jaṭākaṭāhasambhramabhramannilimpanirjharī",
+      "pronunciationHint": "सम्भ्रम, भ्रमन् और निलिम्प के बीच अवांछित विराम न दें; ट/ठ/ड/ढ/ण मूर्धन्य हैं।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "विलोलवीचिवल्लरीविराजमानमूर्धनि",
+      "domain": "shiva_tandava",
+      "iast": "vilolavīcivallarīvirājamānamūrdhani",
+      "pronunciationHint": "वी, री, रा और मू दीर्घ हैं; मूर्धनि का मूर्धन्य ध्वनि-समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "धगद्धगद्धगज्ज्वलल्ललाटपट्टपावके",
+      "domain": "shiva_tandava",
+      "iast": "dhagaddhagaddhagajjvalallalāṭapaṭṭapāvake",
+      "pronunciationHint": "दोहराए व्यंजन और ज्ज्वल/ट्ट जैसे समूह न छोड़ें; ट मूर्धन्य है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "किशोरचन्द्रशेखरे",
+      "domain": "shiva_tandava",
+      "iast": "kiśoracandraśekhare",
+      "pronunciationHint": "श, चन्द्र और शेखर के बीच स्पष्ट पद-प्रवाह रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "धराधरेन्द्रनन्दिनी",
+      "domain": "shiva_tandava",
+      "iast": "dharādharendranandinī",
+      "pronunciationHint": "दीर्घ आ, न्द्र और न्दिनी सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "स्फुरद्दिगन्तसन्तति",
+      "domain": "shiva_tandava",
+      "iast": "sphuraddigantasantati",
+      "pronunciationHint": "स्फुरद्-दिगन्त-सन्तति; संयुक्त और द्वित्व व्यंजन न हटाएँ।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "कृपाकटाक्षधोरणी",
+      "domain": "shiva_tandava",
+      "iast": "kṛpākaṭākṣadhoraṇī",
+      "pronunciationHint": "कृ में ऋ-स्वर; टाक्ष में मूर्धन्य ट/ष के भेद को सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "दुर्धरापदि",
+      "domain": "shiva_tandava",
+      "iast": "durdharāpadi",
+      "pronunciationHint": "ध और द में भेद रखें; आ दीर्घ है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "भुजङ्गपिङ्गल",
+      "domain": "shiva_tandava",
+      "iast": "bhujaṅgapiṅgala",
+      "pronunciationHint": "ङ्ग और ङ्ग/ङ्गपिङ्ग जैसे समूहों की नासिक्य ध्वनि सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "स्फुरत्फणामणिप्रभा",
+      "domain": "shiva_tandava",
+      "iast": "sphuratphaṇāmaṇiprabhā",
+      "pronunciationHint": "फणामणि में ण मूर्धन्य है; आ दीर्घ हैं।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "कदम्बकुङ्कुमद्रव",
+      "domain": "shiva_tandava",
+      "iast": "kadambakuṅkumadrava",
+      "pronunciationHint": "म्ब और ङ्क समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "मदान्धसिन्धुर",
+      "domain": "shiva_tandava",
+      "iast": "madāndhasindhura",
+      "pronunciationHint": "न्ध और न्धु समूह में ध को न छोड़ें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सहस्रलोचन",
+      "domain": "shiva_tandava",
+      "iast": "sahasralocana",
+      "pronunciationHint": "सहस्र में स्र समूह के बीच अनावश्यक स्वर न जोड़ें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "प्रसूनधूलिधोरणी",
+      "domain": "shiva_tandava",
+      "iast": "prasūnadhūlidhoraṇī",
+      "pronunciationHint": "ऊ और धू दीर्घ हैं; ण मूर्धन्य है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "जाटजूटकः",
+      "domain": "shiva_tandava",
+      "iast": "jāṭajūṭakaḥ",
+      "pronunciationHint": "आ और ऊ दीर्घ; ट मूर्धन्य; अंत का विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ललाटचत्वरज्वलद्धनञ्जयस्फुलिङ्गभा",
+      "domain": "shiva_tandava",
+      "iast": "lalāṭacatvarajvaladdhanañjayasphuliṅgabhā",
+      "pronunciationHint": "ट, ञ्ज और लिङ्ग के व्यंजन-समूह स्पष्ट रखें; पाठ-संस्करण सत्यापित करें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "निलिम्पनिर्झरी",
+      "domain": "shiva_tandava",
+      "iast": "nilimpanirjharī",
+      "pronunciationHint": "निर्झरी में झ और र का क्रम सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "धिमिद्धिमिद्धिमिध्वनन्मृदङ्गतुङ्गमङ्गल",
+      "domain": "shiva_tandava",
+      "iast": "dhimiddhimiddhimidhvananmṛdaṅgatuṅgamaṅgala",
+      "pronunciationHint": "मृ में ऋ; ङ्ग में नासिक्य ध्वनि; ध्वनन और तुङ्ग के समूह न छोड़ें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "दृषद्विचित्रतल्पयोः",
+      "domain": "shiva_tandava",
+      "iast": "dṛṣadvicitratalpayoḥ",
+      "pronunciationHint": "दृषद् में ऋ और ष; तल्पयोः में अन्तिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false,
+      "reviewNote": "IAST/पाठ-संस्करण को स्रोत से सत्यापित करें।"
+    },
+    {
+      "surface": "भुजङ्गमौक्तिकस्रजोर्",
+      "domain": "shiva_tandava",
+      "iast": "bhujaṅgamauktikasrajor",
+      "pronunciationHint": "ङ्ग, औ, क्ति और स्रज् समूह स्पष्ट रखें; पद-सन्धि संस्करण के अनुसार बदल सकती है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "निलिम्पनिर्झरीनिकुञ्जकोटरे",
+      "domain": "shiva_tandava",
+      "iast": "nilimpanirjharīnikuñjakoṭare",
+      "pronunciationHint": "कुञ्ज और कोटरे के संयुक्त व्यंजन सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "विमुक्तदुर्मतिः",
+      "domain": "shiva_tandava",
+      "iast": "vimuktadurmatiḥ",
+      "pronunciationHint": "क्त और तिः स्पष्ट रखें; अंतिम विसर्ग सुरक्षित है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "शिवताण्डवस्तोत्रम्",
+      "domain": "devotional_title",
+      "iast": "śivatāṇḍavastotram",
+      "pronunciationHint": "ताण्डव में ण्ड मूर्धन्य समूह; स्तोत्रम् का स्त्र/त्र समूह स्पष्ट रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "नमः शिवाय",
+      "domain": "mantra",
+      "iast": "namaḥ śivāya",
+      "pronunciationHint": "नमः के विसर्ग को अनदेखा न करें; वास्तविक ध्वनि इंजन पर निर्भर है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ॐ नमः शिवाय",
+      "domain": "mantra",
+      "iast": "oṃ namaḥ śivāya",
+      "pronunciationHint": "ॐ को अलग प्रणव-चिह्न के रूप में सुरक्षित रखें; यह सामान्य अक्षर-मात्र नहीं है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "त्र्यम्बकम्",
+      "domain": "mantra",
+      "iast": "tryambakam",
+      "pronunciationHint": "त्र्य और म्ब समूह स्पष्ट रखें; अं/म् को मनमाने ढंग से न बदलें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सुगन्धिं",
+      "domain": "mantra",
+      "iast": "sugandhiṃ",
+      "pronunciationHint": "न्धि समूह और अंतिम अनुस्वार सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "पुष्टिवर्धनम्",
+      "domain": "mantra",
+      "iast": "puṣṭivardhanam",
+      "pronunciationHint": "ष्टि और र्ध समूह स्पष्ट रखें; ष मूर्धन्य है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "उर्वारुकमिव",
+      "domain": "mantra",
+      "iast": "urvārukamiva",
+      "pronunciationHint": "ऊ/आ की मात्रा स्रोत के अनुसार जाँचें; उर्वारुक पद में विराम न जोड़ें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "मृत्योर्मुक्षीय",
+      "domain": "mantra",
+      "iast": "mṛtyormukṣīya",
+      "pronunciationHint": "मृत्योः-मुक्षीय की सन्धि; ऋ, क्ष और दीर्घ ई सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "मामृतात्",
+      "domain": "mantra",
+      "iast": "māmṛtāt",
+      "pronunciationHint": "दीर्घ आ और ऋ-स्वर; अन्तिम त् स्पष्ट रहे।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "नारायणाय",
+      "domain": "devotional_name",
+      "iast": "nārāyaṇāya",
+      "pronunciationHint": "तीनों दीर्घ स्वरों तथा ण को सही रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "वासुदेवाय",
+      "domain": "devotional_name",
+      "iast": "vāsudevāya",
+      "pronunciationHint": "आ दीर्घ हैं।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ईशानाय",
+      "domain": "devotional_name",
+      "iast": "īśānāya",
+      "pronunciationHint": "ई और आ दीर्घ हैं; श को ष न पढ़ें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ब्रह्म",
+      "domain": "philosophical_term",
+      "iast": "brahma",
+      "pronunciationHint": "ब्रह्म में ह्म संयुक्ताक्षर स्पष्ट रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "प्रज्ञान",
+      "domain": "philosophical_term",
+      "iast": "prajñāna",
+      "pronunciationHint": "ज्ञ संयुक्ताक्षर को मनमाने ढंग से अलग न करें; आ दीर्घ है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "क्ष",
+      "domain": "conjunct_example",
+      "iast": "kṣa",
+      "pronunciationHint": "क् + ष का संयुक्ताक्षर; वास्तविक ध्वनि-निर्माण आवाज़ पर निर्भर है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ज्ञ",
+      "domain": "conjunct_example",
+      "iast": "jña",
+      "pronunciationHint": "ज्ञ का परम्परागत संस्कृत उच्चारण क्षेत्रीय/आधुनिक TTS में भिन्न हो सकता है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "श्र",
+      "domain": "conjunct_example",
+      "iast": "śra",
+      "pronunciationHint": "श् + र का संयुक्ताक्षर; दृश्य रूप सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "इळे",
+      "domain": "vedic_samhita",
+      "iast": "iḷe",
+      "pronunciationHint": "ळ का उच्चारण लक्षित आवाज़ पर जाँचें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "वृणीमहे",
+      "domain": "vedic_samhita",
+      "iast": "vṛṇīmahe",
+      "pronunciationHint": "वृ में ऋ; ण मूर्धन्य है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "यज्ञैः",
+      "domain": "vedic_samhita",
+      "iast": "yajñaiḥ",
+      "pronunciationHint": "ज्ञ संयुक्ताक्षर और ऐ दीर्घ द्विस्वर सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ऋत्विजम्",
+      "domain": "vedic_samhita",
+      "iast": "ṛtvijam",
+      "pronunciationHint": "ऋ और त्विज् का संयुक्त क्रम सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "अध्वरम्",
+      "domain": "vedic_samhita",
+      "iast": "adhvaram",
+      "pronunciationHint": "ध्व समूह में ध और व दोनों सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "देवस्य",
+      "domain": "vedic_samhita",
+      "iast": "devasya",
+      "pronunciationHint": "व्यंजन-समूह स्य को अनावश्यक स्वर न दें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "वाचम्",
+      "domain": "vedic_samhita",
+      "iast": "vācam",
+      "pronunciationHint": "आ दीर्घ; अंतिम म् स्पष्ट रहे।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "अश्नुवते",
+      "domain": "vedic_samhita",
+      "iast": "aśnuvate",
+      "pronunciationHint": "श्न संयुक्त समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "स्वस्ति",
+      "domain": "vedic_samhita",
+      "iast": "svasti",
+      "pronunciationHint": "स्व समूह के बीच अतिरिक्त स्वर न जोड़ें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "विश्वानि",
+      "domain": "vedic_samhita",
+      "iast": "viśvāni",
+      "pronunciationHint": "श्व समूह और दीर्घ आ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "देवयन्तः",
+      "domain": "vedic_samhita",
+      "iast": "devayantaḥ",
+      "pronunciationHint": "अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "रायः",
+      "domain": "vedic_samhita",
+      "iast": "rāyaḥ",
+      "pronunciationHint": "अंतिम विसर्ग को स्वतः न हटाएँ।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "रत्नम्",
+      "domain": "vedic_samhita",
+      "iast": "ratnam",
+      "pronunciationHint": "त्न संयुक्त समूह और अंतिम म् स्पष्ट रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "धनम्",
+      "domain": "vedic_samhita",
+      "iast": "dhanam",
+      "pronunciationHint": "ध महाप्राण है; ध को द न करें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "अग्निः",
+      "domain": "vedic_samhita",
+      "iast": "agniḥ",
+      "pronunciationHint": "अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "इन्द्रः",
+      "domain": "vedic_deity_name",
+      "iast": "indraḥ",
+      "pronunciationHint": "न्द्र संयुक्त समूह तथा विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "वरुणः",
+      "domain": "vedic_deity_name",
+      "iast": "varuṇaḥ",
+      "pronunciationHint": "ण मूर्धन्य है; विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "मित्रः",
+      "domain": "vedic_deity_name",
+      "iast": "mitraḥ",
+      "pronunciationHint": "त्र समूह और अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सोमः",
+      "domain": "vedic_deity_name",
+      "iast": "somaḥ",
+      "pronunciationHint": "अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "मरुतः",
+      "domain": "vedic_deity_name",
+      "iast": "marutaḥ",
+      "pronunciationHint": "त और थ में भेद; अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "रुद्रः",
+      "domain": "vedic_deity_name",
+      "iast": "rudraḥ",
+      "pronunciationHint": "द्र संयुक्त समूह और विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सविता",
+      "domain": "vedic_deity_name",
+      "iast": "savitā",
+      "pronunciationHint": "अंतिम आ दीर्घ है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "पूषन्",
+      "domain": "vedic_deity_name",
+      "iast": "pūṣan",
+      "pronunciationHint": "ऊ दीर्घ; ष मूर्धन्य; अंतिम न् स्पष्ट रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "विश्वेदेवाः",
+      "domain": "vedic_deity_name",
+      "iast": "viśvedevāḥ",
+      "pronunciationHint": "श्व समूह और दीर्घ आ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ब्रह्मणस्पते",
+      "domain": "vedic_samhita",
+      "iast": "brahmaṇaspate",
+      "pronunciationHint": "ह्म और ण्स्प संयुक्त क्रम ध्यान से पढ़ें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "प्रचोदयात्",
+      "domain": "gayatri_mantra",
+      "iast": "pracodayāt",
+      "pronunciationHint": "प्र-चो-द-यात्; चो और यात् में दीर्घ स्वर सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false,
+      "hintHi": "प्र-चो-द-यात्; चो और यात् में दीर्घ स्वर सुरक्षित रखें।"
+    },
+    {
+      "surface": "भर्गो",
+      "domain": "gayatri_mantra",
+      "iast": "bhargo",
+      "pronunciationHint": "भ महाप्राण; र्ग समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "धीमहि",
+      "domain": "gayatri_mantra",
+      "iast": "dhīmahi",
+      "pronunciationHint": "धी में दीर्घ ई; ध महाप्राण है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "तत्सवितुर्वरेण्यम्",
+      "domain": "gayatri_mantra",
+      "iast": "tatsavitur vareṇyam",
+      "pronunciationHint": "त्स और ण्य समूह; मूल पद-विच्छेद परंपरा से जाँचें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ॐ भूर्भुवः स्वः",
+      "domain": "gayatri_mantra",
+      "iast": "oṃ bhūr bhuvaḥ svaḥ",
+      "pronunciationHint": "प्रणव, रेफ-युक्त भूः और दोनों विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "भूः",
+      "domain": "vedic_syllable",
+      "iast": "bhūḥ",
+      "pronunciationHint": "ऊ दीर्घ और विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "भुवः",
+      "domain": "vedic_syllable",
+      "iast": "bhuvaḥ",
+      "pronunciationHint": "व और अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "स्वः",
+      "domain": "vedic_syllable",
+      "iast": "svaḥ",
+      "pronunciationHint": "स्व समूह और विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "यजामहे",
+      "domain": "mantra",
+      "iast": "yajāmahe",
+      "pronunciationHint": "आ दीर्घ; चारों अक्षर-खंड क्रम से रहें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सुगन्धिम्",
+      "domain": "mantra",
+      "iast": "sugandhim",
+      "pronunciationHint": "न्धि समूह और अंतिम म् सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "वर्धनम्",
+      "domain": "mantra",
+      "iast": "vardhanam",
+      "pronunciationHint": "र्ध समूह स्पष्ट रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "उर्वारुकम्",
+      "domain": "mantra",
+      "iast": "urvārukam",
+      "pronunciationHint": "उर्वा-रुकम्; आ दीर्घ है, उ ह्रस्व है; अंतिम म् सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false,
+      "hintHi": "उर्वा-रुकम्; आ दीर्घ है, उ ह्रस्व है; अंतिम म् सुरक्षित रखें।"
+    },
+    {
+      "surface": "बन्धनान्",
+      "domain": "mantra",
+      "iast": "bandhanān",
+      "pronunciationHint": "न्ध समूह और दीर्घ आ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "मृत्योः",
+      "domain": "mantra",
+      "iast": "mṛtyoḥ",
+      "pronunciationHint": "ऋ, त्य और अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "मुक्षीय",
+      "domain": "mantra",
+      "iast": "mukṣīya",
+      "pronunciationHint": "क्ष संयुक्ताक्षर और दीर्घ ई सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "अमृतात्",
+      "domain": "mantra",
+      "iast": "amṛtāt",
+      "pronunciationHint": "ऋ तथा आ दीर्घ; अंतिम त् सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "अहं ब्रह्मास्मि",
+      "domain": "upanishadic_phrase",
+      "iast": "ahaṃ brahmāsmi",
+      "pronunciationHint": "अनुस्वार, ह्म और स्मि समूहों को न मिटाएँ।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "तत्त्वमसि",
+      "domain": "upanishadic_phrase",
+      "iast": "tat tvam asi",
+      "pronunciationHint": "तत्त्व द्वित्व और पद-सन्धि सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "अयमात्मा ब्रह्म",
+      "domain": "upanishadic_phrase",
+      "iast": "ayam ātmā brahma",
+      "pronunciationHint": "आत्मा में त्म समूह और दीर्घ आ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सर्वं खल्विदं ब्रह्म",
+      "domain": "upanishadic_phrase",
+      "iast": "sarvaṃ khalvidaṃ brahma",
+      "pronunciationHint": "दोनों अनुस्वार और ख/ल्व समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "नेति नेति",
+      "domain": "upanishadic_phrase",
+      "iast": "neti neti",
+      "pronunciationHint": "पद-क्रम और दोनों दीर्घ/ह्रस्व स्वर ज्यों के त्यों रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "आत्मा",
+      "domain": "philosophical_term",
+      "iast": "ātmā",
+      "pronunciationHint": "आ दीर्घ; त्म समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "परमात्मा",
+      "domain": "philosophical_term",
+      "iast": "paramātmā",
+      "pronunciationHint": "आत्मा का त्म समूह न तोड़ें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ब्रह्मविद्या",
+      "domain": "philosophical_term",
+      "iast": "brahmavidyā",
+      "pronunciationHint": "ह्म और द्य समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सच्चिदानन्दस्वरूप",
+      "domain": "philosophical_term",
+      "iast": "saccidānandasvarūpa",
+      "pronunciationHint": "द्वित्व, दीर्घ आ/ऊ और स्वरूप का स्पष्टरूप रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "चिदानन्दरूपः",
+      "domain": "philosophical_term",
+      "iast": "cidānandarūpaḥ",
+      "pronunciationHint": "दीर्घ आ, ऊ और अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "प्रज्ञानघन",
+      "domain": "philosophical_term",
+      "iast": "prajñānaghana",
+      "pronunciationHint": "ज्ञ और घ का भेद सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "आनन्दवल्ली",
+      "domain": "upanishad_section",
+      "iast": "ānandavallī",
+      "pronunciationHint": "आ और वल्ली की दीर्घ ई सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "शान्तिः",
+      "domain": "chanting_word",
+      "iast": "śāntiḥ",
+      "pronunciationHint": "दीर्घ आ; अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "शान्तिः शान्तिः शान्तिः",
+      "domain": "chanting_formula",
+      "iast": "śāntiḥ śāntiḥ śāntiḥ",
+      "pronunciationHint": "तीनों पद अलग सुरक्षित रखें; विसर्ग न हटाएँ।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "पूर्णमदः पूर्णमिदम्",
+      "domain": "shanti_mantra",
+      "iast": "pūrṇamadaḥ pūrṇamidam",
+      "pronunciationHint": "ण, ण्म और विसर्ग को सुरक्षित रखें; sandhi पाठ-परंपरा पर निर्भर है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "पूर्णात् पूर्णमुदच्यते",
+      "domain": "shanti_mantra",
+      "iast": "pūrṇāt pūrṇam udacyate",
+      "pronunciationHint": "ण और त्/म् के अंतिम व्यंजन सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "असतो मा सद्गमय",
+      "domain": "shanti_mantra",
+      "iast": "asato mā sadgamaya",
+      "pronunciationHint": "सद्गमय में द्ग समूह; आ दीर्घ।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "तमसो मा ज्योतिर्गमय",
+      "domain": "shanti_mantra",
+      "iast": "tamaso mā jyotir gamaya",
+      "pronunciationHint": "ज्योतिर्गमय में र्ग समूह स्पष्ट रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "मृत्योर्मामृतं गमय",
+      "domain": "shanti_mantra",
+      "iast": "mṛtyor māmṛtaṃ gamaya",
+      "pronunciationHint": "ऋ, त्य और अनुस्वार सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "अं",
+      "domain": "phoneme_example",
+      "iast": "aṃ",
+      "pronunciationHint": "अनुस्वार का ध्वनि-रूप सन्दर्भ पर निर्भर है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "अँ",
+      "domain": "phoneme_example",
+      "iast": "ã",
+      "pronunciationHint": "चन्द्रबिन्दु को अनुस्वार से न बदलें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "अः",
+      "domain": "phoneme_example",
+      "iast": "aḥ",
+      "pronunciationHint": "विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ऋ",
+      "domain": "vowel_example",
+      "iast": "ṛ",
+      "pronunciationHint": "ऋ स्वतंत्र स्वर है; उपलब्ध आवाज़ का वास्तविक ध्वनि-रूप जाँचें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ॠ",
+      "domain": "vowel_example",
+      "iast": "ṝ",
+      "pronunciationHint": "दीर्घ ऋ-चिह्न; अधिकांश TTS में पृथक् realization की गारंटी नहीं।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ऌ",
+      "domain": "vowel_example",
+      "iast": "ḷ",
+      "pronunciationHint": "ऌ दुर्लभ स्वर है; TTS समर्थन सत्यापित करें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ॡ",
+      "domain": "vowel_example",
+      "iast": "ḹ",
+      "pronunciationHint": "दीर्घ ऌ; TTS समर्थन सत्यापित करें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "कः",
+      "domain": "phoneme_example",
+      "iast": "kaḥ",
+      "pronunciationHint": "अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "क्",
+      "domain": "phoneme_example",
+      "iast": "k",
+      "pronunciationHint": "हलन्त व्यंजन; अकेले अक्षर का TTS रूप इंजन पर निर्भर है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "म्",
+      "domain": "phoneme_example",
+      "iast": "m",
+      "pronunciationHint": "हलन्त म्; अंतिम व्यंजन को अलग बोलना हमेशा संभव नहीं।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "न्",
+      "domain": "phoneme_example",
+      "iast": "n",
+      "pronunciationHint": "हलन्त न्; अंतिम व्यंजन को सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ङ्",
+      "domain": "phoneme_example",
+      "iast": "ṅ",
+      "pronunciationHint": "कण्ठ्य नासिक्य; सामान्य हिंदी TTS में अलग ध्वनि स्पष्ट न हो सकती है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ञ्",
+      "domain": "phoneme_example",
+      "iast": "ñ",
+      "pronunciationHint": "तालव्य नासिक्य; TTS realization जाँचें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ण्",
+      "domain": "phoneme_example",
+      "iast": "ṇ",
+      "pronunciationHint": "मूर्धन्य नासिक्य; इसे न में न बदलें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "शिवः",
+      "domain": "sanskrit_word",
+      "iast": "śivaḥ",
+      "pronunciationHint": "श और ष का भेद; अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "शम्भुः",
+      "domain": "sanskrit_word",
+      "iast": "śambhuḥ",
+      "pronunciationHint": "म्भ समूह और विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "शङ्करः",
+      "domain": "sanskrit_word",
+      "iast": "śaṅkaraḥ",
+      "pronunciationHint": "ङ्क समूह और अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "महेश्वरः",
+      "domain": "sanskrit_word",
+      "iast": "maheśvaraḥ",
+      "pronunciationHint": "श्व समूह और विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "गङ्गा",
+      "domain": "sanskrit_word",
+      "iast": "gaṅgā",
+      "pronunciationHint": "ङ्ग समूह और दीर्घ आ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "कर्म",
+      "domain": "sanskrit_word",
+      "iast": "karma",
+      "pronunciationHint": "र्म समूह को न तोड़ें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "धर्मः",
+      "domain": "sanskrit_word",
+      "iast": "dharmaḥ",
+      "pronunciationHint": "धर्म और अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "कर्मण्येवाधिकारस्ते",
+      "domain": "bhagavad_gita",
+      "iast": "karmaṇy evādhikāras te",
+      "pronunciationHint": "ण्‍य, एवाधि और रस्ते के पद-संयोजन को स्रोत-पाठ से जाँचें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "योगस्थः कुरु कर्माणि",
+      "domain": "bhagavad_gita",
+      "iast": "yogasthaḥ kuru karmāṇi",
+      "pronunciationHint": "स्थ, र्म और णि सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "निष्कामकर्म",
+      "domain": "philosophical_term",
+      "iast": "niṣkāmakarma",
+      "pronunciationHint": "ष्क समूह; ष को श न करें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सङ्कल्प",
+      "domain": "sanskrit_word",
+      "iast": "saṅkalpa",
+      "pronunciationHint": "ङ्क समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "संस्कृतम्",
+      "domain": "language_name",
+      "iast": "saṃskṛtam",
+      "pronunciationHint": "अनुस्वार और स्कृ समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "व्याकरणम्",
+      "domain": "grammar_term",
+      "iast": "vyākaraṇam",
+      "pronunciationHint": "व्य, कऱ/रण में ण मूर्धन्य; आ दीर्घ है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "स्वरः",
+      "domain": "grammar_term",
+      "iast": "svaraḥ",
+      "pronunciationHint": "स्व समूह और विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "व्यञ्जनम्",
+      "domain": "grammar_term",
+      "iast": "vyañjanam",
+      "pronunciationHint": "व्य और ञ्ज समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सन्धिः",
+      "domain": "grammar_term",
+      "iast": "sandhiḥ",
+      "pronunciationHint": "न्धि और अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "समासः",
+      "domain": "grammar_term",
+      "iast": "samāsaḥ",
+      "pronunciationHint": "आ दीर्घ; अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "हलन्तः",
+      "domain": "grammar_term",
+      "iast": "halantaḥ",
+      "pronunciationHint": "हलन्त और विसर्ग स्पष्ट रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "अनुस्वारः",
+      "domain": "grammar_term",
+      "iast": "anusvāraḥ",
+      "pronunciationHint": "स्वर और अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "चन्द्रबिन्दुः",
+      "domain": "grammar_term",
+      "iast": "candrabinduḥ",
+      "hintHi": "चन्द्रबिन्दु के पद-समूह सुरक्षित रखें; चन्द्रबिन्दु को अनुस्वार से न बदलें।",
+      "pronunciationHint": "चन्द्र और बिन्दु के पद-समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "विसर्गः",
+      "domain": "grammar_term",
+      "iast": "visargaḥ",
+      "pronunciationHint": "र्ग समूह और अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "उदात्तः",
+      "domain": "vedic_grammar_term",
+      "iast": "udāttaḥ",
+      "pronunciationHint": "उदात्त शब्द में दीर्घ आ तथा अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "अनुदात्तः",
+      "domain": "vedic_grammar_term",
+      "iast": "anudāttaḥ",
+      "pronunciationHint": "दात्त में दीर्घ आ; अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "स्वरितः",
+      "domain": "vedic_grammar_term",
+      "iast": "svaritaḥ",
+      "pronunciationHint": "स्वरित का ध्वनि-आकार voice-specific है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "प्लुतः",
+      "domain": "vedic_grammar_term",
+      "iast": "plutaḥ",
+      "pronunciationHint": "प्लुत मात्रा की अवधि सामान्य TTS द्वारा सुनिश्चित नहीं होती।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "गणेशाय",
+      "domain": "devotional_name",
+      "iast": "gaṇeśāya",
+      "pronunciationHint": "ण मूर्धन्य; श और ए-आ ध्वनि क्रम सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "विघ्नेश्वराय",
+      "domain": "devotional_name",
+      "iast": "vighneśvarāya",
+      "pronunciationHint": "घ्न समूह और दीर्घ आ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सरस्वत्यै",
+      "domain": "devotional_name",
+      "iast": "sarasvatyai",
+      "pronunciationHint": "स्व और त्यै समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "महालक्ष्म्यै",
+      "domain": "devotional_name",
+      "iast": "mahālakṣmyai",
+      "pronunciationHint": "क्ष्म्य समूह; आ दीर्घ है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "दुर्गायै",
+      "domain": "devotional_name",
+      "iast": "durgāyai",
+      "pronunciationHint": "र्ग समूह और दीर्घ आ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "चामुण्डायै",
+      "domain": "devotional_name",
+      "iast": "cāmuṇḍāyai",
+      "pronunciationHint": "च, ण्ड, दीर्घ आ तथा यै का क्रम सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "कात्यायन्यै",
+      "domain": "devotional_name",
+      "iast": "kātyānyai",
+      "pronunciationHint": "त्य और न्य समूह; दीर्घ आ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "भवानी",
+      "domain": "devotional_name",
+      "iast": "bhavānī",
+      "pronunciationHint": "आ और ई दीर्घ हैं।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "त्रिपुरसुन्दरी",
+      "domain": "devotional_name",
+      "iast": "tripurasundarī",
+      "pronunciationHint": "ण को न न करें; अंतिम ई दीर्घ है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ललिताम्बिका",
+      "domain": "devotional_name",
+      "iast": "lalitāmbikā",
+      "pronunciationHint": "दीर्घ आ और म्ब समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "जयन्ती मङ्गला काली",
+      "domain": "devotional_phrase",
+      "iast": "jayantī maṅgalā kālī",
+      "pronunciationHint": "ङ्ग, आ और ई दीर्घ; पद-क्रम सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "नारायणी नमोऽस्तुते",
+      "domain": "devotional_phrase",
+      "iast": "nārāyaṇī namo stute",
+      "pronunciationHint": "ण और दीर्घ स्वर; अवग्रह स्रोत में सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सर्वमङ्गलमाङ्गल्ये",
+      "domain": "devotional_phrase",
+      "iast": "sarvamaṅgalamāṅgalye",
+      "pronunciationHint": "ङ्गल और माङ्गल्य समूह स्पष्ट रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "शरण्ये त्र्यम्बके गौरि",
+      "domain": "devotional_phrase",
+      "iast": "śaraṇye tryambake gauri",
+      "pronunciationHint": "ण्य, त्र्य और म्ब संयुक्त समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "नारायणं नमस्कृत्य",
+      "domain": "epic_opening",
+      "iast": "nārāyaṇaṃ namaskṛtya",
+      "pronunciationHint": "ण और कृत्य समूह; अनुस्वार सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "व्यासं वसिष्ठनप्तारम्",
+      "domain": "epic_opening",
+      "iast": "vyāsaṃ vasiṣṭhanaptāram",
+      "pronunciationHint": "व्य, ष्ठ और नप्तारम् समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "शक्तिः",
+      "domain": "sanskrit_word",
+      "iast": "śaktiḥ",
+      "pronunciationHint": "क्त समूह और अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "भक्तिः",
+      "domain": "sanskrit_word",
+      "iast": "bhaktiḥ",
+      "pronunciationHint": "भ महाप्राण; क्त और विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ज्ञानम्",
+      "domain": "sanskrit_word",
+      "iast": "jñānam",
+      "pronunciationHint": "ज्ञ समूह; आ दीर्घ है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "विज्ञानम्",
+      "domain": "sanskrit_word",
+      "iast": "vijñānam",
+      "pronunciationHint": "ज्ञ समूह; दीर्घ आ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "श्रद्धा",
+      "domain": "sanskrit_word",
+      "iast": "śraddhā",
+      "pronunciationHint": "श्र और द्ध समूह; आ दीर्घ है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "प्रणवः",
+      "domain": "sanskrit_word",
+      "iast": "praṇavaḥ",
+      "pronunciationHint": "ण मूर्धन्य; अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सर्वे भवन्तु सुखिनः",
+      "domain": "shanti_mantra",
+      "iast": "sarve bhavantu sukhinaḥ",
+      "pronunciationHint": "भ महाप्राण और अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सर्वे सन्तु निरामयाः",
+      "domain": "shanti_mantra",
+      "iast": "sarve santu nirāmayāḥ",
+      "pronunciationHint": "सन्तु और दीर्घ आ; अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "मा कश्चिद्दुःखभाग्भवेत्",
+      "domain": "shanti_mantra",
+      "iast": "mā kaścid duḥkhabhāg bhavet",
+      "pronunciationHint": "दुःख में विसर्ग और ख; भाग्भवेत् के पद-संयोग को जाँचें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "लोकाः समस्ताः सुखिनो भवन्तु",
+      "domain": "shanti_mantra",
+      "iast": "lokāḥ samastāḥ sukhino bhavantu",
+      "pronunciationHint": "लोकाः और समस्ताः के विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "अस्माकं",
+      "domain": "vedic_word",
+      "iast": "asmākaṃ",
+      "pronunciationHint": "अनुस्वार सुरक्षित रखें; साकार ध्वनि सन्दर्भानुसार जाँचें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "इन्द्राग्नी",
+      "domain": "vedic_compound",
+      "iast": "indrāgnī",
+      "pronunciationHint": "इन्द्र-अग्नी के पद-संयोग तथा दीर्घ आ सुरक्षित रखें; स्रोत-पाठ के सन्धि-रूप की जाँच करें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "विश्वामित्रः",
+      "domain": "vedic_name",
+      "iast": "viśvāmitraḥ",
+      "pronunciationHint": "श्व, त्र और अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "वसिष्ठः",
+      "domain": "vedic_name",
+      "iast": "vasiṣṭhaḥ",
+      "pronunciationHint": "ष्ठ समूह और अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "याज्ञवल्क्यः",
+      "domain": "vedic_name",
+      "iast": "yājñavalkyaḥ",
+      "pronunciationHint": "ज्ञ, ल्क्य समूह; दीर्घ आ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "शौनकः",
+      "domain": "vedic_name",
+      "iast": "śaunakaḥ",
+      "pronunciationHint": "औ और श के भेद पर ध्यान दें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "पिप्पलादः",
+      "domain": "vedic_name",
+      "iast": "pippalādaḥ",
+      "pronunciationHint": "पिप्प में द्वित्व; अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "तैत्तिरीय",
+      "domain": "vedic_text_name",
+      "iast": "taittirīya",
+      "pronunciationHint": "त्त और दीर्घ ई सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "काठक",
+      "domain": "vedic_text_name",
+      "iast": "kāṭhaka",
+      "pronunciationHint": "ट मूर्धन्य; आ दीर्घ है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "शुक्लयजुर्वेद",
+      "domain": "vedic_text_name",
+      "iast": "śuklayajurveda",
+      "pronunciationHint": "शुक्ल, यजुर् और वेद के पद-समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "कृष्णयजुर्वेद",
+      "domain": "vedic_text_name",
+      "iast": "kṛṣṇayajurveda",
+      "pronunciationHint": "कृ में ऋ; ष्ण में मूर्धन्य समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ऋग्वेद",
+      "domain": "vedic_text_name",
+      "iast": "ṛgveda",
+      "pronunciationHint": "ऋ स्वतंत्र स्वर; ग्व समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सामवेद",
+      "domain": "vedic_text_name",
+      "iast": "sāmaveda",
+      "pronunciationHint": "आ दीर्घ; साम-गान के स्वराघात TTS में सुनिश्चित नहीं।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "अथर्ववेद",
+      "domain": "vedic_text_name",
+      "iast": "atharvaveda",
+      "pronunciationHint": "थ महाप्राण; र्व समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "संहिता",
+      "domain": "vedic_text_name",
+      "iast": "saṃhitā",
+      "pronunciationHint": "अनुस्वार और दीर्घ आ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ब्राह्मणम्",
+      "domain": "vedic_text_name",
+      "iast": "brāhmaṇam",
+      "pronunciationHint": "ब्र और ण सुरक्षित रखें; आ दीर्घ है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "आरण्यकम्",
+      "domain": "vedic_text_name",
+      "iast": "āraṇyakam",
+      "pronunciationHint": "आ दीर्घ; ण्य समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "उपनिषद्",
+      "domain": "vedic_text_name",
+      "iast": "upaniṣad",
+      "pronunciationHint": "षद् समूह और अंतिम हलन्त सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "स्वाध्यायः",
+      "domain": "vedic_practice",
+      "iast": "svādhyāyaḥ",
+      "pronunciationHint": "स्व, ध्य और दीर्घ आ; अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "यज्ञोपवीतम्",
+      "domain": "vedic_ritual",
+      "iast": "yajñopavītam",
+      "pronunciationHint": "ज्ञ और वी दीर्घ; अंतिम म् स्पष्ट रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "आहुतिः",
+      "domain": "vedic_ritual",
+      "iast": "āhutiḥ",
+      "pronunciationHint": "आ दीर्घ; अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ऋत्विजः",
+      "domain": "vedic_ritual",
+      "iast": "ṛtvijaḥ",
+      "pronunciationHint": "ऋ और त्वि समूह; अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "स्वाहा",
+      "domain": "vedic_ritual",
+      "iast": "svāhā",
+      "pronunciationHint": "स्व समूह और दोनों दीर्घ आ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "स्वधा",
+      "domain": "vedic_ritual",
+      "iast": "svadhā",
+      "pronunciationHint": "स्व समूह और अंतिम आ दीर्घ है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "वषट्",
+      "domain": "vedic_ritual",
+      "iast": "vaṣaṭ",
+      "pronunciationHint": "ष और ट मूर्धन्य; अंतिम ट् सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "वौषट्",
+      "domain": "vedic_ritual",
+      "iast": "vauṣaṭ",
+      "pronunciationHint": "औ, ष और अंतिम ट् सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "फट्",
+      "domain": "mantra_ending",
+      "iast": "phaṭ",
+      "pronunciationHint": "फ महाप्राण और अंतिम ट् सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ह्रीं",
+      "domain": "bija_mantra",
+      "iast": "hrīṃ",
+      "pronunciationHint": "ह्र संयुक्त समूह, दीर्घ ई और अनुस्वार सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "श्रीं",
+      "domain": "bija_mantra",
+      "iast": "śrīṃ",
+      "pronunciationHint": "श्र संयुक्त समूह, दीर्घ ई और अनुस्वार सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "क्लीं",
+      "domain": "bija_mantra",
+      "iast": "klīṃ",
+      "pronunciationHint": "क्ल संयुक्त समूह, दीर्घ ई और अनुस्वार सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ऐं",
+      "domain": "bija_mantra",
+      "iast": "aiṃ",
+      "pronunciationHint": "ऐ और अनुस्वार सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "दुं",
+      "domain": "bija_mantra",
+      "iast": "duṃ",
+      "pronunciationHint": "अनुस्वार सुरक्षित रखें; इसे स्वतः म् न करें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "गं",
+      "domain": "bija_mantra",
+      "iast": "gaṃ",
+      "pronunciationHint": "अनुस्वार सुरक्षित रखें; इसकी नासिक्य ध्वनि आवाज़ पर निर्भर है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "नमस्ते",
+      "domain": "rudram",
+      "iast": "namaste",
+      "pronunciationHint": "नमस्-ते; पद-सन्धि को स्रोत-पाठ के अनुसार पढ़ें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "रुद्र",
+      "domain": "rudram",
+      "iast": "rudra",
+      "pronunciationHint": "द्र संयुक्त समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "मन्यवे",
+      "domain": "rudram",
+      "iast": "manyave",
+      "pronunciationHint": "न्य संयुक्त समूह और स्वर-क्रम सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "इषवे",
+      "domain": "rudram",
+      "iast": "iṣave",
+      "pronunciationHint": "ष मूर्धन्य है; इसे श न करें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "शिवतमाय",
+      "domain": "rudram",
+      "iast": "śivatamāya",
+      "pronunciationHint": "शिव-तमाय; आ दीर्घ है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "धन्वने",
+      "domain": "rudram",
+      "iast": "dhanvane",
+      "pronunciationHint": "ध्व/न्व समूह को न तोड़ें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "बाहुभ्याम्",
+      "domain": "rudram",
+      "iast": "bāhubhyām",
+      "pronunciationHint": "भ्य संयुक्त समूह और दीर्घ आ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "नीलग्रीवाय",
+      "domain": "rudram",
+      "iast": "nīlagrīvāya",
+      "pronunciationHint": "नी और ग्री दीर्घ; व्यंजन-क्रम सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सहस्राक्षाय",
+      "domain": "rudram",
+      "iast": "sahasrākṣāya",
+      "pronunciationHint": "स्र और क्ष समूह; आ दीर्घ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "पशुपतये",
+      "domain": "rudram",
+      "iast": "paśupataye",
+      "pronunciationHint": "श और तये का क्रम सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "विश्वेश्वराय",
+      "domain": "rudram",
+      "iast": "viśveśvarāya",
+      "pronunciationHint": "श्व और श्वरा के समूह सुरक्षित रखें; आ दीर्घ है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "कपर्दिने",
+      "domain": "rudram",
+      "iast": "kapardine",
+      "pronunciationHint": "र्दि समूह को न बदलें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "नीललोहिताय",
+      "domain": "rudram",
+      "iast": "nīlalohitāya",
+      "pronunciationHint": "नी और ताय में दीर्घ स्वर सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "हिरण्यबाहवे",
+      "domain": "rudram",
+      "iast": "hiraṇyabāhave",
+      "pronunciationHint": "ण्य समूह और बाहवे का आ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सेनान्ये",
+      "domain": "rudram",
+      "iast": "senānye",
+      "pronunciationHint": "न्य समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "वामनाय",
+      "domain": "rudram",
+      "iast": "vāmanāya",
+      "pronunciationHint": "दोनों आ दीर्घ हैं।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "बृहते",
+      "domain": "rudram",
+      "iast": "bṛhate",
+      "pronunciationHint": "बृ में ऋ स्वर सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "वर्षीयसे",
+      "domain": "rudram",
+      "iast": "varṣīyase",
+      "pronunciationHint": "र्ष और दीर्घ ई सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "वृद्धाय",
+      "domain": "rudram",
+      "iast": "vṛddhāya",
+      "pronunciationHint": "ऋ और द्ध संयुक्त समूह; आ दीर्घ है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "समृद्ध्वने",
+      "domain": "rudram",
+      "iast": "samṛddhvane",
+      "pronunciationHint": "ऋ और द्ध्व समूह को न हटाएँ; पाठ-रूप स्रोत से जाँचें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ज्येष्ठाय",
+      "domain": "rudram",
+      "iast": "jyeṣṭhāya",
+      "pronunciationHint": "ज्य और ष्ठ समूह; आ दीर्घ है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "कनिष्ठाय",
+      "domain": "rudram",
+      "iast": "kaniṣṭhāya",
+      "pronunciationHint": "ष्ठ मूर्धन्य समूह; आ दीर्घ है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सहस्रशीर्षा",
+      "domain": "purusha_sukta",
+      "iast": "sahasraśīrṣā",
+      "pronunciationHint": "शीर्ष में दीर्घ ई और ष मूर्धन्य; आ दीर्घ।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "पुरुषः",
+      "domain": "purusha_sukta",
+      "iast": "puruṣaḥ",
+      "pronunciationHint": "ष मूर्धन्य और अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "विश्वतोवृत्त्वा",
+      "domain": "purusha_sukta",
+      "iast": "viśvato vṛttvā",
+      "pronunciationHint": "वृ और त्त्व समूह; स्रोत की पद-विभाजन जाँचें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "अत्यतिष्ठद्दशाङ्गुलम्",
+      "domain": "purusha_sukta",
+      "iast": "atyatiṣṭhad daśāṅgulam",
+      "pronunciationHint": "तिष्ठद्, दश और ङ्गुलम् के समूह स्पष्ट रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "एतावानस्य महिमा",
+      "domain": "purusha_sukta",
+      "iast": "etāvānasya mahimā",
+      "pronunciationHint": "आ दीर्घ; नस्य के पद-प्रवाह को सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "त्रिपादूर्ध्व",
+      "domain": "purusha_sukta",
+      "iast": "tripād ūrdhva",
+      "pronunciationHint": "दीर्घ आ/ऊ और र्ध्व समूह स्पष्ट रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "उदैत्पुरुषः",
+      "domain": "purusha_sukta",
+      "iast": "udait puruṣaḥ",
+      "pronunciationHint": "ऐ स्वर और अंतिम विसर्ग; पाठ-सन्धि जाँचें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "विराडजायत",
+      "domain": "purusha_sukta",
+      "iast": "virāḍ ajāyata",
+      "pronunciationHint": "ड्/ड का मूर्धन्य स्थान और आ दीर्घ है।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ऋचः",
+      "domain": "purusha_sukta",
+      "iast": "ṛcaḥ",
+      "pronunciationHint": "ऋ स्वर तथा अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सामानि",
+      "domain": "purusha_sukta",
+      "iast": "sāmāni",
+      "pronunciationHint": "दोनों आ दीर्घ हैं।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "छन्दांसि",
+      "domain": "purusha_sukta",
+      "iast": "chandāṃsi",
+      "pronunciationHint": "छ महाप्राण; अनुस्वार सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "जज्ञिरे",
+      "domain": "purusha_sukta",
+      "iast": "jajñire",
+      "pronunciationHint": "ज्ञ संयुक्ताक्षर स्पष्ट रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "यजुस्तस्मादजायत",
+      "domain": "purusha_sukta",
+      "iast": "yajus tasmād ajāyata",
+      "pronunciationHint": "जुस्-तस्माद् का पद-संयोग स्रोत के अनुसार जाँचें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "अश्वा जायन्ते",
+      "domain": "purusha_sukta",
+      "iast": "aśvā jāyante",
+      "pronunciationHint": "श्व और जायन्ते का क्रम; आ दीर्घ हैं।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "गावो ह जज्ञिरे",
+      "domain": "purusha_sukta",
+      "iast": "gāvo ha jajñire",
+      "pronunciationHint": "गावो में आ दीर्घ और जज्ञिरे में ज्ञ समूह।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "अजावयः",
+      "domain": "purusha_sukta",
+      "iast": "ajā vayaḥ",
+      "pronunciationHint": "पाठ-रूप और पद-विभाजन संस्करण-सापेक्ष हो सकते हैं; स्रोत जाँचें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "चन्द्रमा मनसो जातः",
+      "domain": "purusha_sukta",
+      "iast": "candramā manaso jātaḥ",
+      "pronunciationHint": "चन्द्र, दीर्घ आ और जातः का विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "चक्षोः सूर्यो अजायत",
+      "domain": "purusha_sukta",
+      "iast": "cakṣoḥ sūryo ajāyata",
+      "pronunciationHint": "क्ष, ऊ और विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "प्राणाद्वायुरजायत",
+      "domain": "purusha_sukta",
+      "iast": "prāṇād vāyur ajāyata",
+      "pronunciationHint": "प्राण में ण; दीर्घ आ; सन्धि-पदों की जाँच करें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "नाभ्या आसीदन्तरिक्षम्",
+      "domain": "purusha_sukta",
+      "iast": "nābhyā āsīd antarikṣam",
+      "pronunciationHint": "भ्य, आ और क्ष समूह सुरक्षित रखें; सन्धि स्रोत से जाँचें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "शीर्ष्णो द्यौः",
+      "domain": "purusha_sukta",
+      "iast": "śīrṣṇo dyauḥ",
+      "pronunciationHint": "शीर्ष्ण समूह, दीर्घ ई और द्यौः का स्वर-समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "पद्भ्यां भूमिः",
+      "domain": "purusha_sukta",
+      "iast": "padbhyāṃ bhūmiḥ",
+      "pronunciationHint": "द्भ्य संयुक्त समूह; अनुस्वार और दीर्घ ऊ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ऋतं च सत्यं च",
+      "domain": "vedic_phrase",
+      "iast": "ṛtaṃ ca satyaṃ ca",
+      "pronunciationHint": "ऋ स्वर और दोनों अनुस्वार सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "तपसोऽध्यजायत",
+      "domain": "vedic_phrase",
+      "iast": "tapaso dhy ajāyata",
+      "pronunciationHint": "अवग्रह और ध्य समूह का पाठ-रूप स्रोत से जाँचें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "ततो विराडजायत",
+      "domain": "purusha_sukta",
+      "iast": "tato virāḍ ajāyata",
+      "pronunciationHint": "विराट्/विराड् पाठ-रूप को संस्करण से सत्यापित करें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "नमो हिरण्यबाहवे",
+      "domain": "rudram",
+      "iast": "namo hiraṇyabāhave",
+      "pronunciationHint": "ण्य समूह और बाहवे में दीर्घ आ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "नमः शम्भवे च मयोभवे च",
+      "domain": "rudram",
+      "iast": "namaḥ śambhave ca mayobhave ca",
+      "pronunciationHint": "विसर्ग, म्भ और दोनों पदों का क्रम सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "नमः शङ्कराय च मयस्कराय च",
+      "domain": "rudram",
+      "iast": "namaḥ śaṅkarāya ca mayaskarāya ca",
+      "pronunciationHint": "ङ्क समूह; आ दीर्घ; विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "नमः शिवाय च शिवतराय च",
+      "domain": "rudram",
+      "iast": "namaḥ śivāya ca śivatarāya ca",
+      "pronunciationHint": "दोनों दीर्घ आ और विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "नमो नीलग्रीवाय च शितिकण्ठाय च",
+      "domain": "rudram",
+      "iast": "namo nīlagrīvāya ca śitikaṇṭhāya ca",
+      "pronunciationHint": "नीलग्रीव और ण्ठ/ण्ट मूर्धन्य समूह सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "नमः कपर्दिने च व्युप्तकेशाय च",
+      "domain": "rudram",
+      "iast": "namaḥ kapardine ca vyuptakeśāya ca",
+      "pronunciationHint": "र्दि, व्यु और शाय का क्रम सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "नमः सहस्राक्षाय च शतधन्वने च",
+      "domain": "rudram",
+      "iast": "namaḥ sahasrākṣāya ca śatadhanvane ca",
+      "pronunciationHint": "सहस्राक्ष और धन्व समूह; विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "नमः पशुपतये च",
+      "domain": "rudram",
+      "iast": "namaḥ paśupataye ca",
+      "pronunciationHint": "अंतिम विसर्ग सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "नमस्ते अस्तु भगवन्",
+      "domain": "rudram",
+      "iast": "namaste astu bhagavan",
+      "pronunciationHint": "भगवन् में गव और अंतिम न् स्पष्ट रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "विश्वेश्वराय महादेवाय",
+      "domain": "rudram",
+      "iast": "viśveśvarāya mahādevāya",
+      "pronunciationHint": "श्व, दीर्घ आ और देवाय का क्रम सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "त्र्यम्बकाय त्रिपुरान्तकाय",
+      "domain": "rudram",
+      "iast": "tryambakāya tripurāntakāya",
+      "pronunciationHint": "त्र्य/म्ब और त्रि/न्त समूह; आ दीर्घ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "नीलकण्ठाय मृत्युञ्जयाय",
+      "domain": "rudram",
+      "iast": "nīlakaṇṭhāya mṛtyuñjayāya",
+      "pronunciationHint": "ण्ठ और ञ्ज समूह; ऋ और दीर्घ आ सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    },
+    {
+      "surface": "सर्वेश्वराय सदाशिवाय",
+      "domain": "rudram",
+      "iast": "sarveśvarāya sadāśivāya",
+      "pronunciationHint": "दीर्घ आ तथा श/ष का भेद सुरक्षित रखें।",
+      "pronunciationVerified": false,
+      "autoApply": false
+    }
+  ],
+  "testCases": {
+    "preserveExactly": [
+      "अग्निमीळे पुरोहितम्",
+      "॑अग्निमीळे॒",
+      "लम्बितां भुजङ्गतुङ्गमालिकाम्",
+      "दधिक्राव्णः",
+      "क्ष ज्ञ श्र"
+    ],
+    "lookup": [
+      "अग्निमीळे",
+      "दधिक्राव्णः",
+      "ऋत्विज्",
+      "होतृ",
+      "उद्गातृ",
+      "पुरोडाश",
+      "ब्रह्मणस्पतिः",
+      "प्रज्ञानं ब्रह्म",
+      "लम्बितां",
+      "जटाकटाहसम्भ्रमभ्रमन्निलिम्पनिर्झरी",
+      "धगद्धगद्धगज्ज्वलल्ललाटपट्टपावके",
+      "धिमिद्धिमिद्धिमिध्वनन्मृदङ्गतुङ्गमङ्गल"
+    ],
+    "acceptance": "डेटा parse और lookup परीक्षण, वास्तविक उच्चारण परीक्षण से अलग हैं। Android/Chrome में सुनकर ही runtime acceptance PASS घोषित करें।",
+    "additionalPreservationAssertions": [
+      "No Unicode combining mark is removed by dictionary lookup.",
+      "Vedic accent marks U+0951, U+0952 and Vedic Extensions characters are retained exactly.",
+      "A TTS candidate is not used unless explicitly reviewed and enabled.",
+      "Every lexicon entry defaults to pronunciationVerified=false and autoApply=false.",
+      "Unknown words and unknown Unicode code points pass through unchanged.",
+      "Lookup and transliteration must not mutate the source/display text."
+    ],
+    "morphologyAndMarkLookup": [
+      "अग्निमीळे",
+      "ऋत्विज्",
+      "होतृ",
+      "उद्गातृ",
+      "दधिक्राव्णः",
+      "लम्बितां",
+      "भजाम्यहम्",
+      "॑अग्निमीळे॒",
+      "ॐ",
+      "अं",
+      "अँ",
+      "अः",
+      "क्",
+      "क्ष्ण",
+      "त्र्य",
+      "ज्ञ",
+      "श्र",
+      "ष्ठ",
+      "द्ग",
+      "ह्म",
+      "जटाकटाहसम्भ्रमभ्रमन्निलिम्पनिर्झरी",
+      "विलोलवीचिवल्लरीविराजमानमूर्धनि",
+      "धगद्धगद्धगज्ज्वलल्ललाटपट्टपावके",
+      "धिमिद्धिमिद्धिमिध्वनन्मृदङ्गतुङ्गमङ्गल"
+    ]
+  },
+  "provenance": {
+    "builtAt": "2026-10-13",
+    "basis": "उपयोगकर्ता द्वारा पहचाने गए शिवताण्डव के कठिन पद और उपलब्ध Sanskrit–Vedic master dataset के starter terms।",
+    "verificationPolicy": "प्रविष्टि को verified तभी करें जब स्रोत-पाठ/शाखा निर्दिष्ट हो और लक्षित आवाज़ पर सुनकर/विद्वत् समीक्षा से जाँच दर्ज हो।",
+    "warning": "IAST और लिखित hints केवल समीक्षा-सहायता हैं; वे नया ध्वनि-मॉडल प्रशिक्षित नहीं करते।",
+    "wordCount": 287,
+    "expandedAt": "2026-10-13",
+    "verificationWarning": "All entries in this expanded dataset remain unverified for runtime unless an explicit source and device-test result are recorded. Descriptive hints are not acoustic training data."
+  },
+  "entrySchema": {
+    "requiredFields": [
+      "surface",
+      "domain",
+      "pronunciationVerified",
+      "autoApply"
+    ],
+    "optionalFields": [
+      "iast",
+      "pronunciationHint",
+      "hintHi",
+      "ttsCandidate",
+      "candidateStatus",
+      "transliterationStatus",
+      "reviewNote",
+      "notes",
+      "sourceWork",
+      "sourceLocation",
+      "vedicAccents"
+    ],
+    "verificationStates": [
+      "not-reviewed-for-runtime",
+      "candidate-unverified",
+      "human-reviewed",
+      "runtime-tested"
+    ],
+    "approvalRule": "autoApply may become true only after human review of source text and actual target-device voice output; never infer it from IAST alone.",
+    "hintPolicy": "Use pronunciationHint first; hintHi is an accepted legacy alias. Hints are not training data and do not prove audio accuracy.",
+    "defaultValues": {
+      "pronunciationVerified": false,
+      "autoApply": false,
+      "transliterationStatus": "candidate-unverified",
+      "candidateStatus": "not-reviewed-for-runtime",
+      "ttsCandidate": null,
+      "pronunciationHint": null
+    }
+  },
+  "statistics": {
+    "lexiconEntryCount": 287,
+    "uniqueSurfaceCount": 287,
+    "pronunciationVerifiedCount": 0,
+    "autoApplyEnabledCount": 0,
+    "unverifiedEntryCount": 287,
+    "countMeaning": "Generated from this file; not a measure of exhaustive Sanskrit/Vedic coverage."
+  },
+  "phonologicalReference": {
+    "vowelLengthContrasts": [
+      {
+        "short": "अ",
+        "long": "आ",
+        "policy": "preserve length distinction"
+      },
+      {
+        "short": "इ",
+        "long": "ई",
+        "policy": "preserve length distinction"
+      },
+      {
+        "short": "उ",
+        "long": "ऊ",
+        "policy": "preserve length distinction"
+      },
+      {
+        "short": "ऋ",
+        "long": "ॠ",
+        "policy": "rare; verify font and voice support"
+      },
+      {
+        "short": "ऌ",
+        "long": "ॡ",
+        "policy": "very rare; verify source and voice support"
+      }
+    ],
+    "aspiratedUnaspiratedPairs": [
+      [
+        "क",
+        "ख"
+      ],
+      [
+        "ग",
+        "घ"
+      ],
+      [
+        "च",
+        "छ"
+      ],
+      [
+        "ज",
+        "झ"
+      ],
+      [
+        "ट",
+        "ठ"
+      ],
+      [
+        "ड",
+        "ढ"
+      ],
+      [
+        "त",
+        "थ"
+      ],
+      [
+        "द",
+        "ध"
+      ],
+      [
+        "प",
+        "फ"
+      ],
+      [
+        "ब",
+        "भ"
+      ]
+    ],
+    "placeContrasts": [
+      {
+        "set": [
+          "ट",
+          "ठ",
+          "ड",
+          "ढ",
+          "ण"
+        ],
+        "name": "मूर्धन्य",
+        "warning": "दन्त्य वर्णों में न बदलें"
+      },
+      {
+        "set": [
+          "त",
+          "थ",
+          "द",
+          "ध",
+          "न"
+        ],
+        "name": "दन्त्य",
+        "warning": "मूर्धन्य वर्णों में न बदलें"
+      },
+      {
+        "set": [
+          "श",
+          "ष",
+          "स"
+        ],
+        "name": "तीन सिबिलेंट",
+        "warning": "समान अक्षर न मानें"
+      },
+      {
+        "set": [
+          "ङ",
+          "ञ",
+          "ण",
+          "न",
+          "म"
+        ],
+        "name": "नासिक्य व्यंजन",
+        "warning": "स्थान और प्रसंग महत्त्वपूर्ण हैं"
+      }
+    ],
+    "syllablePracticeSequences": [
+      {
+        "text": "क ख ग घ ङ",
+        "category": "कण्ठ्य"
+      },
+      {
+        "text": "च छ ज झ ञ",
+        "category": "तालव्य"
+      },
+      {
+        "text": "ट ठ ड ढ ण",
+        "category": "मूर्धन्य"
+      },
+      {
+        "text": "त थ द ध न",
+        "category": "दन्त्य"
+      },
+      {
+        "text": "प फ ब भ म",
+        "category": "ओष्ठ्य"
+      },
+      {
+        "text": "य र ल व",
+        "category": "अन्तःस्थ"
+      },
+      {
+        "text": "श ष स ह",
+        "category": "ऊष्म"
+      },
+      {
+        "text": "अ आ इ ई उ ऊ ऋ ॠ ऌ ॡ ए ऐ ओ औ",
+        "category": "स्वर"
+      },
+      {
+        "text": "क् त् म् न् ङ् ञ् ण्",
+        "category": "हलन्त-परीक्षण"
+      },
+      {
+        "text": "अं अँ अः ॐ ऽ",
+        "category": "विशेष चिह्न"
+      }
+    ],
+    "conjunctPracticeSequences": [
+      "क्ष क्ष्ण क्ष्म क्ष्व क्ष्य",
+      "त्र त्र्य त्र्व",
+      "ज्ञ",
+      "श्र श्र्य श्र्व",
+      "स्त्र स्त्य स्त्व",
+      "ष्ठ ष्ठ्य ष्ण ष्प ष्म",
+      "क्त क्त्व क्त्र क्न",
+      "ङ्क ङ्ख ङ्ग ङ्घ ङ्म",
+      "ञ्च ञ्ज ञ्छ ञ्झ",
+      "ण्ड ण्ठ",
+      "द्ग द्घ द्भ",
+      "ह्न ह्म ह्य ह्व"
+    ],
+    "boundaryGuidance": [
+      "Line wrapping for display must not be treated as a lexical boundary.",
+      "A hyphen may represent typesetting, elision, or editorial division; only merge it under a tested rule and retain original display text.",
+      "Danda and double-danda can indicate pause/verse ending, but verse numbers are metadata, not spoken words.",
+      "Do not infer Vedic svara contours from ordinary punctuation.",
+      "Pause timing can be approximated at phrase boundaries; synthetic breathing cannot be guaranteed by browser SpeechSynthesis."
+    ],
+    "noUniversalG2pClaim": true,
+    "note": "These contrasts and practice sequences are references for tests. They do not promise that each installed TTS voice realizes every phoneme correctly."
+  },
+  "reviewWorkflow": {
+    "states": [
+      "not-reviewed-for-runtime",
+      "candidate-unverified",
+      "human-reviewed",
+      "runtime-tested"
+    ],
+    "checklist": [
+      "Source spelling has been checked against a named edition/recension.",
+      "IAST is checked by a knowledgeable reviewer, not inferred from a rough pronunciation.",
+      "Any ttsCandidate is listened to using the actual target device and selected voice.",
+      "Display text remains unchanged; only the TTS stream may use a separately approved candidate.",
+      "Vedic accent marks and unknown Unicode characters are preserved.",
+      "Actual audio result, device, browser, voice name, and review date are recorded."
+    ],
+    "requiredBeforeAutoApply": [
+      "human reviewer",
+      "source edition or documented exception",
+      "device voice test",
+      "regression test case"
+    ],
+    "policy": "No autoApply is enabled in this dataset. Do not set pronunciationVerified=true merely because JSON parses or spelling is recognized."
+  }
+}
